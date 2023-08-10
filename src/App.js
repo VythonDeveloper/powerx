@@ -75,7 +75,6 @@ function App() {
           <Route path="/refer" element={<Refer />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/faq" element={<Faq />} />
-          {/* Test */}
         </Routes>
       </Suspense>
     </>
