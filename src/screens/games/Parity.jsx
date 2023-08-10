@@ -328,7 +328,7 @@ const Parity = () => {
             <table style={{ width: "100%", marginTop: "1rem" }}>
               <thead>
                 <tr className="parity-myorder-header parity-myorder">
-                  <td className="d-flex align-items-center gap-1" onClick={() => setShowMyBid(!showMyBid)}>Entry {!showMyBid ? <i class="bi bi-arrow-down-circle"></i>: <i class="bi bi-arrow-up-circle"></i>}</td>
+                  <td className="d-flex align-items-center gap-1" onClick={() => setShowMyBid(!showMyBid)}>Entry {showMyBid ? <i class="bi bi-arrow-down-circle"></i>: <i class="bi bi-arrow-up-circle"></i>}</td>
                   <td className="mx-auto">ID</td>
                   <td className="mx-auto">Total</td>
                   <td className="mx-auto">Result</td>
