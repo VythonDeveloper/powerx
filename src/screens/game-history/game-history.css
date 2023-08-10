@@ -1,0 +1,136 @@
+.gameHistory-btn-group {
+  display: flex;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.gameHistory-btn-group button {
+  border: none;
+  background: none;
+  padding: 0.6rem;
+  border-radius: 10px;
+  font-weight: 500;
+  color: #fff;
+  font-size: 1rem;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.gameHistory-activeBtn {
+  background-color: #fbaa79 !important;
+  color: black !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.emptyImage {
+  display: flex;
+  min-height: 82vh;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.emptyImage img {
+  width: 40%;
+}
+
+.history-parity {
+  background-color: #283546;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  margin-top: 0.5rem;
+  transition: all 0.5s ease-in-out !important;
+}
+
+.history-parity .date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-parity .date p {
+  font-size: 15px;
+  color: #e6e4e4;
+}
+
+.hr80 {
+  border-bottom: 1px solid gray;
+  margin-top: 1rem;
+}
+
+.parity-delivery {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  color: #e6e4e4;
+  font-size: 15px;
+}
+
+.history-parity-btn {
+  display: flex;
+  gap: 1rem;
+}
+
+.history-parity-btn button {
+  border: none;
+  padding: 0.25rem 1rem;
+  border-radius: 2rem;
+  font-weight: 500;
+}
+
+.parity-myorder-header td {
+  color: #f1b81a;
+  font-weight: 500;
+}
+
+.parity-myorder {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+}
+
+.parity-myorder td:first-child {
+  text-align: left;
+}
+
+.parity-myorder td:last-child {
+  text-align: right;
+}
+
+.parity-myorder-header td {
+  color: #f1b81a;
+  font-weight: 500;
+}
+
+.parity-selected {
+  display: flex;
+  justify-content: center;
+}
+
+.parity-selected p {
+  background-color: #e8f3d5;
+  width: 50%;
+  color: #000;
+  font-size: 14px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parity-result p {
+  width: 38%;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  background-color: #e14738;
+  color: #fff;
+}
+
+
+@media screen and (max-width: 370px) {
+  .parity-myorder td:last-child {
+    font-size: 14px;
+}
+}

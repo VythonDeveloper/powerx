@@ -1,0 +1,62 @@
+.recharge-history-container {
+  padding-top: 1rem;
+  color: #fff;
+  padding-bottom: 1rem;
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.recharge-history-container h2 {
+  font-weight: 400;
+  text-align: center;
+}
+
+.recharge-history-card-group {
+  margin-top: 1rem;
+}
+
+.recharge-history-card {
+  background-color: #283546;
+  margin-top: 0.5rem;
+  border-radius: 1rem;
+  padding: 0.2rem 0;
+}
+
+.recharge-history-card .top {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.5rem;
+  padding-left: 0;
+}
+
+.recharge-history-card .top img {
+  width: 60px;
+  object-fit: contain;
+}
+
+.recharge-history-card .top div {
+  background-color: #4caf4c;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0.7rem 0.7rem 0;
+}
+
+.recharge-history-card .top div p {
+  font-size: 1rem;
+}
+
+.recharge-history-card .bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 1rem 1rem;
+}
+
+.recharge-history-card .bottom .amount {
+  display: flex;
+}
+
+
+.recharge-history-card .bottom .amount p {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
