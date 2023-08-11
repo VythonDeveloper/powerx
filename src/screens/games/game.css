@@ -157,17 +157,19 @@
 }
 
 .dus-ka-dum .parity-period p:first-child {
-  color: #777;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .parity-count {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .parity-count p:first-child {
-  color: #c8c5c5;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .parity-count-box {
@@ -556,11 +558,11 @@ input:focus {
 }
 
 .slider {
-  /* background-color: black; */
-  border: 1px solid rgb(248, 26, 26);
+  /* border: 1px solid rgb(121, 11, 11); */
   padding: 0.5rem;
-  margin-top: 1rem;
   border-radius: 5px;
+  background: #eaeaff;
+    border: 1px solid #a6a1ff;
 }
 
 .slide-item div {
@@ -609,4 +611,10 @@ input:focus {
 
 .dus-ka-dum {
   font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+.timer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
 }

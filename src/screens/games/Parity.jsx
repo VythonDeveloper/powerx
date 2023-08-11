@@ -270,19 +270,21 @@ const Parity = () => {
           </div>
 
           {/* Timer */}
-          <div className="parity-top mt-4 px-4 py-2">
-            <div className="parity-period">
-              <p className="">5 Minute</p>
+          <div className="timer  mt-4">
+            <div className="parity-period rounded d-flex flex-column align-items-center justify-content-center text-light p-3 bg-warning h-100">
+              <p className="mb-2">5 Minute</p>
               <p className="mb-0">04/08/23 12:30 PM</p>
             </div>
 
-            <div className="parity-count">
+            <div className="parity-count rounded p-3 bg-warning">
               <p className="m-0 mt-1">Time Left</p>
               <div className="parity-count-box p-2 ">
-                <p className="m-0" style={{ color: '#000' }}>{timer}</p>
+                <p className="m-0">{timer}</p>
               </div>
             </div>
           </div>
+
+          <p className="mb-1 mt-3">Result</p>
 
           <div className="slider d-flex align-items-center gap-2">
             <div onClick={handlePrev} className="slider-btn">
@@ -298,7 +300,7 @@ const Parity = () => {
                       <div>
                         {item.result}
                       </div>
-                      <p className="mb-0 text-danger" style={{ fontSize: '12px' }} >{item.time}</p>
+                      <p className="mb-0" style={{ fontSize: '12px' }} >{item.time}</p>
                     </div>
                   </SwiperSlide>
                 ))
@@ -325,9 +327,9 @@ const Parity = () => {
           </div>
 
           <div>
-            <table style={{ width: "100%", marginTop: "1rem" }}>
+            <table className="border" style={{ width: "100%", marginTop: "1rem" }}>
               <thead>
-                <tr className="parity-myorder-header parity-myorder">
+                <tr className="parity-myorder-header p-2 parity-myorder">
                   <td className="d-flex align-items-center gap-1" onClick={() => setShowMyBid(!showMyBid)}>Entry {showMyBid ? <i class="bi bi-arrow-down-circle"></i>: <i class="bi bi-arrow-up-circle"></i>}</td>
                   <td className="mx-auto">ID</td>
                   <td className="mx-auto">Total</td>
@@ -337,7 +339,7 @@ const Parity = () => {
               </thead>
 
               <tbody>
-                <tr className="parity-myorder">
+                <tr className="parity-myorder p-2 pt-0">
                   <td>1</td>
                   <td className="parity-selected" style={{ fontSize: 14 }}>
                     12/5/2024 12:50pm
