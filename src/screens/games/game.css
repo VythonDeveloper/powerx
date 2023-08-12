@@ -237,11 +237,13 @@
 
 .dus-ka-dum .paritynum-btns {
   background: #eaeaff;
-    border: 1px solid #a6a1ff;
+  border-radius: 10px;
 }
 
+
+
 .dus-ka-dum .paritynum-btns .item {
-  background-color: #4ec7de;
+  background-color: #6F61C0;
 }
 
 .paritynum-btns p {
@@ -251,7 +253,7 @@
 
 .dus-ka-dum .paritynum-btns .item p {
   font-size: 1.5rem;
-  color:#ff0206;
+  color: #ff0206;
   font-weight: 800;
   text-align: center;
 }
@@ -562,11 +564,11 @@ input:focus {
   padding: 0.5rem;
   border-radius: 5px;
   background: #eaeaff;
-    border: 1px solid #a6a1ff;
 }
 
 .slide-item div {
-  background-color: #00c282;
+  background-color: #6F61C0;
+  border-radius: 8px;
   color: #fff;
   aspect-ratio: 1/1;
   display: flex;
@@ -617,4 +619,9 @@ input:focus {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
+}
+
+.my-bit {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 }

@@ -135,8 +135,8 @@ const Parity = () => {
               </div>
 
               <div className="withdrawal__input__notes d-flex justify-content-between" >
-                <p className="mb-0 mt-2">Service charge 10%</p>
-                <p className="mb-0 mt-2">Delivery 50.00</p>
+                <p className="mb-0 mt-2 text-light">Service charge 10%</p>
+                <p className="mb-0 mt-2 text-light">Delivery 50.00</p>
               </div>
 
               <Keyboard amount={amount} setAmount={setAmount} />
@@ -267,7 +267,7 @@ const Parity = () => {
               <div className="position-relative item mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal" key={i}>
                 <p className="m-0 text-light">{item}</p>
                 <span className="dus-ka-dum-flag text-light">
-                  <span className="w-100 h-75 mt-2 text-center bg-warning">{i % 2 === 0 ? '₹500' : null}</span></span>
+                  <span className="w-100 h-75 mt-2 text-center bg-war" style={{backgroundColor: '#A084E8'}}>{i % 2 === 0 ? '₹500' : null}</span></span>
               </div>
             ))}
           </div>
@@ -305,11 +305,11 @@ const Parity = () => {
 
           {
             showMyBid && (
-              <div className="d-flex justify-content-between mt-2">
+              <div className="my-bit mt-2">
                 {
                   firstCardList.map((item, i) => (
-                    <div key={i}>
-                      <p className="mb-0 text-danger fw-blod fw-bold">{item}</p>
+                    <div key={i} className="d-flex flex-column align-items-center gap-1">
+                      <p className="mb-0 text-light d-flex justify-content-center align-items-center rounded-pill fw-blod fw-bold bg-danger" style={{width: 30, height: 30}}>{item}</p>
                       <p>2</p>
                     </div>
                   ))
