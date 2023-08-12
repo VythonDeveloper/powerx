@@ -19,7 +19,7 @@ const FastParity = () => {
   const [period, setPeroid] = useState('000000000000')
   const [winWallet, setWinWallet] = useState('0.00')
   const [playWallet, setPlayWallet] = useState('0.00')
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useState('1')
   const [coin, setCoin] = useState()
   const [color, setColor] = useState()
   const [alphabet, setAlphabet] = useState()
@@ -42,7 +42,6 @@ const FastParity = () => {
     try {
       onValue(powerxRef, (snapshot) => {
         const data = snapshot.val();
-        console.log(data)
         if (data) {
           const key = Object.keys(data)[0];
           const { time, period } = data[key];
@@ -71,6 +70,8 @@ const FastParity = () => {
 
   useEffect(() => {
     getWallet()
+    myOrder()
+    resultHistory()
   }, [])
 
   const placeBit = async () => {
@@ -84,17 +85,40 @@ const FastParity = () => {
         points: amount
       }
 
+      console.log(values)
+
       const formData = new FormData();
       for (const key in values) {
         formData.append(key, values[key]);
       }
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data', // Set the content type to form data
+          'Content-Type': 'multipart/form-data',
         },
       };
 
       const { data } = await dbObject.post('/power-x/place-bid.php', formData, config)
+      console.log(data)
+      if(!data.error) {
+        getWallet()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const myOrder = async () => {
+    try {
+      const {data} = await dbObject.get('/power-x/my-orders.php')
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
+  const resultHistory = async () => {
+    try {
+      const {data} = await dbObject.get('/power-x/result-history.php')
       console.log(data)
     } catch (error) {
       console.log(error)
@@ -118,17 +142,9 @@ const FastParity = () => {
             <div className="modal-content start-box">
               <div className="modal-header p-2 mb-3">
                 <button data-bs-toggle="modal"
-                  data-bs-target="#exampleModal" className="ms-auto close-btn" ><i class="bi bi-x-lg"></i></button>
+                  data-bs-target="#exampleModal" className="ms-auto close-btn" ><i className="bi bi-x-lg"></i></button>
               </div>
               <h2 className="game-name">{coin || alphabet || color}</h2>
-              <p className="mb-0">Points</p>
-
-              <div className="points-div">
-                <h3 className="mb-0">INR 0.0</h3>
-                <button onClick={() => navigate("/recharge")}>
-                  <i className="fa-solid fa-clock-rotate-left"></i> Recharge
-                </button>
-              </div>
 
               <div className="contract-point">
                 <p>Contract Amount</p>
@@ -160,7 +176,7 @@ const FastParity = () => {
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                 >
-                  Yes
+                  Start
                 </button>
               </div>
             </div>
@@ -251,12 +267,12 @@ const FastParity = () => {
 
           <div className="power-x p-2 position-relative">
             <div className="game-coins position-relative">
-              <div className="d-flex flex-column gold-coin" onClick={() => { setCoin('Gold'); setColor(null); setAlphabet(null) }} data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <div className="d-flex flex-column gold-coin" onClick={() => { setCoin('Gold'); setColor(''); setAlphabet('') }} data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <p className="mb-0 pt-3 text-center">GOLD</p>
                 <p className="border-top w-75 text-center mx-auto">2X</p>
               </div>
 
-              <div className="d-flex flex-column justify-content-center align-items-center silver-coin" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <div className="d-flex flex-column justify-content-center align-items-center silver-coin" onClick={() => { setCoin('Silver'); setColor(''); setAlphabet('') }} data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <p className="mb-0 pt-3 text-center">SILVER</p>
 
                 <p className="border-top  w-75 text-center mx-auto">2X</p>
@@ -271,6 +287,7 @@ const FastParity = () => {
                 data-bs-target="#exampleModal"
                 className="p-3"
                 style={{ backgroundColor: "#d72e2a" }}
+                onClick={() => { setCoin(''); setColor('Red'); setAlphabet('') }}
               >
                 <p className="m-0">Red</p>
                 <p className="m-0 border-top w-75 text-center">2X</p>
@@ -280,6 +297,7 @@ const FastParity = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
                 style={{ backgroundColor: "#388e3d" }}
+                onClick={() => { setCoin(''); setColor('Green'); setAlphabet('') }}
               >
                 <p className="m-0">green</p>
                 <p className="m-0 border-top w-75 text-center">3X</p>
@@ -289,6 +307,7 @@ const FastParity = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
                 style={{ backgroundColor: "#1976d3" }}
+                onClick={() => { setCoin(''); setColor('Blue'); setAlphabet('') }}
               >
                 <p className="m-0">Blue</p>
                 <p className="m-0 border-top w-75 text-center">4X</p>
@@ -299,7 +318,7 @@ const FastParity = () => {
 
             <div className="paritynum-btns position-relative">
               {firstCardList.map((item, i) => (
-                <div data-bs-toggle="modal" data-bs-target="#exampleModal" key={i}>
+                <div onClick={() => { setCoin(''); setColor(''); setAlphabet(item) }} className="border" data-bs-toggle="modal" data-bs-target="#exampleModal" key={i}>
                   <p className="m-0">{item}</p>
                   <p className="m-0 border-top w-50 text-center">{2 + i}X</p>
                 </div>
@@ -315,43 +334,13 @@ const FastParity = () => {
             </div>
           </div>
 
-
-          {/* <div className="parity-btn">
-            <button
-              onClick={() => setActiveBtn("continuos")}
-              className={activeBtn === "continuos" ? "parity-btn-active" : ""}
-            >
-              Continuos
-            </button>
-            <button
-              onClick={() => setActiveBtn("record")}
-              className={activeBtn === "record" ? "parity-btn-active" : ""}
-            >
-              Record
-            </button>
-            <button
-              onClick={() => setActiveBtn("probability")}
-              className={activeBtn === "probability" ? "parity-btn-active" : ""}
-            >
-              Probability
-            </button>
-          </div>
-
-          {activeBtn === "continuos" && <ContinuousTab />}
-
-          {activeBtn === "record" && <Record />}
-
-          {activeBtn === "probability" && (
-            <Probability probabilityBox={probabilityBox} />
-          )} */}
-
           <div className="gameDetails-btn-group">
             <button
               onClick={() => setActiveBtn2("OtherPlayers")}
               className={`${activeBtn2 === "OtherPlayers" ? "gameDetails-activeBtn" : ""
                 }`}
             >
-              Other Players
+              Result History
             </button>
 
             <button

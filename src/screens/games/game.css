@@ -204,7 +204,7 @@
 }
 
 .prity-colors div {
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -475,6 +475,7 @@ input:focus {
   margin-top: 0.5rem;
   display: flex;
   gap: 1.1rem;
+  color: #000;
 }
 
 .contract-point button {
