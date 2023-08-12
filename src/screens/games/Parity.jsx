@@ -13,8 +13,6 @@ import "swiper/css";
 const Parity = () => {
   const navigate = useNavigate();
   const firstCardList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  const [activeBtn, setActiveBtn] = useState("probability");
-  const [activeBtn2, setActiveBtn2] = useState("OtherPlayers");
   const [timer, setTimer] = useState('0:00');
   const [period, setPeroid] = useState('000000000000')
   const [winWallet, setWinWallet] = useState('0.00')
@@ -97,47 +95,12 @@ const Parity = () => {
 
     {
       time: '12:05pm',
-      result: '6'
-    },
-
-    {
-      time: '12:05pm',
-      result: '5'
-    },
-
-    {
-      time: '12:05pm',
-      result: '10'
-    },
-
-    {
-      time: '12:05pm',
       result: '1'
-    },
-
-    {
-      time: '12:05pm',
-      result: '8'
-    },
-
-    {
-      time: '12:05pm',
-      result: '6'
     },
 
   ]
 
-  const handlePrev = () => {
-    if (swiper) {
-      swiper.slidePrev();
-    }
-  };
 
-  const handleNext = () => {
-    if (swiper) {
-      swiper.slideNext();
-    }
-  };
 
 
 
@@ -158,14 +121,6 @@ const Parity = () => {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content start-box">
               <h2 className="game-name">Gold</h2>
-              <p>Points</p>
-
-              <div className="points-div">
-                <h3>INR 0.0</h3>
-                <button onClick={() => navigate("/recharge")}>
-                  <i className="fa-solid fa-clock-rotate-left"></i> Recharge
-                </button>
-              </div>
 
               <div className="contract-point">
                 <p>Contract Amount</p>
@@ -286,28 +241,22 @@ const Parity = () => {
 
           <p className="mb-1 mt-3">Result</p>
 
-          <div className="slider d-flex align-items-center gap-2">
-            <div onClick={handlePrev} className="slider-btn">
-              <i class="bi bi-arrow-left-square-fill"></i>
-            </div>
-            <Swiper onSwiper={setSwiper}
-              spaceBetween={15}
-              slidesPerView={5}>
-              {
-                result.map((item, i) => (
-                  <SwiperSlide key={i}>
-                    <div className="slide-item d-flex flex-column align-item-center">
-                      <div>
-                        {item.result}
-                      </div>
-                      <p className="mb-0" style={{ fontSize: '12px' }} >{item.time}</p>
-                    </div>
-                  </SwiperSlide>
-                ))
-              }
-            </Swiper>
+          <div className="slider d-flex align-items-center gap-3">
 
-            <div onClick={handleNext} className="slider-btn">
+
+            {
+              result.map((item, i) => (
+                <div className="slide-item d-flex flex-column align-item-center">
+                  <div>
+                    {item.result}
+                  </div>
+                  <p className="mb-0" style={{ fontSize: '12px' }} >{item.time}</p>
+                </div>
+              ))
+            }
+
+
+            <div className="slider-btn">
               <i class="bi bi-arrow-right-square-fill"></i>
             </div>
           </div>
@@ -330,7 +279,7 @@ const Parity = () => {
             <table className="border" style={{ width: "100%", marginTop: "1rem" }}>
               <thead>
                 <tr className="parity-myorder-header p-2 parity-myorder">
-                  <td className="d-flex align-items-center gap-1" onClick={() => setShowMyBid(!showMyBid)}>Entry {showMyBid ? <i class="bi bi-arrow-down-circle"></i>: <i class="bi bi-arrow-up-circle"></i>}</td>
+                  <td className="d-flex align-items-center gap-1" onClick={() => setShowMyBid(!showMyBid)}>Entry {showMyBid ? <i class="bi bi-arrow-down-circle"></i> : <i class="bi bi-arrow-up-circle"></i>}</td>
                   <td className="mx-auto">ID</td>
                   <td className="mx-auto">Total</td>
                   <td className="mx-auto">Result</td>

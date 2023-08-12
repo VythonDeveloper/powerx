@@ -8,21 +8,26 @@ import { onValue, ref, set } from 'firebase/database';
 import { dbObject } from "../../helper/constant";
 import Keyboard from "../../components/keyboard/Keyboard";
 import { Rupee } from "../../assets/svg/CustomSVG";
+import { toast } from "react-toastify";
+import Toaster, { toastOptions } from "../../components/toaster/Toaster";
+
 
 const FastParity = () => {
   const navigate = useNavigate();
   const firstCardList = ["A", "B", "C", "D"];
-  const [activeBtn, setActiveBtn] = useState("probability");
   const [activeBtn2, setActiveBtn2] = useState("OtherPlayers");
-  const probabilityBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const [timer, setTimer] = useState('0:00');
   const [period, setPeroid] = useState('000000000000')
   const [winWallet, setWinWallet] = useState('0.00')
   const [playWallet, setPlayWallet] = useState('0.00')
-  const [amount, setAmount] = useState('1')
+  const [amount, setAmount] = useState('')
   const [coin, setCoin] = useState()
   const [color, setColor] = useState()
   const [alphabet, setAlphabet] = useState()
+  const [showModal, setShowModal] = useState(false)
+  const [timeinSec, setTimeinSec] = useState(0)
+  const [myOrder, setMyOrder] = useState([])
+  const [resultHistory, setResultHistory] = useState([])
 
   const location = useLocation();
 
@@ -47,6 +52,7 @@ const FastParity = () => {
           const { time, period } = data[key];
           setPeroid(period)
           setTimer(secondsToTime(time));
+          setTimeinSec(time)
         }
       });
     } catch (error) {
@@ -70,56 +76,76 @@ const FastParity = () => {
 
   useEffect(() => {
     getWallet()
-    myOrder()
-    resultHistory()
+    getMyOrder()
+    getResultHistory()
   }, [])
 
   const placeBit = async () => {
+    if (timeinSec > 10) {
+      try {
+
+        const values = {
+          period,
+          coin,
+          color,
+          alphabet,
+          points: amount
+        }
+
+
+        if (!amount) return toast.error('Minimum 1 Rupee is required', toastOptions)
+
+        const formData = new FormData();
+        for (const key in values) {
+          formData.append(key, values[key]);
+        }
+        const config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+
+        const { data } = await dbObject.post('/power-x/place-bid.php', formData, config)
+        console.log(data)
+        if (!data.error) {
+          toast.success(data.message, toastOptions)
+          setAmount('')
+          getWallet()
+          getMyOrder()
+          setShowModal(false)
+        } else {
+          toast.warning(data.message, toastOptions)
+          setShowModal(false)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      toast.warning("You can place bit after in next period")
+    }
+  }
+
+  const getMyOrder = async () => {
     try {
-
-      const values = {
-        period,
-        coin,
-        color,
-        alphabet,
-        points: amount
-      }
-
-      console.log(values)
-
-      const formData = new FormData();
-      for (const key in values) {
-        formData.append(key, values[key]);
-      }
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      };
-
-      const { data } = await dbObject.post('/power-x/place-bid.php', formData, config)
+      const { data } = await dbObject.get('/power-x/my-orders.php')
       console.log(data)
-      if(!data.error) {
-        getWallet()
+
+      if (!data.error) {
+        setMyOrder(data.response.reverse())
       }
     } catch (error) {
       console.log(error)
     }
   }
 
-  const myOrder = async () => {
+  const getResultHistory = async () => {
     try {
-      const {data} = await dbObject.get('/power-x/my-orders.php')
+      const { data } = await dbObject.get('/power-x/result-history.php')
       console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  
-  const resultHistory = async () => {
-    try {
-      const {data} = await dbObject.get('/power-x/result-history.php')
-      console.log(data)
+
+      if (!data.error) {
+        setResultHistory(data.response.reverse())
+      }
     } catch (error) {
       console.log(error)
     }
@@ -129,14 +155,11 @@ const FastParity = () => {
     <IsAuthenticate path='/power-x'>
       <div className="container">
         <Header title={"Power X"} />
-
+        <Toaster />
         {/* Start */}
-        <div
+        {/* <div
           className="modal fade start-box-outer"
           id="exampleModal"
-          tabIndex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
         >
           <div className="modal-dialog m-0 modal-dialog-centered">
             <div className="modal-content start-box">
@@ -181,7 +204,50 @@ const FastParity = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+
+        {
+          showModal && <div className="start-box">
+            <div className="modal-header p-2 mb-3 border-bottom">
+              <button
+                onClick={() => setShowModal(false)}
+                className="ms-auto close-btn" ><i className="bi bi-x-lg"></i></button>
+            </div>
+            <h2 className="game-name">{coin? 'Coin - ': alphabet? 'Alphabet - ': 'Color - '} {coin || alphabet || color}</h2>
+
+            <div className="contract-point">
+              <p>Contract Amount</p>
+
+              <div className="withdrawal__input__field justify-content-start px-3" style={{ backgroundColor: '#e5e5e5' }}>
+                <div className="withdrawal__input__field__icon justify-content-start text-dark">
+                  <Rupee />
+                </div>
+
+                <div className="input pe-3" style={{ fontWeight: '700', fontSize: '1.5rem' }}>{amount}</div>
+              </div>
+            </div>
+
+            <div className="withdrawal__input__notes d-flex justify-content-between" >
+              <p className="mb-0 mt-2">Service charge 10%</p>
+              <p className="mb-0 mt-2">Delivery 50.00</p>
+            </div>
+
+            <Keyboard amount={amount} setAmount={setAmount} />
+
+            <div className="mb-3 d-flex justify-content-center">
+              <button
+                style={{
+                  backgroundColor: 'rgb(252, 148, 13)'
+                }}
+
+                onClick={placeBit}
+                className="btn text-light py-3 modal-btn w-25"
+              >
+                Start
+              </button>
+            </div>
+          </div>
+        }
 
         <div>
 
@@ -267,12 +333,12 @@ const FastParity = () => {
 
           <div className="power-x p-2 position-relative">
             <div className="game-coins position-relative">
-              <div className="d-flex flex-column gold-coin" onClick={() => { setCoin('Gold'); setColor(''); setAlphabet('') }} data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <div className="d-flex flex-column gold-coin" onClick={() => { setCoin('Gold'); setColor(''); setAlphabet(''); setShowModal(true) }} >
                 <p className="mb-0 pt-3 text-center">GOLD</p>
                 <p className="border-top w-75 text-center mx-auto">2X</p>
               </div>
 
-              <div className="d-flex flex-column justify-content-center align-items-center silver-coin" onClick={() => { setCoin('Silver'); setColor(''); setAlphabet('') }} data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <div className="d-flex flex-column justify-content-center align-items-center silver-coin" onClick={() => { setCoin('Silver'); setColor(''); setAlphabet(''); setShowModal(true) }} >
                 <p className="mb-0 pt-3 text-center">SILVER</p>
 
                 <p className="border-top  w-75 text-center mx-auto">2X</p>
@@ -283,31 +349,31 @@ const FastParity = () => {
 
             <div className="prity-colors position-relative">
               <div
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                // data-bs-toggle="modal"
+                // data-bs-target="#exampleModal"
                 className="p-3"
                 style={{ backgroundColor: "#d72e2a" }}
-                onClick={() => { setCoin(''); setColor('Red'); setAlphabet('') }}
+                onClick={() => { setCoin(''); setColor('Red'); setAlphabet(''); setShowModal(true) }}
               >
                 <p className="m-0">Red</p>
                 <p className="m-0 border-top w-75 text-center">2X</p>
               </div>
 
               <div
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                // data-bs-toggle="modal"
+                // data-bs-target="#exampleModal"
                 style={{ backgroundColor: "#388e3d" }}
-                onClick={() => { setCoin(''); setColor('Green'); setAlphabet('') }}
+                onClick={() => { setCoin(''); setColor('Green'); setAlphabet(''); setShowModal(true) }}
               >
                 <p className="m-0">green</p>
                 <p className="m-0 border-top w-75 text-center">3X</p>
               </div>
 
               <div
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                // data-bs-toggle="modal"
+                // data-bs-target="#exampleModal"
                 style={{ backgroundColor: "#1976d3" }}
-                onClick={() => { setCoin(''); setColor('Blue'); setAlphabet('') }}
+                onClick={() => { setCoin(''); setColor('Blue'); setAlphabet(''); setShowModal(true) }}
               >
                 <p className="m-0">Blue</p>
                 <p className="m-0 border-top w-75 text-center">4X</p>
@@ -318,7 +384,7 @@ const FastParity = () => {
 
             <div className="paritynum-btns position-relative">
               {firstCardList.map((item, i) => (
-                <div onClick={() => { setCoin(''); setColor(''); setAlphabet(item) }} className="border" data-bs-toggle="modal" data-bs-target="#exampleModal" key={i}>
+                <div onClick={() => { setCoin(''); setColor(''); setAlphabet(item); setShowModal(true) }} className="border rounded" key={i} >
                   <p className="m-0">{item}</p>
                   <p className="m-0 border-top w-50 text-center">{2 + i}X</p>
                 </div>
@@ -353,60 +419,64 @@ const FastParity = () => {
           </div>
 
           {activeBtn2 === "OtherPlayers" ? (
-            <div className="gameDetails-others">
-              <div>
-                <p className="mb-0">Period</p>
-                <small className="mb-0">18:54</small>
-              </div>
+            <div>
+            <table style={{ width: "100%", marginTop: "1rem" }}>
+              <thead>
+                <tr className="parity-myorder-header parity-myorder row">
+                  <td className="col-5">Period</td>
+                  <td className="col-2 text-center">Coin</td>
+                  <td className="col-2 text-center">Color</td>
+                  <td className="col-2">Alphabet</td>
+                </tr>
+              </thead>
 
-              <div style={{ textAlign: "center" }}>
-                <p className="mb-0">User</p>
-                <small className="mb-0">****18787</small>
-              </div>
+              <tbody>
+                {
+                  resultHistory.map((item, i) => (
+                    <tr key={i} className="parity-myorder row">
+                      <td className="col-5">{item.period}</td>
+                      <td className="parity-selected col-2">
+                      <p
+                        >
+                          {item.coin? item.coin : '-'}
+                        </p>
+                      </td>
+                      <td className="col-2 text-center">{item.color? item.color : '-'}</td>
+                      <td className="col-2" >{item.alphabet? item.alphabet : '-'}</td>
 
-              <div style={{ textAlign: "center" }}>
-                <p className="mb-0">Select</p>
-                <small className="mb-0">2x2</small>
-              </div>
-
-              <div style={{ textAlign: "right" }}>
-                <p className="mb-0">Point</p>
-                <small className="mb-0">₹ 90</small>
-              </div>
-            </div>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
           ) : (
             <div>
               <table style={{ width: "100%", marginTop: "1rem" }}>
                 <thead>
-                  <tr className="parity-myorder-header parity-myorder">
-                    <td>Period</td>
-                    <td>Select</td>
-                    <td>Point</td>
-                    <td>Result</td>
-                    <td>Amount</td>
+                  <tr className="parity-myorder-header parity-myorder row">
+                    <td className="col-4">Period</td>
+                    <td className="col-4 text-center">Select</td>
+                    <td className="col-4">Point</td>
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr className="parity-myorder">
-                    <td>18:01</td>
-                    <td className="parity-selected">
-                      <p
-                        style={{
-                          backgroundColor: "#1776d7",
-                          width: "100%",
-                          color: "#fff",
-                        }}
-                      >
-                        blue
-                      </p>
-                    </td>
-                    <td>₹10</td>
-                    <td className="parity-selected parity-result">
-                      <p style={{ backgroundColor: "#388e3d" }}>7</p>
-                    </td>
-                    <td>+₹0.00</td>
-                  </tr>
+                  {
+                    myOrder.map((item, i) => (
+                      <tr key={i} className="parity-myorder row">
+                        <td className="col-4">{item.period}</td>
+                        <td className="parity-selected col-4">
+                        <p
+                          >
+                            {item.alphabet || item.coin || item.color}
+                          </p>
+                        </td>
+                        <td className="col-4">₹{item.points}</td>
+
+                      </tr>
+                    ))
+                  }
                 </tbody>
               </table>
             </div>
@@ -417,208 +487,5 @@ const FastParity = () => {
   );
 };
 
-function ContinuousTab() {
-  const fastParityContinuousList = [
-    0,
-    7,
-    "-",
-    8,
-    0,
-    6,
-    1,
-    9,
-    3,
-    5,
-    0,
-    7,
-    7,
-    8,
-    0,
-    7,
-    8,
-    0,
-    6,
-    1,
-    9,
-    3,
-  ];
-  return (
-    <div className="continuous-tab">
-      <div className="scroll-container">
-        {fastParityContinuousList?.map((item, i) => (
-          <div key={i} className="parity__records__circle">
-            <div className="parity__records__circle__no">{item}</div>
-            <div
-              className="parity__records__circle__inner"
-              style={{
-                backgroundColor:
-                  item === "-"
-                    ? "#fec007"
-                    : item % 2 === 0
-                      ? "#f44238"
-                      : "#3b8d3c",
-              }}
-            >
-              <div
-                className="parity__records__circle__col"
-                style={{
-                  background:
-                    item === 0 ? "#f24337" : item === 5 ? "#1f98ef" : "",
-                }}
-              ></div>
-              <div
-                className="parity__records__circle__col"
-                style={{
-                  background:
-                    item === 0 ? "#0f45a2" : item === 5 ? "#388e3d" : "",
-                }}
-              ></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-const Record = () => {
-  const numberList = [
-    2,
-    2,
-    2,
-    2,
-    9,
-    9,
-    0,
-    "-",
-    5,
-    9,
-    8,
-    8,
-    8,
-    8,
-    6,
-    4,
-    8,
-    7,
-    1,
-    4,
-    9,
-    7,
-    1,
-    2,
-    8,
-    1,
-    4,
-  ];
-
-  return (
-    <div className="parity-record">
-      <p>Fast Parity Record</p>
-      <div className="parity-record-box">
-        {numberList.map((item, i) => (
-          <div key={i} className="parity__records__circle">
-            <div className="parity__records__circle__no">{item}</div>
-            <div
-              className="parity__records__circle__inner"
-              style={{
-                backgroundColor:
-                  item === "-"
-                    ? "#fec007"
-                    : item % 2 === 0
-                      ? "#f44238"
-                      : "#3b8d3c",
-              }}
-            >
-              <div
-                className="parity__records__circle__col"
-                style={{
-                  background:
-                    item === 0 ? "#f24337" : item === 5 ? "#1f98ef" : "",
-                }}
-              ></div>
-              <div
-                className="parity__records__circle__col"
-                style={{
-                  background:
-                    item === 0 ? "#0f45a2" : item === 5 ? "#388e3d" : "",
-                }}
-              ></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const Probability = ({ probabilityBox }) => (
-  <>
-    <div className="probability">
-      <p
-        style={{
-          textAlign: "center",
-          marginTop: "1.2rem",
-          fontSize: 15,
-        }}
-      >
-        1 item today
-      </p>
-    </div>
-
-    <div className="game-first-row">
-      <div>
-        <p>0</p>
-      </div>
-
-      <div>
-        <p>0</p>
-      </div>
-
-      <div>
-        <p>0</p>
-      </div>
-
-      <div className="game-first-row-box-out">
-        <p style={{ backgroundColor: "#d72e2a" }}>R</p>
-        <div
-          className="game-first-row-box"
-          style={{ backgroundColor: "#ffcdd2" }}
-        ></div>
-      </div>
-
-      <div className="game-first-row-box-out">
-        <p style={{ backgroundColor: "#1976d3" }}>B</p>
-        <div
-          className="game-first-row-box"
-          style={{ backgroundColor: "#bbdefa" }}
-        ></div>
-      </div>
-
-      <div className="game-first-row-box-out">
-        <p style={{ backgroundColor: "#388e3d" }}>G</p>
-        <div
-          className="game-first-row-box"
-          style={{ backgroundColor: "#c8e6ca" }}
-        ></div>
-      </div>
-    </div>
-
-    <div className="probabilty-game-second-row game-second-row">
-      {probabilityBox.map((item, i) => (
-        <div key={i} className="game-second-row-color">
-          <p>{item}</p>
-        </div>
-      ))}
-
-      {probabilityBox.map((item, i) => (
-        <div key={i} className="numbers">
-          <p>{item}</p>
-          <p>0</p>
-        </div>
-      ))}
-    </div>
-  </>
-);
 
 export default FastParity;

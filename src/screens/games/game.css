@@ -80,11 +80,7 @@
   aspect-ratio: 1 / 2;
 }
 
-.parity-myorder {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
-}
+
 
 .parity-myorder td:first-child {
   text-align: left;
@@ -105,9 +101,6 @@
 }
 
 .parity-selected p {
-  background-color: #e8f3d5;
-  width: 50%;
-  color: #000;
   font-size: 14px;
   border-radius: 5px;
   display: flex;
@@ -436,6 +429,12 @@ input:focus {
   border-radius: 0px;
   width: 100%;
   height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
 }
 
 .start-box-outer {
