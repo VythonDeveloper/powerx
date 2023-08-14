@@ -226,12 +226,12 @@ const Parity = () => {
 
           {/* Timer */}
           <div className="timer  mt-4">
-            <div className="parity-period rounded d-flex flex-column align-items-center justify-content-center text-light p-3 bg-warning h-100">
+            <div className="parity-period rounded d-flex flex-column align-items-center justify-content-center text-light p-3 h-100" style={{backgroundColor: '#6F61C0'}}>
               <p className="mb-2">5 Minute</p>
               <p className="mb-0">04/08/23 12:30 PM</p>
             </div>
 
-            <div className="parity-count rounded p-3 bg-warning">
+            <div className="parity-count rounded p-3" style={{backgroundColor: '#6F61C0'}}>
               <p className="m-0 mt-1">Time Left</p>
               <div className="parity-count-box p-2 ">
                 <p className="m-0">{timer}</p>
