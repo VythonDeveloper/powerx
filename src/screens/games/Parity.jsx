@@ -7,8 +7,7 @@ import { onValue, ref, set } from 'firebase/database';
 import { dbObject } from "../../helper/constant";
 import { Rupee } from "../../assets/svg/CustomSVG";
 import Keyboard from "../../components/keyboard/Keyboard";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import ResultPopup from "../../components/result-popup/ResultPopup";
 
 const Parity = () => {
   const navigate = useNavigate();
@@ -18,6 +17,7 @@ const Parity = () => {
   const [winWallet, setWinWallet] = useState('0.00')
   const [playWallet, setPlayWallet] = useState('0.00')
   const [amount, setAmount] = useState('')
+  const [showResult, setShowResult] = useState(false);
 
   const location = useLocation();
 
@@ -68,7 +68,6 @@ const Parity = () => {
     getWallet()
   }, [])
 
-  const [swiper, setSwiper] = useState(null);
   const [showMyBid, setShowMyBid] = useState(false)
 
 
@@ -108,6 +107,12 @@ const Parity = () => {
     <div style={{ background: '#fff', minHeight: '100vh', color: '#000' }}>
       <div className="container dus-ka-dum">
         <Header backgroundColor={'#fff'} title={"10 Ka Dum"} />
+
+        {
+          showResult && (
+            <ResultPopup setShowResult={setShowResult} />
+          )
+        }
 
         {/* Start */}
         <div
@@ -279,8 +284,8 @@ const Parity = () => {
             <table className="border" style={{ width: "100%", marginTop: "1rem" }}>
               <thead>
                 <tr className="parity-myorder-header p-2 parity-myorder">
-                  <td className="d-flex align-items-center gap-1" onClick={() => setShowMyBid(!showMyBid)}>Entry {showMyBid ? <i class="bi bi-arrow-down-circle"></i> : <i class="bi bi-arrow-up-circle"></i>}</td>
-                  <td className="mx-auto">ID</td>
+                  <td className="d-flex align-items-center gap-1" onClick={() => setShowMyBid(!showMyBid)}>Entry No. {showMyBid ? <i class="bi bi-arrow-down-circle"></i> : <i class="bi bi-arrow-up-circle"></i>}</td>
+                  <td className="mx-auto" style={{maxWidth: '100px'}}>ID</td>
                   <td className="mx-auto">Total</td>
                   <td className="mx-auto">Result</td>
                   <td>Won</td>
@@ -290,7 +295,7 @@ const Parity = () => {
               <tbody>
                 <tr className="parity-myorder p-2 pt-0">
                   <td>1</td>
-                  <td className="parity-selected" style={{ fontSize: 14 }}>
+                  <td className="parity-selected" style={{ fontSize: 14, maxWidth: '100px' }}>
                     12/5/2024 12:50pm
                   </td>
                   <td className="mx-auto">₹10</td>

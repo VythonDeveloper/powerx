@@ -80,6 +80,9 @@
   aspect-ratio: 1 / 2;
 }
 
+.parity-myorder td {
+  font-size: 13px;
+}
 
 
 .parity-myorder td:first-child {
