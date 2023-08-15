@@ -53,7 +53,7 @@ const DKDResult = () => {
             });
             return (
             <div className="value  p-2">
-              <p className="mb-0">{item.period.slice(item.period.length - 7,item.period.length)}</p>
+              <p className="mb-0">...{item.period.slice(item.period.length - 5,item.period.length)}</p>
               <p className="text-center mb-0">{formattedTime}</p>
               <div className="text-center mb-0">{item.number || '?'}</div>
               <p
