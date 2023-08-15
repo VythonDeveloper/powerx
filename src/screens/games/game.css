@@ -80,9 +80,9 @@
   aspect-ratio: 1 / 2;
 }
 
-.parity-myorder td {
+/* .parity-myorder td {
   font-size: 13px;
-}
+} */
 
 
 .parity-myorder td:first-child {
@@ -94,7 +94,6 @@
 }
 
 .parity-myorder-header td {
-  color: #f1b81a;
   font-weight: 500;
 }
 
@@ -153,7 +152,7 @@
 }
 
 .dus-ka-dum .parity-period p:first-child {
-  color: #ffffff;
+  color: #000000;
   font-weight: 600;
 }
 
@@ -239,8 +238,8 @@
 }
 
 .dus-ka-dum .paritynum-btns {
-  background: #eaeaff;
   border-radius: 10px;
+  border: 1px solid rgb(196, 4, 4);
 }
 
 
@@ -563,20 +562,24 @@ input:focus {
 }
 
 .slider {
-  /* border: 1px solid rgb(121, 11, 11); */
+  border: 1px solid rgb(121, 11, 11);
   padding: 0.5rem;
   border-radius: 5px;
-  background: #eaeaff;
+  /* background: #eaeaff; */
 }
 
 .slide-item div {
-  background-color: #6F61C0;
+  /* background-color: #6F61C0; */
   border-radius: 8px;
   color: #fff;
   aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(/public/images/chip.png);
+  background-size: contain;
+  background-position: center;
+background-repeat: no-repeat;
 }
 
 .slider-btn i {
@@ -620,11 +623,27 @@ input:focus {
 
 .timer {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 
+  60% 38%;
   gap: 0.5rem;
 }
 
 .my-bit {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+}
+
+.dkd .parity-period {
+  background-color: #ffdd00;
+}
+
+.dkd .parity-count {
+  background-color: #ffdd00;
+}
+
+.dkd-chip {
+  background-image: url(/public/images/chip.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }

@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import About from "./screens/about/About";
 import Faq from "./screens/faq/Faq";
 import DKDWithdraw from "./screens/withdraw/DKD/DKDWithdraw";
+import DKDResult from "./screens/duskadum-result/DKDResult";
 const Welcome = lazy(() => import("./screens/welcome/Welcome"));
 const Home = lazy(() => import("./screens/home/Home"));
 const FastParity = lazy(() => import("./screens/games/FastParity"));
@@ -56,7 +57,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPass />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/power-x" element={<FastParity />} />
-          <Route path="/parity" element={<Parity />} />
+          <Route path="/dus-ka-dum" element={<Parity />} />
           <Route path="/forward" element={<Forward />} />
           <Route path="/power-x/forward" element={<ForwardPX />} />
           <Route path="/dus-ka-dum/forward" element={<ForwardDKD />} />
@@ -67,6 +68,7 @@ function App() {
           <Route path="/recharge" element={<Recharge />} />
           <Route path="/recharge-history" element={<RechargeHistory />} />
           <Route path="/dus-ka-dum/withdraw" element={<DKDWithdraw />} />
+          <Route path="/dus-ka-dum/result" element={<DKDResult />} />
           <Route path="/withdraw" element={<Withdraw />} />
           <Route path="/transfer" element={<Transfer />} />
           <Route path="/dus-ka-dum/transfer" element={<DKDTransfer />} />
