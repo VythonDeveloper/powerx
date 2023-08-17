@@ -477,7 +477,7 @@ const FastParity = () => {
                   {myOrder.map((item, i) => (
                     <tr key={i} className="parity-myorder row">
                       <td className="col-4">{item.period}</td>
-                      <td className="parity-selected col-4">
+                      <td className="parity-selected col-4 text-light">
                         <p>{item.alphabet || item.coin || item.color}</p>
                       </td>
                       <td className="col-4">₹{item.points}</td>
