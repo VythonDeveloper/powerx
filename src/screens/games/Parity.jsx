@@ -84,9 +84,9 @@ const Parity = () => {
         const sortedData = data.response.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
-        setResult(sortedData.slice(0, 6));
+        setResult(sortedData.slice(0, 5));
 
-        console.log(sortedData.slice(0, 6));
+        console.log(sortedData.slice(0, 5));
       }
     } catch (error) {
       console.log(error);
@@ -329,7 +329,7 @@ const Parity = () => {
                   className="slide-item d-flex flex-column align-item-center"
                 >
                   <div>{item.number || "?"}</div>
-                  <p className="mb-0 text-danger" style={{ fontSize: "10px" }}>
+                  <p className="mb-0 text-danger text-center" style={{ fontSize: "10px" }}>
                     {/* {item.time} */}
                     {formattedTime}
                   </p>
