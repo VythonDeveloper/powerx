@@ -137,6 +137,7 @@
 .dus-ka-dum .parity-top {
   background-color: #f5f5f5;
   border: none;
+  border: 1px solid rgba(196, 4, 4, 0.396);
 }
 
 .dus-ka-dum .parity-top p:first-child {
@@ -349,7 +350,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  margin-top: 2rem;
 }
 
 .gameDetails-btn-group button {
@@ -475,10 +475,11 @@ input:focus {
 }
 
 .contract-point div {
-  margin-top: 0.5rem;
+  /* margin-top: 0.5rem; */
   display: flex;
   gap: 1.1rem;
   color: #000;
+  font-size: 1.5rem;
 }
 
 .contract-point button {
@@ -531,7 +532,6 @@ input:focus {
 
 .power-x {
   border: 2px solid red;
-  margin-top: 1.5rem;
 }
 
 
@@ -583,7 +583,7 @@ background-repeat: no-repeat;
 }
 
 .slider-btn i {
-  font-size: 25px !important;
+  font-size: 27px !important;
   color: #6655d3;
 }
 
@@ -646,4 +646,25 @@ background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+.game-name {
+  background-color: #fff;
+  padding: 0.8rem;
+  color: #000;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.dkd-table .header {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: #ffc565;
+  font-weight: 500;
+}
+
+.dkd-table .value {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
 }

@@ -189,7 +189,7 @@ const FastParity = () => {
                 className="withdrawal__input__field justify-content-start px-3"
                 style={{ backgroundColor: "#e5e5e5" }}
               >
-                <div className="withdrawal__input__field__icon justify-content-start text-dark">
+                <div className="withdrawal__input__field__icon justify-content-start text-dark ">
                   <Rupee />
                 </div>
 
@@ -225,7 +225,7 @@ const FastParity = () => {
 
         <div>
           {/* Wallet */}
-          <div className="wallet-container d-flex justify-content-between align-items-center gap-2 mt-3 mb-4">
+          <div className="wallet-container d-flex justify-content-between align-items-center gap-2 my-2">
             <div className="parity-top flex-column align-items-center w-100 p-2 ">
               <p className="mb-1">Win Wallet</p>
               <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
@@ -295,7 +295,7 @@ const FastParity = () => {
             </div>
           </div>
 
-          <div className="parity-top mt-4 px-4 py-2">
+          <div className="parity-top mt-2 px-4 py-2">
             <div className="parity-period">
               <p>5 Minute</p>
               <p>{period}</p>
@@ -309,7 +309,7 @@ const FastParity = () => {
             </div>
           </div>
 
-          <div className="power-x p-2 position-relative">
+          <div className="power-x p-2 mt-2 position-relative">
             <div className="game-coins position-relative">
               <div
                 className="d-flex flex-column gold-coin"
@@ -412,7 +412,7 @@ const FastParity = () => {
             </div>
           </div>
 
-          <div className="gameDetails-btn-group">
+          <div className="gameDetails-btn-group mt-3">
             <button
               onClick={() => setActiveBtn2("OtherPlayers")}
               className={`${

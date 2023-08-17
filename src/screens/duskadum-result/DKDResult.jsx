@@ -39,7 +39,7 @@ const DKDResult = () => {
         <div className="result-history">
           <div className="header mt-4 p-2">
             <p className="mb-0">Period</p>
-            <p className="text-center mb-0">Date</p>
+            <p className="text-center mb-0"></p>
             <p className="text-center mb-0">Number</p>
             <p className="text-end mb-0">Status</p>
           </div>
@@ -53,9 +53,9 @@ const DKDResult = () => {
             });
             return (
             <div className="value  p-2">
-              <p className="mb-0">...{item.period.slice(item.period.length - 5,item.period.length)}</p>
-              <p className="text-center mb-0">{formattedTime}</p>
-              <div className="text-center mb-0">{item.number || '?'}</div>
+              <p className="mb-0">{item.period}</p>
+              <p className="text-center mb-0"></p>
+              <div className="text-center mb-0" style={{marginRight: item.status === 'Running' ? '2.4rem' : '2rem'}}>{item.number || '?'}</div>
               <p
                 className={`text-end mb-0 ${item.status === 'Running'? 'text-danger': 'text-success'}`}
                 style={{ fontSize: "18px", fontWeight: "500" }}
