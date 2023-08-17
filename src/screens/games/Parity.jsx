@@ -329,7 +329,7 @@ const Parity = () => {
                   className="slide-item d-flex flex-column align-item-center"
                 >
                   <div>{item.number || "?"}</div>
-                  <p className="mb-0 text-danger text-center" style={{ fontSize: "10px" }}>
+                  <p className="mb-0 text-danger text-center" style={{ fontSize: "10px", fontWeight: '600' }}>
                     {/* {item.time} */}
                     {formattedTime}
                   </p>
