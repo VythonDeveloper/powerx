@@ -288,7 +288,7 @@ const Parity = () => {
                 style={{
                   backgroundColor: "#098285",
                   position: "absolute",
-                  bottom: "-28px",
+                  bottom: "-14px",
                   borderRadius: 5,
                 }}
               >
@@ -296,7 +296,7 @@ const Parity = () => {
               </p>
             </div>
 
-            <div className="parity-count rounded p-1 ">
+            <div className="parity-count rounded p-3 ">
               <p
                 className="m-0"
                 style={{ fontWeight: "800", color: "#002060" }}
@@ -314,7 +314,7 @@ const Parity = () => {
             </div>
           </div>
 
-          <div className="slider d-flex align-items-center gap-2 mt-4">
+          <div className="slider mt-2">
             {result.map((item, i) => {
               const dateObject = new Date(item.date);
               const formattedTime = dateObject.toLocaleTimeString("en-US", {
@@ -328,7 +328,7 @@ const Parity = () => {
                   className="slide-item d-flex flex-column align-item-center"
                 >
                   <div>{item.number || "?"}</div>
-                  <p className="mb-0 text-danger" style={{ fontSize: "12px" }}>
+                  <p className="mb-0 text-danger" style={{ fontSize: "10px" }}>
                     {/* {item.time} */}
                     {formattedTime}
                   </p>
