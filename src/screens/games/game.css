@@ -563,11 +563,11 @@ input:focus {
 
 .slider {
   border: 1px solid rgb(121, 11, 11);
-  padding: 0.5rem;
+  padding: 0rem 0.5rem;
   border-radius: 5px;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
 }
 
 .slide-item div {

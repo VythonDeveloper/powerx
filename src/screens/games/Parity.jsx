@@ -84,9 +84,9 @@ const Parity = () => {
         const sortedData = data.response.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
-        setResult(sortedData.slice(0, 5));
+        setResult(sortedData.slice(0, 6));
 
-        console.log(sortedData.slice(0, 5));
+        console.log(sortedData.slice(0, 6));
       }
     } catch (error) {
       console.log(error);
