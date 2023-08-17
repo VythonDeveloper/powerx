@@ -21,6 +21,7 @@ const Parity = () => {
   const [nums, setNums] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [selectedNum, setSelectedNum] = useState(null);
+  const [selectedNum2, setSelectedNum2] = useState(null);
   const [result, setResult] = useState([]);
 
   const location = useLocation();
@@ -146,7 +147,7 @@ const Parity = () => {
               </button>
             </div>
             <h2 className="game-name">
-              Selected - {selectedNum.slice(3, 4)}
+              Selected - {selectedNum2}
             </h2>
 
             <div className="contract-point">
@@ -271,7 +272,7 @@ const Parity = () => {
             <div>
               <div className="parity-period  rounded d-flex flex-column align-items-center justify-content-center p-1">
                 <p
-                  className="mb-2 py-1 px-3"
+                  className="mb-0 py-1 px-3"
                   style={{
                     backgroundColor: "#fff",
                     fontWeight: "900",
@@ -287,7 +288,7 @@ const Parity = () => {
                 style={{
                   backgroundColor: "#098285",
                   position: "absolute",
-                  bottom: "-14px",
+                  bottom: "-28px",
                   borderRadius: 5,
                 }}
               >
@@ -295,14 +296,14 @@ const Parity = () => {
               </p>
             </div>
 
-            <div className="parity-count rounded p-2 ">
+            <div className="parity-count rounded p-1 ">
               <p
-                className="m-0 mt-1"
+                className="m-0"
                 style={{ fontWeight: "800", color: "#002060" }}
               >
                 Time Left
               </p>
-              <div className="parity-count-box p-2 ">
+              <div className="parity-count-box p-1 ">
                 <p
                   className="m-0"
                   style={{ backgroundColor: "#fff", color: "#000" }}
@@ -313,7 +314,7 @@ const Parity = () => {
             </div>
           </div>
 
-          <div className="slider d-flex align-items-center gap-2">
+          <div className="slider d-flex align-items-center gap-2 mt-4">
             {result.map((item, i) => {
               const dateObject = new Date(item.date);
               const formattedTime = dateObject.toLocaleTimeString("en-US", {
@@ -354,6 +355,7 @@ const Parity = () => {
                 onClick={() => {
                   setShowModal(true);
                   setSelectedNum(`num${i + 1}`);
+                  setSelectedNum2(i+1)
                 }}
                 key={i}
               >
@@ -408,7 +410,7 @@ const Parity = () => {
               {firstCardList.map((item, i) => (
                 <div
                   key={i}
-                  className="d-flex flex-column align-items-center gap-1"
+                  className={`d-flex flex-column gap-1 text-center`}
                 >
                   <p
                     className="mb-0 text-light d-flex justify-content-center align-items-center rounded-pill fw-blod fw-bold bg-danger"

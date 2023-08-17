@@ -629,8 +629,12 @@ background-repeat: no-repeat;
 }
 
 .my-bit {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  /* display: grid;
+  grid-template-columns: repeat(6, 1fr); */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-between;
 }
 
 .dkd .parity-period {
@@ -665,10 +669,16 @@ background-repeat: no-repeat;
   grid-template-columns: repeat(5, 1fr);
   background-color: #ffc565;
   font-weight: 500;
+  font-size: 13px;
 }
 
 .dkd-table .value {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
+  font-size: 13px;
+}
+
+.my-bit {
+  font-size: 13px;
 }
