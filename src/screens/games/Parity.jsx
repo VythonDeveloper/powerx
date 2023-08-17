@@ -272,23 +272,24 @@ const Parity = () => {
             <div>
               <div className="parity-period  rounded d-flex flex-column align-items-center justify-content-center p-1">
                 <p
-                  className="mb-0 py-1 px-3"
+                  className="mb-0 pb-0 px-3"
                   style={{
                     backgroundColor: "#fff",
                     fontWeight: "900",
                     color: "#002060",
+                    fontSize: '14px'
                   }}
                 >
                   5 Minute
                 </p>
-                <p className="mb-0">{period}</p>
+                <p className="mb-0" style={{fontSize: 14}}>{period}</p>
               </div>
               <p
                 className="mb-1 mt-1 w-25 d-flex justify-content-center text-light"
                 style={{
                   backgroundColor: "#098285",
                   position: "absolute",
-                  bottom: "-14px",
+                  bottom: "-12.5px",
                   borderRadius: 5,
                 }}
               >
@@ -296,7 +297,7 @@ const Parity = () => {
               </p>
             </div>
 
-            <div className="parity-count rounded p-3 ">
+            <div className="parity-count rounded p-1 ">
               <p
                 className="m-0"
                 style={{ fontWeight: "800", color: "#002060" }}
