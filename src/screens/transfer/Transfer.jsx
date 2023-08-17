@@ -4,6 +4,9 @@ import { Header } from '../../components';
 import './transfer.css'
 import { Rupee } from '../../assets/svg/CustomSVG';
 import Keyboard from '../../components/keyboard/Keyboard';
+import { dbObject } from '../../helper/constant';
+import { toast } from 'react-toastify';
+import Toaster, { toastOptions } from '../../components/toaster/Toaster';
 
 const Transfer = () => {
     const location = useLocation();
@@ -11,23 +14,94 @@ const Transfer = () => {
     const [error, setError] = useState(true);
     const [bonusAmount, setBonusAmount] = useState('0.00')
     const [bonus, setBonus] = useState('10')
+    const [winWallet, setWinWallet] = useState("0.00");
+  const [playWallet, setPlayWallet] = useState("0.00");
 
     useEffect(() => {
       setBonusAmount(Number(amount) * Number(bonus) / 100)
     }, [amount])
 
+    const getWallet = async () => {
+      try {
+        const { data } = await dbObject("/power-x/transfer.php");
+        console.log(data);
+  
+        if (!data.error) {
+          setWinWallet(data?.response.winWallet);
+          setPlayWallet(data?.response.playWallet);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const getControlFields = async () => {
+      try {
+          const {data} = await dbObject.get('/power-x/control-fields.php')
+          console.log(data)
+  
+          if(!data.error) {
+              setBonus(data.response.transferBonus)
+          }
+      } catch (error) {
+          console.log(error)
+      }
+    }
+
+    useEffect(() => {
+      getWallet()
+      getControlFields()
+    }, [])
+
+    const transferHandler = async () => {
+      try {
+        const values = {
+          points: amount,
+        };
+  
+        const formData = new FormData();
+        for (const key in values) {
+          formData.append(key, values[key]);
+        }
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+  
+        const { data } = await dbObject.post(
+          '/power-x/transfer.php',
+          formData,
+          config
+        );
+  
+        console.log(data);
+  
+        if (!data.error) {
+          toast.success(data.message, toastOptions)
+          getWallet();
+        } else {
+          toast.error(data.message, toastOptions);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+
   return (
     <div className="container">
       <Header title={"Transfer"} path={location?.state?.from || "/"} />
+      <Toaster />
       
       <div className="withdrawal__page__balance__section">
         <center>
-          <div className="withdrawal__page__balance__section__top">My Balance</div>
+          <div className="withdrawal__page__balance__section__top">Win Balance</div>
           <div
             className="withdrawal__page__balance__section__bottom"
             style={{ fontFamily: "sans-serif" }}
           >
-            ₹398.48
+            ₹{winWallet}
           </div>
         </center>
       </div>
@@ -53,11 +127,11 @@ const Transfer = () => {
         
         <br />
         <button
-          className={`withdraw__btn ${error && "recharge__btn_disabled"}`}
+          className={`withdraw__btn `}
           style={{
             height: 45,
           }}
-          disabled={error}
+          onClick={transferHandler}
         >
           Transfer
         </button>

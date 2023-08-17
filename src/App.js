@@ -23,7 +23,6 @@ const Recharge = lazy(() => import("./screens/recharge/Recharge"));
 const Withdraw = lazy(() => import("./screens/withdraw/Withdraw"));
 const Transfer = lazy(() => import("./screens/transfer/Transfer"));
 const DKDTransfer = lazy(() => import("./screens/transfer/DKD/DKDTransfer"));
-const Bank = lazy(() => import("./screens/bank/Bank"));
 const AddBank = lazy(() => import("./screens/bank/AddBank"));
 const RechargeHistory = lazy(() =>
   import("./screens/recharge-history/RechargeHistory")
@@ -72,8 +71,7 @@ function App() {
           <Route path="/withdraw" element={<Withdraw />} />
           <Route path="/transfer" element={<Transfer />} />
           <Route path="/dus-ka-dum/transfer" element={<DKDTransfer />} />
-          <Route path="/bank" element={<Bank />} />
-          <Route path="/add-bank" element={<AddBank />} />
+          <Route path="/bank" element={<AddBank />} />
           <Route path="/refer" element={<Refer />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/faq" element={<Faq />} />

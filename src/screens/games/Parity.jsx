@@ -8,6 +8,9 @@ import { dbObject } from "../../helper/constant";
 import { Rupee } from "../../assets/svg/CustomSVG";
 import Keyboard from "../../components/keyboard/Keyboard";
 import ResultPopup from "../../components/result-popup/ResultPopup";
+import IsAuthenticate from "../../redirect/IsAuthenticate";
+import { toast } from "react-toastify";
+import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 
 const Parity = () => {
   const navigate = useNavigate();
@@ -18,11 +21,25 @@ const Parity = () => {
   const [playWallet, setPlayWallet] = useState("0.00");
   const [amount, setAmount] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [nums, setNums] = useState({});
+  const [nums, setNums] = useState({
+    num1: "",
+    num2: "",
+    num3: "",
+    num4: "",
+    num5: "",
+    num6: "",
+    num7: "",
+    num8: "",
+    num9: "",
+    num10: "",
+    num11: "",
+    num12: "",
+  });
   const [showModal, setShowModal] = useState(false);
   const [selectedNum, setSelectedNum] = useState(null);
   const [selectedNum2, setSelectedNum2] = useState(null);
   const [result, setResult] = useState([]);
+  const [currentDayHistory, setCurrentDayHistory] = useState([]);
 
   const location = useLocation();
 
@@ -71,9 +88,11 @@ const Parity = () => {
   useEffect(() => {
     getWallet();
     getResultHistory();
+    getCurrentDayHistory();
   }, []);
 
   const [showMyBid, setShowMyBid] = useState(false);
+  const [showMyBidId, setShowMyBidId] = useState(false);
 
   const getResultHistory = async () => {
     try {
@@ -85,8 +104,21 @@ const Parity = () => {
           (a, b) => new Date(b.date) - new Date(a.date)
         );
         setResult(sortedData.slice(0, 5));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-        console.log(sortedData.slice(0, 5));
+  const getCurrentDayHistory = async () => {
+    try {
+      const { data } = await dbObject.get(
+        "/dus-ka-dum/my-current-day-orders.php"
+      );
+      console.log(data);
+
+      if (!data.error) {
+        setCurrentDayHistory(data.response);
       }
     } catch (error) {
       console.log(error);
@@ -122,314 +154,367 @@ const Parity = () => {
         config
       );
 
-      console.log(data);
-      setNums({});
+      if (!data.error) {
+        toast.success(data.message, toastOptions);
+      } else {
+        toast.error(data.message, toastOptions);
+      }
+
+      setNums({
+        num1: "",
+        num2: "",
+        num3: "",
+        num4: "",
+        num5: "",
+        num6: "",
+        num7: "",
+        num8: "",
+        num9: "",
+        num10: "",
+        num11: "",
+        num12: "",
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
-      <div className="container dus-ka-dum">
-        <Header backgroundColor={"#fff"} title={"10 Ka Dum"} />
+    <IsAuthenticate path="/dus-ka-dum">
+      <Toaster />
+      <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
+        <div className="container dus-ka-dum">
+          <Header backgroundColor={"#fff"} title={"10 Ka Dum"} />
 
-        {showResult && <ResultPopup setShowResult={setShowResult} />}
+          {showResult && <ResultPopup setShowResult={setShowResult} />}
 
-        {showModal && (
-          <div className="start-box">
-            <div className="modal-header p-2 mb-3 border-bottom">
-              <button
-                onClick={() => setShowModal(false)}
-                className="ms-auto close-btn"
-              >
-                <i className="bi bi-x-lg"></i>
-              </button>
-            </div>
-            <h2 className="game-name">
-              Selected - {selectedNum2}
-            </h2>
+          {showModal && (
+            <div className="start-box">
+              <div className="modal-header p-2 mb-3 border-bottom">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="ms-auto close-btn"
+                >
+                  <i className="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <h2 className="game-name">Selected - {selectedNum2}</h2>
 
-            <div className="contract-point">
-              <p>Contract Amount</p>
-
-              <div
-                className="withdrawal__input__field justify-content-start px-3"
-                style={{ backgroundColor: "#e5e5e5" }}
-              >
-                <div className="withdrawal__input__field__icon justify-content-start text-dark">
-                  <Rupee />
-                </div>
+              <div className="contract-point">
+                <p>Contract Amount</p>
 
                 <div
-                  className="input pe-3"
-                  style={{ fontWeight: "700", fontSize: "1.5rem" }}
+                  className="withdrawal__input__field justify-content-start px-3"
+                  style={{ backgroundColor: "#e5e5e5" }}
                 >
-                  {amount}
+                  <div className="withdrawal__input__field__icon justify-content-start text-dark">
+                    <Rupee />
+                  </div>
+
+                  <div
+                    className="input pe-3"
+                    style={{ fontWeight: "700", fontSize: "1.5rem" }}
+                  >
+                    {amount}
+                  </div>
                 </div>
+              </div>
+
+              <div className="withdrawal__input__notes d-flex justify-content-between">
+                <p className="mb-0 mt-2 text-light">Service charge 10%</p>
+                <p className="mb-0 mt-2 text-light">Delivery 50.00</p>
+              </div>
+
+              <Keyboard amount={amount} setAmount={setAmount} />
+
+              <div className="mb-3 d-flex justify-content-center">
+                <button
+                  style={{
+                    backgroundColor: "rgb(252, 148, 13)",
+                  }}
+                  onClick={handleChange}
+                  className="btn text-light py-3 modal-btn w-50"
+                >
+                  Continue
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div>
+            {/* Wallet */}
+            <div className="wallet-container d-flex justify-content-between align-items-center gap-2 mt-2">
+              <div className="parity-top flex-column align-items-center w-100 p-2 ">
+                <p className="mb-1">Win Wallet</p>
+                <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
+                  ₹{winWallet}
+                </p>
+
+                <button
+                  className="btn text-white rounded-pill w-100 fw-medium"
+                  style={{
+                    backgroundColor: "#65c65f",
+                    fontSize: 13,
+                  }}
+                  onClick={() =>
+                    navigate("/dus-ka-dum/withdraw", {
+                      state: { from: location.pathname },
+                    })
+                  }
+                >
+                  Withdraw
+                </button>
+
+                <button
+                  className="btn text-white rounded-pill w-100 fw-medium mt-2"
+                  style={{
+                    backgroundColor: "#25263b",
+                    fontSize: 13,
+                  }}
+                  onClick={() =>
+                    navigate("/dus-ka-dum/transfer", {
+                      state: { from: location.pathname },
+                    })
+                  }
+                >
+                  Transfer
+                </button>
+              </div>
+
+              <div className="parity-top flex-column align-items-center w-100 p-2">
+                <p className="mb-1">Play Wallet</p>
+                <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
+                  ₹{playWallet}
+                </p>
+
+                <button
+                  className="btn text-white rounded-pill w-100 fw-medium"
+                  style={{
+                    backgroundColor: "#65c65f",
+                    fontSize: 13,
+                  }}
+                  onClick={() =>
+                    navigate("/recharge", {
+                      state: { from: location.pathname },
+                    })
+                  }
+                >
+                  Recharge
+                </button>
+
+                <button
+                  className="btn text-white rounded-pill w-100 fw-medium mt-2"
+                  style={{
+                    backgroundColor: "#25263b",
+                    fontSize: 13,
+                  }}
+                  onClick={() =>
+                    navigate("/dus-ka-dum/forward", {
+                      state: { from: location.pathname },
+                    })
+                  }
+                >
+                  Forward
+                </button>
               </div>
             </div>
 
-            <div className="withdrawal__input__notes d-flex justify-content-between">
-              <p className="mb-0 mt-2 text-light">Service charge 10%</p>
-              <p className="mb-0 mt-2 text-light">Delivery 50.00</p>
-            </div>
-
-            <Keyboard amount={amount} setAmount={setAmount} />
-
-            <div className="mb-3 d-flex justify-content-center">
-              <button
-                style={{
-                  backgroundColor: "rgb(252, 148, 13)",
-                }}
-                onClick={handleChange}
-                className="btn text-light py-3 modal-btn w-50"
-              >
-                Continue
-              </button>
-            </div>
-          </div>
-        )}
-
-        <div>
-          {/* Wallet */}
-          <div className="wallet-container d-flex justify-content-between align-items-center gap-2 mt-2">
-            <div className="parity-top flex-column align-items-center w-100 p-2 ">
-              <p className="mb-1">Win Wallet</p>
-              <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
-                ₹{winWallet}
-              </p>
-
-              <button
-                className="btn text-white rounded-pill w-100 fw-medium"
-                style={{
-                  backgroundColor: "#65c65f",
-                  fontSize: 13,
-                }}
-                onClick={() =>
-                  navigate("/dus-ka-dum/withdraw", {
-                    state: { from: location.pathname },
-                  })
-                }
-              >
-                Withdraw
-              </button>
-
-              <button
-                className="btn text-white rounded-pill w-100 fw-medium mt-2"
-                style={{
-                  backgroundColor: "#25263b",
-                  fontSize: 13,
-                }}
-                onClick={() =>
-                  navigate("/dus-ka-dum/transfer", {
-                    state: { from: location.pathname },
-                  })
-                }
-              >
-                Transfer
-              </button>
-            </div>
-
-            <div className="parity-top flex-column align-items-center w-100 p-2">
-              <p className="mb-1">Play Wallet</p>
-              <p style={{ fontSize: "1.5rem", fontWeight: "500" }}>
-                ₹{playWallet}
-              </p>
-
-              <button
-                className="btn text-white rounded-pill w-100 fw-medium"
-                style={{
-                  backgroundColor: "#65c65f",
-                  fontSize: 13,
-                }}
-                onClick={() =>
-                  navigate("/recharge", { state: { from: location.pathname } })
-                }
-              >
-                Recharge
-              </button>
-
-              <button
-                className="btn text-white rounded-pill w-100 fw-medium mt-2"
-                style={{
-                  backgroundColor: "#25263b",
-                  fontSize: 13,
-                }}
-                onClick={() =>
-                  navigate("/dus-ka-dum/forward", {
-                    state: { from: location.pathname },
-                  })
-                }
-              >
-                Forward
-              </button>
-            </div>
-          </div>
-
-          {/* Timer */}
-          <div className="timer dkd  my-2 position-relative">
-            <div>
-              <div className="parity-period  rounded d-flex flex-column align-items-center justify-content-center p-1">
+            {/* Timer */}
+            <div className="timer dkd  my-2 position-relative">
+              <div>
+                <div className="parity-period  rounded d-flex flex-column align-items-center justify-content-center p-1">
+                  <p
+                    className="mb-0 pb-0 px-3"
+                    style={{
+                      backgroundColor: "#fff",
+                      fontWeight: "900",
+                      color: "#002060",
+                      fontSize: "14px",
+                    }}
+                  >
+                    5 Minute
+                  </p>
+                  <p className="mb-0" style={{ fontSize: 14 }}>
+                    {period}
+                  </p>
+                </div>
                 <p
-                  className="mb-0 pb-0 px-3"
+                  className="mb-1 mt-1 w-25 d-flex justify-content-center text-light"
                   style={{
-                    backgroundColor: "#fff",
-                    fontWeight: "900",
-                    color: "#002060",
-                    fontSize: '14px'
+                    backgroundColor: "#098285",
+                    position: "absolute",
+                    bottom: "-12.5px",
+                    borderRadius: 5,
                   }}
                 >
-                  5 Minute
+                  Result...
                 </p>
-                <p className="mb-0" style={{fontSize: 14}}>{period}</p>
               </div>
-              <p
-                className="mb-1 mt-1 w-25 d-flex justify-content-center text-light"
-                style={{
-                  backgroundColor: "#098285",
-                  position: "absolute",
-                  bottom: "-12.5px",
-                  borderRadius: 5,
-                }}
-              >
-                Result...
-              </p>
-            </div>
 
-            <div className="parity-count rounded p-1 ">
-              <p
-                className="m-0"
-                style={{ fontWeight: "800", color: "#002060" }}
-              >
-                Time Left
-              </p>
-              <div className="parity-count-box p-1 ">
+              <div className="parity-count rounded p-1 ">
                 <p
                   className="m-0"
-                  style={{ backgroundColor: "#fff", color: "#000" }}
+                  style={{ fontWeight: "800", color: "#002060" }}
                 >
-                  {timer}
+                  Time Left
                 </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="slider mt-2">
-            {result.map((item, i) => {
-              const dateObject = new Date(item.date);
-              const formattedTime = dateObject.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              });
-              return (
-                <div
-                  key={i}
-                  className="slide-item d-flex flex-column align-item-center"
-                >
-                  <div>{item.number || "?"}</div>
-                  <p className="mb-0 text-danger text-center" style={{ fontSize: "10px", fontWeight: '600' }}>
-                    {/* {item.time} */}
-                    {formattedTime}
+                <div className="parity-count-box p-1 ">
+                  <p
+                    className="m-0"
+                    style={{ backgroundColor: "#fff", color: "#000" }}
+                  >
+                    {timer}
                   </p>
                 </div>
-              );
-            })}
-
-            <div
-              onClick={() =>
-                navigate("/dus-ka-dum/result", {
-                  state: { from: '/dus-ka-dum/result' },
-                })
-              }
-              className="slider-btn ms-auto"
-            >
-              <i className="bi bi-arrow-right-square-fill"></i>
-            </div>
-          </div>
-
-          <div className="paritynum-btns mt-2 p-4">
-            {firstCardList.map((item, i) => (
-              <div
-                className="position-relative item mb-2 dkd-chip"
-                onClick={() => {
-                  setShowModal(true);
-                  setSelectedNum(`num${i + 1}`);
-                  setSelectedNum2(i+1)
-                }}
-                key={i}
-              >
-                <p className="m-0 text-light">{item}</p>
-                {nums[`num${i + 1}`] > 0 ? (
-                  <span className="dus-ka-dum-flag text-light">
-                    <span
-                      className="w-100 h-75 mt-2 text-center bg-war"
-                      style={{ backgroundColor: "#A084E8" }}
-                    >
-                      {nums[`num${i + 1}`]}
-                    </span>
-                  </span>
-                ) : null}
               </div>
-            ))}
-          </div>
-          <div className="d-flex justify-content-center mt-2">
-            <button onClick={placeBit} className="enter-btn">
-              Enter
-            </button>
-          </div>
-
-          <div className="dkd-table">
-          <div className="header mt-4 p-2">
-            <p className="mb-0">Entry no.</p>
-            <p className="text-center mb-0">ID</p>
-            <p className="text-center mb-0">Total</p>
-            <p className="text-center mb-0">Result</p>
-            <p className="text-end mb-0">Won </p>
-          </div>
-
-            <div className="value  p-2">
-              <p className="mb-0" onClick={() => setShowMyBid(!showMyBid)}>1  {showMyBid ? (
-                      <i className="bi bi-arrow-down-circle"></i>
-                    ) : (
-                      <i className="bi bi-arrow-up-circle"></i>
-                    )}</p>
-              <p className="text-center mb-0">12/5/2024 12:50pm</p>
-              <div className="text-center mb-0" >₹20</div>
-              <div className="text-center mb-0" >5</div>
-              <p
-                className={`text-end mb-0`}
-                style={{ fontSize: "18px", fontWeight: "500" }}
-              >
-                ₹200
-              </p>
             </div>
 
-            {showMyBid && (
-            <div className="my-bit mt-2">
+            <div className="slider mt-2">
+              {result.map((item, i) => {
+                const dateObject = new Date(item.date);
+                const formattedTime = dateObject.toLocaleTimeString("en-US", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                });
+                return (
+                  <div
+                    key={i}
+                    className="slide-item d-flex flex-column align-item-center"
+                  >
+                    <div>{item.number || "?"}</div>
+                    <p
+                      className="mb-0 text-danger text-center"
+                      style={{ fontSize: "10px", fontWeight: "600" }}
+                    >
+                      {/* {item.time} */}
+                      {formattedTime}
+                    </p>
+                  </div>
+                );
+              })}
+
+              <div
+                onClick={() =>
+                  navigate("/dus-ka-dum/result", {
+                    state: { from: "/dus-ka-dum/result" },
+                  })
+                }
+                className="slider-btn ms-auto"
+              >
+                <i className="bi bi-arrow-right-square-fill"></i>
+              </div>
+            </div>
+
+            <div className="paritynum-btns mt-2 p-4">
               {firstCardList.map((item, i) => (
                 <div
+                  className="position-relative item mb-2 dkd-chip"
+                  onClick={() => {
+                    setShowModal(true);
+                    setSelectedNum(`num${i + 1}`);
+                    setSelectedNum2(i + 1);
+                  }}
                   key={i}
-                  className={`d-flex flex-column gap-1 text-center`}
                 >
-                  <p
-                    className="mb-0 text-light d-flex justify-content-center align-items-center rounded-pill fw-blod fw-bold bg-danger"
-                    style={{ width: 30, height: 30 }}
-                  >
-                    {item}
-                  </p>
-                  <p className="mb-0">2</p>
+                  <p className="m-0 text-light">{item}</p>
+                  {nums[`num${i + 1}`] > 0 ? (
+                    <span className="dus-ka-dum-flag text-light">
+                      <span
+                        className="w-100 h-75 mt-2 text-center bg-war"
+                        style={{ backgroundColor: "#A084E8" }}
+                      >
+                        {nums[`num${i + 1}`]}
+                      </span>
+                    </span>
+                  ) : null}
                 </div>
               ))}
             </div>
-          )}
-       
-        </div>
+            <div className="d-flex justify-content-center mt-2">
+              <button onClick={placeBit} className="enter-btn">
+                Enter
+              </button>
+            </div>
+
+            <div className="dkd-table">
+              <div className="header mt-4 p-2">
+                <p className="mb-0">Entry no.</p>
+                <p className="text-center mb-0">ID</p>
+                <p className="text-center mb-0">Total</p>
+                <p className="text-center mb-0">Result</p>
+                <p className="text-end mb-0">Won </p>
+              </div>
+
+              {currentDayHistory?.map((item, i) => (
+                <React.Fragment key={i}>
+                  <div className="value  p-2">
+                    <p
+                      className="mb-0"
+                      onClick={() => {
+                        setShowMyBid(!showMyBid);
+                        setShowMyBidId(item.id);
+                      }}
+                    >
+                      {i + 1}{" "}
+                      {showMyBid && showMyBidId === item.id ? (
+                        <i className="bi bi-arrow-down-circle"></i>
+                      ) : (
+                        <i className="bi bi-arrow-up-circle"></i>
+                      )}
+                    </p>
+                    <p className="text-center mb-0">{item.date}</p>
+                    <div className="text-center mb-0">₹{item.totalPoints}</div>
+                    <div className="text-center mb-0">5</div>
+                    <p
+                      className={`text-end mb-0`}
+                      style={{ fontSize: "18px", fontWeight: "500" }}
+                    >
+                      ₹{item.winPoints}
+                    </p>
+                  </div>
+
+                  {showMyBid && showMyBidId === item.id ? (
+                    <div className="my-bit mt-2">
+                      <div className="d-flex justify-content-between">
+                        <ResultCircle numResult={item.num1}  num="1" />
+                        <ResultCircle numResult={item.num2} num="2" />
+                        <ResultCircle numResult={item.num3} num="3" />
+                        <ResultCircle numResult={item.num4} num="4" />
+                        <ResultCircle numResult={item.num5} num="5" />
+                        <ResultCircle numResult={item.num6} num="6" />
+                      </div>
+
+                      <div className="d-flex justify-content-between mt-2">
+                        <ResultCircle numResult={item.num7}  num="7" />
+                        <ResultCircle numResult={item.num8} num="8" />
+                        <ResultCircle numResult={item.num9} num="9" />
+                        <ResultCircle numResult={item.num10} num="10" />
+                        <ResultCircle numResult={item.num11} num="11" />
+                        <ResultCircle numResult={item.num12} num="12" />
+                      </div>
+                    </div>
+                  ) : null}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </IsAuthenticate>
   );
 };
+
+const ResultCircle = ({ numResult, num }) => (
+  <div className={`d-flex flex-column gap-1 text-center`}>
+    <p
+      className="mb-0 text-light d-flex justify-content-center align-items-center rounded-pill fw-blod fw-bold bg-danger"
+      style={{ width: 30, height: 30 }}
+    >
+      {num}
+    </p>
+    <p className="mb-0">{numResult}</p>
+  </div>
+);
 
 export default Parity;
