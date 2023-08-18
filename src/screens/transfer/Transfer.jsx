@@ -15,7 +15,6 @@ const Transfer = () => {
     const [bonusAmount, setBonusAmount] = useState('0.00')
     const [bonus, setBonus] = useState('10')
     const [winWallet, setWinWallet] = useState("0.00");
-  const [playWallet, setPlayWallet] = useState("0.00");
 
     useEffect(() => {
       setBonusAmount(Number(amount) * Number(bonus) / 100)
@@ -28,8 +27,9 @@ const Transfer = () => {
   
         if (!data.error) {
           setWinWallet(data?.response.winWallet);
-          setPlayWallet(data?.response.playWallet);
         }
+
+        
       } catch (error) {
         console.log(error);
       }

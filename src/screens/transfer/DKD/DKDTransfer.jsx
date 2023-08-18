@@ -14,7 +14,7 @@ const Transfer = () => {
   const [bonusAmount, setBonusAmount] = useState("0.00");
   const [bonus, setBonus] = useState("10");
   const [winWallet, setWinWallet] = useState("0.00");
-  const [playWallet, setPlayWallet] = useState("0.00");
+  const [minimunTransfer, setMinimumTrasfer] = useState()
 
   useEffect(() => {
     setBonusAmount((Number(amount) * Number(bonus)) / 100);
@@ -27,7 +27,7 @@ const Transfer = () => {
 
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
-        setPlayWallet(data?.response.playWallet);
+        
       }
     } catch (error) {
       console.log(error);
@@ -41,6 +41,7 @@ const Transfer = () => {
 
         if(!data.error) {
             setBonus(data.response.transferBonus)
+            setMinimumTrasfer(data?.response.minTransfer)
         }
     } catch (error) {
         console.log(error)
@@ -79,6 +80,7 @@ const Transfer = () => {
       if (!data.error) {
         toast.success(data.message, toastOptions)
         getWallet();
+        setAmount('')
       } else {
         toast.error(data.message, toastOptions);
       }
@@ -115,7 +117,7 @@ const Transfer = () => {
           <div className="withdrawal__field__header">
             Transfer to Play Wallet <br />
             <span style={{ fontSize: 12, fontWeight: "300" }}>
-              Min Rs. 10 & thereafter multiple of Rs. 10
+              Min Rs. {minimunTransfer} & thereafter multiple of Rs. 5
             </span>
           </div>
           <div className="withdrawal__input__field">
@@ -146,7 +148,7 @@ const Transfer = () => {
 
         <Keyboard color={"#c1bebe27"} setAmount={setAmount} amount={amount} />
 
-        <div className="withdrawal__records__section">
+        {/* <div className="withdrawal__records__section">
           <div className="withdrawal__records__section__record__top"></div>
           <div className="withdrawal__records__section__bottom">
             <div className="withdrawal__records__section__bottom__header">
@@ -209,7 +211,7 @@ const Transfer = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

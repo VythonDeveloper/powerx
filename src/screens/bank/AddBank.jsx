@@ -1,24 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import { useFormik } from "formik";
 import { bankValidation } from "../../validation/auth";
-import './bank.css'
+import "./bank.css";
+import { dbObject } from "../../helper/constant";
+import { toast } from "react-toastify";
+import { toastOptions } from "../../components/toaster/Toaster";
 
-const initialValues = {
-  bank_name: "",
-  account_number: "",
-  ifsc_code: "",
-  account_holder: "",
-  upi: "",
+let initialValues = {
+  bankName: "",
+  accountNumber: "",
+  ifscCode: "",
+  accountHolder: "",
+  upiAddress: "",
 };
 
 const AddBank = () => {
+  const [bank, setBank] = useState({})
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
       validationSchema: bankValidation,
-      onSubmit: async () => {},
+      onSubmit: async () => {
+        try {
+          const formData = new FormData();
+          for (const key in values) {
+            formData.append(key, values[key]);
+          }
+          const config = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+
+          const { data } = await dbObject.post("/bank-account/update.php", formData, config);
+          if(!data.error) {
+            toast.success(data.message, toastOptions)
+            
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
     });
+
+  const getBank = async () => {
+    try {
+      const { data } = await dbObject.get("/bank-account/fetch.php");
+
+      console.log(data)
+      initialValues = {
+        ...data.response
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBank();
+  }, []);
 
   return (
     <div className="container">
@@ -26,8 +67,7 @@ const AddBank = () => {
       <Header title={"Add Bank"} path={"/bank"} />
 
       <div className="addbank-icon">
-      <i className="bi bi-bank2" ></i>
-       
+        <i className="bi bi-bank2"></i>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -37,13 +77,13 @@ const AddBank = () => {
             id="input1"
             type="text"
             placeholder="Eg., State Bank of India"
-            value={values.bank_name}
-            name="bank_name"
+            value={values.bankName}
+            name="bankName"
             onBlur={handleBlur}
             onChange={handleChange}
           />
-          {errors.bank_name && touched.bank_name ? (
-            <small style={{ color: "red" }}>{errors.bank_name}</small>
+          {errors.bankName && touched.bankName ? (
+            <small style={{ color: "red" }}>{errors.bankName}</small>
           ) : null}
         </div>
 
@@ -53,14 +93,14 @@ const AddBank = () => {
             id="input2"
             type="text"
             placeholder="Eg., 110283...."
-            value={values.account_number}
-            name="account_number"
+            value={values.accountNumber}
+            name="accountNumber"
             onBlur={handleBlur}
             onChange={handleChange}
           />
 
-          {errors.account_number && touched.account_number ? (
-            <small style={{ color: "red" }}>{errors.account_number}</small>
+          {errors.accountNumber && touched.accountNumber ? (
+            <small style={{ color: "red" }}>{errors.accountNumber}</small>
           ) : null}
         </div>
 
@@ -70,13 +110,13 @@ const AddBank = () => {
             id="input3"
             type="text"
             placeholder="Eg., SBIN008.."
-            value={values.ifsc_code}
-            name="ifsc_code"
+            value={values.ifscCode}
+            name="ifscCode"
             onBlur={handleBlur}
             onChange={handleChange}
           />
-          {errors.ifsc_code && touched.ifsc_code ? (
-            <small style={{ color: "red" }}>{errors.ifsc_code}</small>
+          {errors.ifscCode && touched.ifscCode ? (
+            <small style={{ color: "red" }}>{errors.ifscCode}</small>
           ) : null}
         </div>
 
@@ -86,34 +126,38 @@ const AddBank = () => {
             id="input4"
             type="text"
             placeholder="Eg., Your Name"
-            value={values.account_holder}
-            name="account_holder"
+            value={values.accountHolder}
+            name="accountHolder"
             onBlur={handleBlur}
             onChange={handleChange}
           />
-          {errors.account_holder && touched.account_holder ? (
-            <small style={{ color: "red" }}>{errors.account_holder}</small>
+          {errors.accountHolder && touched.accountHolder ? (
+            <small style={{ color: "red" }}>{errors.accountHolder}</small>
           ) : null}
         </div>
 
         <div className="up-input-outer">
-          <label htmlFor="input1">UPI Address</label>
+          <label htmlFor="input1">upiAddress Address</label>
           <input
             id="input1"
             type="text"
-            placeholder="Eg., some@upi"
-            value={values.upi}
-            name="upi"
+            placeholder="Eg., some@upiAddress"
+            value={values.upiAddress}
+            name="upiAddress"
             onBlur={handleBlur}
             onChange={handleChange}
           />
 
-          {errors.upi && touched.upi ? (
-            <small style={{ color: "red" }}>{errors.upi}</small>
+          {errors.upiAddress && touched.upiAddress ? (
+            <small style={{ color: "red" }}>{errors.upiAddress}</small>
           ) : null}
         </div>
         <div style={{ width: "100%" }}>
-          <button className="withdraw__btn" style={{ marginTop: "1.5rem", height: 55 }} type="submit">
+          <button
+            className="withdraw__btn"
+            style={{ marginTop: "1.5rem", height: 55 }}
+            type="submit"
+          >
             Add bank account
           </button>
         </div>

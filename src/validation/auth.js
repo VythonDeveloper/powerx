@@ -22,19 +22,19 @@ export const forgotPassSchema = Yup.object({
 })
 
 export const bankValidation = Yup.object({
-  bank_name: Yup.string().required("Please enter your phone number!"),
-  account_number: Yup.string()
+  bankName: Yup.string().required("Please enter your phone number!"),
+  accountNumber: Yup.string()
     .required("Please enter your account number!")
     .matches(/^[0-9]{10}$/, "Invalid bank number"),
-  ifsc_code: Yup.string()
+    ifscCode: Yup.string()
     .required("Please enter IFSC code!")
     .matches(/^([A-Za-z]{4}\d{7})$/, "Invalid IFSC code"),
-  account_holder: Yup.string()
+  accountHolder: Yup.string()
     .required("Please enter your name!")
     .matches(/^[A-Za-z\s]+$/, "Invalid account holder name")
     .min(2, "Account holder name should be at least 2 characters long")
     .max(50, "Account holder name should not exceed 50 characters"),
-  upi: Yup.string()
-    .required("Please enter your UPI!")
-    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, "Invalid UPI"),
+  upiAddress: Yup.string()
+    .required("Please enter your upi address!")
+    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, "Invalid upi address"),
 });

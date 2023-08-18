@@ -156,6 +156,7 @@ const Parity = () => {
 
       if (!data.error) {
         toast.success(data.message, toastOptions);
+        getCurrentDayHistory()
       } else {
         toast.error(data.message, toastOptions);
       }
@@ -451,21 +452,22 @@ const Parity = () => {
                   <div className="value  p-2">
                     <p
                       className="mb-0"
-                      onClick={() => {
-                        setShowMyBid(!showMyBid);
-                        setShowMyBidId(item.id);
-                      }}
+                     
                     >
                       {i + 1}{" "}
-                      {showMyBid && showMyBidId === item.id ? (
-                        <i className="bi bi-arrow-down-circle"></i>
+                      {showMyBidId === item.id ? (
+                        <i  onClick={() => {
+                          setShowMyBidId('');
+                        }} className="bi bi-arrow-down-circle"></i>
                       ) : (
-                        <i className="bi bi-arrow-up-circle"></i>
+                        <i  onClick={() => {
+                          setShowMyBidId(item.id);
+                        }} className="bi bi-arrow-up-circle"></i>
                       )}
                     </p>
                     <p className="text-center mb-0">{item.date}</p>
                     <div className="text-center mb-0">₹{item.totalPoints}</div>
-                    <div className="text-center mb-0">5</div>
+                    <div className="text-center mb-0">{item.numberResult || '?'}</div>
                     <p
                       className={`text-end mb-0`}
                       style={{ fontSize: "18px", fontWeight: "500" }}
@@ -474,7 +476,7 @@ const Parity = () => {
                     </p>
                   </div>
 
-                  {showMyBid && showMyBidId === item.id ? (
+                  {showMyBidId === item.id ? (
                     <div className="my-bit mt-2">
                       <div className="d-flex justify-content-between">
                         <ResultCircle numResult={item.num1}  num="1" />
