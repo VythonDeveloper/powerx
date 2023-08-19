@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Rupee } from "../../../assets/svg/CustomSVG";
 import Keyboard from "../../../components/keyboard/Keyboard";
 import { dbObject } from "../../../helper/constant";
+import Toaster, { toastOptions } from "../../../components/toaster/Toaster";
+import { toast } from "react-toastify";
 
 const DKDWithdraw = () => {
   const location = useLocation();
@@ -59,27 +61,65 @@ const DKDWithdraw = () => {
 
   const getWithdrawHitory = async () => {
     try {
-      const {data} = await dbObject.get('/dus-ka-dum/withdraw-history.php')
-      console.log(data)
+      const { data } = await dbObject.get("/dus-ka-dum/withdraw-history.php");
+      console.log(data);
 
-      if(!data.error) {
-        setWithdrawHistory(data?.response?.slice(0, 1))
+      if (!data.error) {
+        setWithdrawHistory(data?.response?.slice(0, 1));
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getWallet();
     getBank();
-    getControlFields()
-    getWithdrawHitory()
+    getControlFields();
+    getWithdrawHitory();
   }, []);
+  
+  const handleWithdraw = async () => {
+    try {
+      const values = {
+        points: amount,
+      };
+
+      const formData = new FormData();
+      for (const key in values) {
+        formData.append(key, values[key]);
+      }
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const { data } = await dbObject.post(
+        "/dus-ka-dum/withdraw.php",
+        formData,
+        config
+      );
+
+      if (!data.error) {
+        toast.success(data.message, toastOptions);
+        setAmount("");
+        getWallet();
+        getWithdrawHitory()
+      } else {
+        toast.warning(data.message, toastOptions);
+      }
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <div className="container dus-ka-dum">
+        <Toaster />
         <Header
           backgroundColor={"#fff"}
           title={"Withdraw"}
@@ -109,7 +149,6 @@ const DKDWithdraw = () => {
               navigate("/bank", { state: { from: location.pathname } })
             }
             className="bank-card bg-light"
-        
           >
             <div>
               <i className="bi bi-bank2"></i>
@@ -172,8 +211,6 @@ const DKDWithdraw = () => {
           </div>
         )}
 
-   
-
         <div className="withdrawal__amount__field">
           <div className="withdrawal__field__header">
             Withdrawal Amount{" "}
@@ -198,6 +235,7 @@ const DKDWithdraw = () => {
             style={{
               height: 45,
             }}
+            onClick={handleWithdraw}
           >
             Withdraw
           </button>
@@ -205,89 +243,105 @@ const DKDWithdraw = () => {
 
         <Keyboard color={"#c1bebe27"} setAmount={setAmount} amount={amount} />
 
-        <div className="withdrawal__records__section">
-          <div className="withdrawal__records__section__record__top"></div>
-          <div className="withdrawal__records__section__bottom">
-            <div className="withdrawal__records__section__bottom__header">
-              Withdrawal Records
-            </div>
-            <div className="withdrawalRecords__container">
-              <div className="withdrawalRecords__container__box">
-                <div className="withdrawalRecords__container__box__top">
-                  <div
-                    className="withdrawalRecords__container__box__top__col"
-                    style={{ flexBasis: "32%", width: "100%" }}
-                  >
-                    <div className="withdrawalRecords__container__box__top__top">
-                      Amount
-                    </div>
-                    <div
-                      className="withdrawalRecords__container__box__top__bottom"
-                      style={{ fontFamily: "sans-serif" }}
-                    >
-                      ₹158
-                    </div>
-                  </div>
-                  <div
-                    className="withdrawalRecords__container__box__top__col"
-                    style={{ flexBasis: "34%", width: "100%" }}
-                  >
-                    <div className="withdrawalRecords__container__box__top__top">
-                      Time
-                    </div>
-                    <div className="withdrawalRecords__container__box__top__bottom">
-                      01/25 16:24
-                    </div>
-                  </div>
-                  <div
-                    className="withdrawalRecords__container__box__top__col"
-                    style={{
-                      flexBasis: "34%",
-                      width: "100%",
-                      textAlign: "right",
-                    }}
-                  >
-                    <div className="withdrawalRecords__container__box__top__top">
-                      Status
-                    </div>
-                    <div className="withdrawalRecords__container__box__top__bottom">
-                      Pending
-                    </div>
-                  </div>
-                </div>
-                <div className="withdrawalRecords__container__box__bottom">
-                  <div className="withdrawalRecords__container__box__bottom__top">
-                    <div className="withdrawalRecords__container__box__bottom__top__col">
-                      Actually Arrived: 128
-                    </div>
-                    <div className="withdrawalRecords__container__box__bottom__top__col">
-                      Fee: 30
-                    </div>
-                  </div>
-                  <div
-                    className="withdrawalRecords__container__box__bottom__top"
-                    style={{ marginTop: 12 }}
-                  >
-                    <div className="withdrawalRecords__container__box__bottom__top__col">
-                      Name:
-                    </div>
-                    <div className="withdrawalRecords__container__box__bottom__top__col">
-                      Harsh Kumar Jha
-                    </div>
-                  </div>
-                  <div className="withdrawalRecords__container__box__bottom__top">
-                    <div className="withdrawalRecords__container__box__bottom__top__col">
-                      UPI:
-                    </div>
-                    <div className="withdrawalRecords__container__box__bottom__top__col">
-                      mrhulk@apl
-                    </div>
-                  </div>
+        {withdrawHistory?.length ? (
+          <div className="withdrawal__records__section">
+            <div className="withdrawal__records__section__record__top"></div>
+            <div className="withdrawal__records__section__bottom">
+              <div className="withdrawal__records__section__bottom__header  d-flex justify-content-between">
+                <div>Withdrawal Records</div>
+
+                <div
+                  onClick={() =>
+                    navigate("/dus-ka-dum/withdraw-history", {
+                      state: { from: location.pathname },
+                    })
+                  }
+                >
+                  View All
                 </div>
               </div>
+
+              {withdrawHistory.map((item, i) => (
+                <div className="withdrawalRecords__container">
+                  <div className="withdrawalRecords__container__box">
+                    <div className="withdrawalRecords__container__box__top">
+                      <div
+                        className="withdrawalRecords__container__box__top__col"
+                        style={{ flexBasis: "32%", width: "100%" }}
+                      >
+                        <div className="withdrawalRecords__container__box__top__top">
+                          Amount
+                        </div>
+                        <div
+                          className="withdrawalRecords__container__box__top__bottom"
+                          style={{ fontFamily: "sans-serif" }}
+                        >
+                          ₹{item.withdrawPoints}
+                        </div>
+                      </div>
+                      <div
+                        className="withdrawalRecords__container__box__top__col"
+                        style={{ flexBasis: "34%", width: "100%" }}
+                      >
+                        <div className="withdrawalRecords__container__box__top__top">
+                          Time
+                        </div>
+                        <div className="withdrawalRecords__container__box__top__bottom">
+                        {item.date}
+                        </div>
+                      </div>
+                      <div
+                        className="withdrawalRecords__container__box__top__col"
+                        style={{
+                          flexBasis: "34%",
+                          width: "100%",
+                          textAlign: "right",
+                        }}
+                      >
+                        <div className="withdrawalRecords__container__box__top__top">
+                          Status
+                        </div>
+                        <div className="withdrawalRecords__container__box__top__bottom">
+                          {item.status}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="withdrawalRecords__container__box__bottom">
+                    <div
+                      className="withdrawalRecords__container__box__bottom__top"
+                      style={{ marginTop: 12 }}
+                    >
+                      <div className="withdrawalRecords__container__box__bottom__top__col">
+                        Name:
+                      </div>
+                      <div style={{textTransform: 'capitalize'}} className="withdrawalRecords__container__box__bottom__top__col">
+                        {item.accountHolder}
+                      </div>
+                    </div>
+
+                    <div className="withdrawalRecords__container__box__bottom__top">
+                      <div className="withdrawalRecords__container__box__bottom__top__col">
+                      Account Number:
+                      </div>
+                      <div className="withdrawalRecords__container__box__bottom__top__col">
+                        {item.accountNumber}
+                      </div>
+                    </div>
+                    <div className="withdrawalRecords__container__box__bottom__top">
+                      <div className="withdrawalRecords__container__box__bottom__top__col">
+                        UPI:
+                      </div>
+                      <div className="withdrawalRecords__container__box__bottom__top__col">
+                        {item.upiAddress}
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </div>
   );

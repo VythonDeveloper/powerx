@@ -29,6 +29,7 @@ const RechargeHistory = lazy(() =>
 );
 const Refer = lazy(() => import("./screens/refer/Refer"));
 const WithdrawHistory = lazy(() => import('./screens/withdraw-history/WIthdrawHistory'))
+const DKDWithdrawHistory = lazy(() => import('./screens/withdraw-history/DKDWithdrawHistory'))
 
 function App() {
   return (
@@ -76,6 +77,7 @@ function App() {
           <Route path="/about-us" element={<About />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/power-x/withdraw-history" element={<WithdrawHistory />} />
+          <Route path="/dus-ka-dum/withdraw-history" element={<DKDWithdrawHistory />} />
 
         </Routes>
       </Suspense>
