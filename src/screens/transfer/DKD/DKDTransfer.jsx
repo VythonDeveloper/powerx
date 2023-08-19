@@ -12,7 +12,7 @@ const Transfer = () => {
   const location = useLocation();
   const [amount, setAmount] = useState("");
   const [bonusAmount, setBonusAmount] = useState("0.00");
-  const [bonus, setBonus] = useState("10");
+  const [bonus, setBonus] = useState("0");
   const [winWallet, setWinWallet] = useState("0.00");
   const [minimunTransfer, setMinimumTrasfer] = useState()
 

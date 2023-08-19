@@ -68,3 +68,55 @@
     font-weight: 600;
     font-size: 1.05rem;
 }
+
+.bank-card {
+    margin-top: 2rem;
+    background-color: #283546;
+    padding: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 1rem;
+  }
+  
+  .bank-card p {
+    color: #778d9c;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 1.2rem;
+  }
+  
+  .bank-card div {
+    width: 65px;
+    aspect-ratio: 1/1;
+    background-color: #0000002e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+  
+  }
+  
+  .bank-card i {
+    font-size: 30px;
+  }
+
+  .add-friend {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.357);
+    backdrop-filter: blur(4px);
+    height: 100vh;
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+  }
+
+  /* .add-friend  */

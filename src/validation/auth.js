@@ -36,5 +36,5 @@ export const bankValidation = Yup.object({
     .max(50, "Account holder name should not exceed 50 characters"),
   upiAddress: Yup.string()
     .required("Please enter your upi address!")
-    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, "Invalid upi address"),
+    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]/, "Invalid upi address"),
 });

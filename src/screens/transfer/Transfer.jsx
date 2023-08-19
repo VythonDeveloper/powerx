@@ -11,18 +11,22 @@ import Toaster, { toastOptions } from '../../components/toaster/Toaster';
 const Transfer = () => {
     const location = useLocation();
     const [amount, setAmount] = useState('');
-    const [error, setError] = useState(true);
     const [bonusAmount, setBonusAmount] = useState('0.00')
-    const [bonus, setBonus] = useState('10')
+    const [level1Bonus, setLevel1Bonus] = useState(0)
+    const [level2Bonus, setLevel2Bonus] = useState(0)
+    const [bonus, setBonus] = useState('0')
     const [winWallet, setWinWallet] = useState("0.00");
+    const [minimunTransfer, setMinimumTrasfer] = useState()
 
     useEffect(() => {
-      setBonusAmount(Number(amount) * Number(bonus) / 100)
+      let level1Fees = amount * (level1Bonus / 100)
+      let level2Fees = amount * (level2Bonus / 100)
+      setBonusAmount((level1Fees + level2Fees) - Number(amount) * (Number(bonus) / 100))
     }, [amount])
 
     const getWallet = async () => {
       try {
-        const { data } = await dbObject("/power-x/transfer.php");
+        const { data } = await dbObject.get("/power-x/fetch-wallet.php");
         console.log(data);
   
         if (!data.error) {
@@ -42,6 +46,9 @@ const Transfer = () => {
   
           if(!data.error) {
               setBonus(data.response.transferBonus)
+              setMinimumTrasfer(data?.response.minTransfer)
+              setLevel2Bonus(data.response.level2Bonus)
+              setLevel1Bonus(data.response.level1Bonus)
           }
       } catch (error) {
           console.log(error)
@@ -80,6 +87,7 @@ const Transfer = () => {
         if (!data.error) {
           toast.success(data.message, toastOptions)
           getWallet();
+          setAmount('')
         } else {
           toast.error(data.message, toastOptions);
         }
@@ -90,7 +98,7 @@ const Transfer = () => {
   
 
   return (
-    <div className="container">
+    <div className="container px-transfer">
       <Header title={"Transfer"} path={location?.state?.from || "/"} />
       <Toaster />
       
@@ -110,7 +118,7 @@ const Transfer = () => {
         <div className="withdrawal__field__header">
           Transfer to Play Wallet{" "}
            <br />
-          <span style={{ fontSize: 12, fontWeight: "300" }}>Min Rs. 10 & thereafter multiple of Rs. 10</span>
+          <span style={{ fontSize: 12, fontWeight: "300" }}>Min Rs. {minimunTransfer} & thereafter multiple of Rs. 5</span>
         </div>
         <div className="withdrawal__input__field">
           <div className="withdrawal__input__field__icon">
@@ -121,7 +129,8 @@ const Transfer = () => {
         </div>
 
         <div className="withdrawal__input__notes">
-          <p className="mb-0 mt-2">Bonus {bonus}% = ₹{bonusAmount}</p>
+          <p className="mb-0 mt-2">Bonus {bonus}%</p>
+          <p className="mb-0 mt-2">Referral Fees  {Number(level1Bonus) + Number(level2Bonus)}%</p>
         </div>
         
         
@@ -139,7 +148,7 @@ const Transfer = () => {
 
       <Keyboard setAmount={setAmount} amount={amount} />
 
-      <div className="withdrawal__records__section">
+      {/* <div className="withdrawal__records__section">
         <div className="withdrawal__records__section__record__top"></div>
         <div className="withdrawal__records__section__bottom">
           <div className="withdrawal__records__section__bottom__header">
@@ -203,7 +212,7 @@ const Transfer = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

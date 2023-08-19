@@ -40,17 +40,17 @@ const Profile = () => {
   };
 
   const data = [
-    {
-      title: 'Game History',
-      path: '/game-history',
-      icon: <HistorySvg />
-    },
+    // {
+    //   title: 'Game History',
+    //   path: '/game-history',
+    //   icon: <HistorySvg />
+    // },
 
-    {
-      title: 'Transaction',
-      path: '/transaction',
-      icon: <Transaction />
-    },
+    // {
+    //   title: 'Transaction',
+    //   path: '/transaction',
+    //   icon: <Transaction />
+    // },
 
     {
       title: 'Follow us',

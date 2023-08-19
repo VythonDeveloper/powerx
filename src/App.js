@@ -11,7 +11,6 @@ const FastParity = lazy(() => import("./screens/games/FastParity"));
 const Parity = lazy(() => import("./screens/games/Parity"));
 const FollowUs = lazy(() => import("./screens/follow-us/FollowUs"));
 const ForgotPass = lazy(() => import("./screens/auth/ForgotPass"));
-const Forward = lazy(() => import("./screens/forward/Forward"));
 const ForwardPX = lazy(() => import("./screens/forward/ForwardPX"));
 const ForwardDKD = lazy(() => import("./screens/forward/DKD/ForwardDKD"));
 const Profile = lazy(() => import("./screens/profile/Profile"));
@@ -20,6 +19,7 @@ const Signin = lazy(() => import("./screens/auth/Signin"));
 const Signup = lazy(() => import("./screens/auth/Signup"));
 const GameHistory = lazy(() => import("./screens/game-history/GameHistory"));
 const Recharge = lazy(() => import("./screens/recharge/Recharge"));
+const DKDRecharge = lazy(() => import("./screens/recharge/DKDRecharge"));
 const Withdraw = lazy(() => import("./screens/withdraw/Withdraw"));
 const Transfer = lazy(() => import("./screens/transfer/Transfer"));
 const DKDTransfer = lazy(() => import("./screens/transfer/DKD/DKDTransfer"));
@@ -28,6 +28,7 @@ const RechargeHistory = lazy(() =>
   import("./screens/recharge-history/RechargeHistory")
 );
 const Refer = lazy(() => import("./screens/refer/Refer"));
+const WithdrawHistory = lazy(() => import('./screens/withdraw-history/WIthdrawHistory'))
 
 function App() {
   return (
@@ -57,14 +58,13 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/power-x" element={<FastParity />} />
           <Route path="/dus-ka-dum" element={<Parity />} />
-          <Route path="/forward" element={<Forward />} />
           <Route path="/power-x/forward" element={<ForwardPX />} />
           <Route path="/dus-ka-dum/forward" element={<ForwardDKD />} />
-          <Route path="/forward" element={<Forward />} />
           <Route path="/follow-us" element={<FollowUs />} />
           <Route path="/transaction" element={<Transaction />} />
           <Route path="/game-history" element={<GameHistory />} />
-          <Route path="/recharge" element={<Recharge />} />
+          <Route path="/power-x/recharge" element={<Recharge />} />
+          <Route path="/dus-ka-dum/recharge" element={<DKDRecharge />} />
           <Route path="/recharge-history" element={<RechargeHistory />} />
           <Route path="/dus-ka-dum/withdraw" element={<DKDWithdraw />} />
           <Route path="/dus-ka-dum/result" element={<DKDResult />} />
@@ -75,6 +75,8 @@ function App() {
           <Route path="/refer" element={<Refer />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/faq" element={<Faq />} />
+          <Route path="/power-x/withdraw-history" element={<WithdrawHistory />} />
+
         </Routes>
       </Suspense>
     </>

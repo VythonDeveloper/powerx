@@ -11,12 +11,12 @@ const Recharge = () => {
     <div className="container">
       <Header title={"Recharge"} path={location?.state?.from || "/"} />
       <div className="d-flex flex-column align-items-center mt-2">
-        <p className="mb-0">Recharge for fast parity</p>
+        <p className="mb-0">Recharge for</p>
         <p
           className="mb-2"
           style={{ fontSize: "2rem", color: "#398d3f", fontWeight: "500" }}
         >
-          NHDI4DAD
+          Power-X
         </p>
         <p>Proceed to pay</p>
 

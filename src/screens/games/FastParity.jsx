@@ -28,7 +28,8 @@ const FastParity = () => {
   const [timeinSec, setTimeinSec] = useState(0);
   const [myOrder, setMyOrder] = useState([]);
   const [resultHistory, setResultHistory] = useState([]);
-  const [showResult, setShowResult] = useState(true);
+  const [showResult, setShowResult] = useState(false);
+  const [maxCoinBid, setmaxCoinBid] = useState('1')
 
   const location = useLocation();
 
@@ -75,10 +76,24 @@ const FastParity = () => {
     }
   };
 
+  const getControlFields = async () => {
+    try {
+        const {data} = await dbObject.get('/power-x/control-fields.php')
+        console.log(data)
+
+        if(!data.error) {
+          setmaxCoinBid(data.response.maxCoinBid)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
   useEffect(() => {
     getWallet();
     getMyOrder();
     getResultHistory();
+    getControlFields()
   }, []);
 
   const placeBit = async () => {
@@ -272,7 +287,7 @@ const FastParity = () => {
                   fontSize: 13,
                 }}
                 onClick={() =>
-                  navigate("/recharge", { state: { from: location.pathname } })
+                  navigate("/power-x/recharge", { state: { from: location.pathname } })
                 }
               >
                 Recharge
@@ -310,6 +325,7 @@ const FastParity = () => {
           </div>
 
           <div className="power-x p-2 mt-2 position-relative">
+            <p className="mb-1 w-50" style={{fontSize: 12}}>Maximum bid for Gold and Silver is ₹{maxCoinBid} </p>
             <div className="game-coins position-relative">
               <div
                 className="d-flex flex-column gold-coin"

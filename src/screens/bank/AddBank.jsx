@@ -5,7 +5,8 @@ import { bankValidation } from "../../validation/auth";
 import "./bank.css";
 import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
-import { toastOptions } from "../../components/toaster/Toaster";
+import Toaster, { toastOptions } from "../../components/toaster/Toaster";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let initialValues = {
   bankName: "",
@@ -16,7 +17,9 @@ let initialValues = {
 };
 
 const AddBank = () => {
-  const [bank, setBank] = useState({})
+  const location = useLocation();
+  const navigate = useNavigate()
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
@@ -33,10 +36,19 @@ const AddBank = () => {
             },
           };
 
-          const { data } = await dbObject.post("/bank-account/update.php", formData, config);
-          if(!data.error) {
-            toast.success(data.message, toastOptions)
-            
+          const { data } = await dbObject.post(
+            "/bank-account/update.php",
+            formData,
+            config
+          );
+
+          console.log(data)
+          if (!data.error) {
+            toast.success(data.message, toastOptions);
+
+            setTimeout(() => {
+              navigate(location?.state?.from || '/')
+            }, 1000)
           }
         } catch (error) {
           console.log(error);
@@ -48,10 +60,10 @@ const AddBank = () => {
     try {
       const { data } = await dbObject.get("/bank-account/fetch.php");
 
-      console.log(data)
+      console.log(data);
       initialValues = {
-        ...data.response
-      }
+        ...data.response,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +76,8 @@ const AddBank = () => {
   return (
     <div className="container">
       {/* Top Navbar */}
-      <Header title={"Add Bank"} path={"/bank"} />
+      <Header title={"Add Bank"} path={location?.state?.from || "/"} />
+      <Toaster />
 
       <div className="addbank-icon">
         <i className="bi bi-bank2"></i>
