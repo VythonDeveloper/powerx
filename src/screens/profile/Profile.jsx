@@ -47,8 +47,8 @@ const Profile = () => {
     },
 
     {
-      title: 'Transaction',
-      path: '/transaction',
+      title: 'Contact Us',
+      path: '/Contact-us',
       icon: <Transaction />
     },
 

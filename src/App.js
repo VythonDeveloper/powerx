@@ -5,6 +5,7 @@ import About from "./screens/about/About";
 import Faq from "./screens/faq/Faq";
 import DKDWithdraw from "./screens/withdraw/DKD/DKDWithdraw";
 import DKDResult from "./screens/duskadum-result/DKDResult";
+import ContactUs from "./screens/contact-us/ContactUs";
 const Welcome = lazy(() => import("./screens/welcome/Welcome"));
 const Home = lazy(() => import("./screens/home/Home"));
 const FastParity = lazy(() => import("./screens/games/FastParity"));
@@ -78,6 +79,7 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/power-x/withdraw-history" element={<WithdrawHistory />} />
           <Route path="/dus-ka-dum/withdraw-history" element={<DKDWithdrawHistory />} />
+          <Route path="/contact-us" element={<ContactUs />} />
 
         </Routes>
       </Suspense>

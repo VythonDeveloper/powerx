@@ -2,7 +2,8 @@ import './rechargehistory.css';
 import { emptyBox, upi } from '../../assets';
 import { Header } from '../../components';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { dbObject } from '../../helper/constant';
 
 const RechargeHistory = () => {
   const location = useLocation()
@@ -13,11 +14,34 @@ const RechargeHistory = () => {
 
   const getPowerx = async () => {
     try {
-      
+      const {data} = await dbObject('/power-x/recharge-history.php')
+      console.log(data)
+      if(!data.error) {
+        setPowerx(data.response)
+      }
     } catch (error) {
       console.log(error)
     }
   }
+
+  const getDusKadum = async () => {
+    try {
+      const {data} = await dbObject('/dus-ka-dum/recharge-history.php')
+      console.log(data)
+      if(!data.error) {
+        setDuskadum(data.response)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  useEffect(() => {
+   getPowerx() 
+   getDusKadum()
+  }, [])
+  
 
   return (
     <div className="container">
@@ -47,13 +71,90 @@ const RechargeHistory = () => {
 
 
       {activeBtn === "fast-parity" &&
-        (!powerx.length ? (
+        (powerx.length ? (
           <div className="recharge-history-card-group">
-            <Card
-              orderId={"NHDI4DAD"}
-              amount={'500.00'}
-              date= {'10/20/2002'}
-            />
+           {
+            powerx.map((item, i) => (
+              <div key={i} className="withdrawalRecords__container">
+              <div className="withdrawalRecords__container__box">
+                <div className="withdrawalRecords__container__box__top">
+                  <div
+                    className="withdrawalRecords__container__box__top__col"
+                    style={{ flexBasis: "32%", width: "100%" }}
+                  >
+                    <div className="withdrawalRecords__container__box__top__top">
+                      Amount
+                    </div>
+                    <div
+                      className="withdrawalRecords__container__box__top__bottom"
+                      style={{ fontFamily: "sans-serif" }}
+                    >
+                      ₹{item.points}
+                    </div>
+                  </div>
+                  <div
+                    className="withdrawalRecords__container__box__top__col"
+                    style={{ flexBasis: "34%", width: "100%" }}
+                  >
+                    <div className="withdrawalRecords__container__box__top__top">
+                      Time
+                    </div>
+                    <div className="withdrawalRecords__container__box__top__bottom">
+                      {/* 01/25 16:24 */}
+                      {item.date}
+                    </div>
+                  </div>
+                  <div
+                    className="withdrawalRecords__container__box__top__col"
+                    style={{
+                      flexBasis: "34%",
+                      width: "100%",
+                      textAlign: "right",
+                    }}
+                  >
+                    <div className="withdrawalRecords__container__box__top__top">
+                      Status
+                    </div>
+                    <div className="withdrawalRecords__container__box__top__bottom">
+                      {item.status}
+                    </div>
+                  </div>
+                </div>
+                <div className="withdrawalRecords__container__box__bottom">
+                  
+                  <div
+                    className="withdrawalRecords__container__box__bottom__top"
+                    style={{ marginTop: 12 }}
+                  >
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                      Bonus:
+                    </div>
+                    <div style={{textTransform: 'capitalize'}} className="withdrawalRecords__container__box__bottom__top__col">
+                    ₹{item.bonus}
+                    </div>
+                  </div>
+
+                  <div className="withdrawalRecords__container__box__bottom__top">
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                    Deposit Amount:
+                    </div>
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                    ₹{item.depositPoints}
+                    </div>
+                  </div>
+                  <div className="withdrawalRecords__container__box__bottom__top">
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                    Referral Fees:
+                    </div>
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                    ₹{item.referralFees}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            ))
+           }
 
          
         </div>
@@ -66,12 +167,88 @@ const RechargeHistory = () => {
       {activeBtn === "full-parity" &&
         (duskadum.length ? (
           <div className="recharge-history-card-group">
-            <Card
-              orderId={"NHDI4DAD"}
-              amount={'500.00'}
-              date= {'10/20/2002'}
-            />
+           {
+            duskadum.map((item, i) => (
+              <div key={i} className="withdrawalRecords__container">
+              <div className="withdrawalRecords__container__box">
+                <div className="withdrawalRecords__container__box__top">
+                  <div
+                    className="withdrawalRecords__container__box__top__col"
+                    style={{ flexBasis: "32%", width: "100%" }}
+                  >
+                    <div className="withdrawalRecords__container__box__top__top">
+                      Amount
+                    </div>
+                    <div
+                      className="withdrawalRecords__container__box__top__bottom"
+                      style={{ fontFamily: "sans-serif" }}
+                    >
+                      ₹{item.points}
+                    </div>
+                  </div>
+                  <div
+                    className="withdrawalRecords__container__box__top__col"
+                    style={{ flexBasis: "34%", width: "100%" }}
+                  >
+                    <div className="withdrawalRecords__container__box__top__top">
+                      Time
+                    </div>
+                    <div className="withdrawalRecords__container__box__top__bottom">
+                      {/* 01/25 16:24 */}
+                      {item.date}
+                    </div>
+                  </div>
+                  <div
+                    className="withdrawalRecords__container__box__top__col"
+                    style={{
+                      flexBasis: "34%",
+                      width: "100%",
+                      textAlign: "right",
+                    }}
+                  >
+                    <div className="withdrawalRecords__container__box__top__top">
+                      Status
+                    </div>
+                    <div className="withdrawalRecords__container__box__top__bottom">
+                      {item.status}
+                    </div>
+                  </div>
+                </div>
+                <div className="withdrawalRecords__container__box__bottom">
+                  
+                  <div
+                    className="withdrawalRecords__container__box__bottom__top"
+                    style={{ marginTop: 12 }}
+                  >
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                      Bonus:
+                    </div>
+                    <div style={{textTransform: 'capitalize'}} className="withdrawalRecords__container__box__bottom__top__col">
+                    ₹{item.bonus}
+                    </div>
+                  </div>
 
+                  <div className="withdrawalRecords__container__box__bottom__top">
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                    Deposit Amount:
+                    </div>
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                    ₹{item.depositPoints}
+                    </div>
+                  </div>
+                  <div className="withdrawalRecords__container__box__bottom__top">
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                    Referral Fees:
+                    </div>
+                    <div className="withdrawalRecords__container__box__bottom__top__col">
+                    ₹{item.referralFees}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            ))
+           }
          
         </div>
         ) : (
