@@ -7,21 +7,19 @@ const Refer = () => {
 
     const shareLink = () => {
         // Replace this URL with the link you want to share
-        const linkToShare = 'https://example.com';
+        const linkToShare = `https://zingo.online/signup`;
+        const message = 'Check out this link!';
         
         // Use the Web Share API to share the link
         if (navigator.share) {
           navigator.share({
             title: 'Share this link',
+            text: message,
             url: linkToShare,
           })
           .then(() => console.log('Link shared successfully'))
           .catch(error => console.error('Error sharing link:', error));
-        } else {
-          console.warn('Web Share API not supported');
-          // Fallback behavior if Web Share API is not supported
-          // You can open a new window with the link or display a message
-        }
+        } 
       };
     return (
         <div >
