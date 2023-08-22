@@ -1,11 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../context/AppContext'
-import { useLocation, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import Toaster from '../components/toaster/Toaster'
 
 const IsAuthenticate = ({ children, path }) => {
     const { loading, user } = useContext(AppContext)
-    const location = useLocation()
     const navigate = useNavigate()
 
     useEffect(() => {

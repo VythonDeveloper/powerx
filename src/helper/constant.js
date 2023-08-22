@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const baseURL = 'https://vedicpetsclinicandsurgerycentre.com/power-x/apis';
+export const baseURL = "https://app-apis.zingo.online";
 
 export const dbObject = axios.create({
-    withCredentials: true,
-    baseURL: 'https://vedicpetsclinicandsurgerycentre.com/power-x/apis'
+  withCredentials: true,
+  baseURL: "https://app-apis.zingo.online",
 });
