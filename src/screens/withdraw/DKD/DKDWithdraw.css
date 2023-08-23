@@ -206,3 +206,37 @@
 .dus-ka-dum .passbook__details {
     color: #000;
 }
+
+.bank-card {
+    margin-top: 2rem;
+    background-color: #283546;
+    padding: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 1rem;
+  }
+  
+  .bank-card p {
+    color: #778d9c;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 1.2rem;
+  }
+  
+  .bank-card div {
+    width: 65px;
+    aspect-ratio: 1/1;
+    background-color: #0000002e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+  
+  }
+  
+  .bank-card i {
+    font-size: 30px;
+  }

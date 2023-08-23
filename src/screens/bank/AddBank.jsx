@@ -8,65 +8,68 @@ import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 import { useLocation, useNavigate } from "react-router-dom";
 
-let initialValues = {
-  bankName: "",
-  accountNumber: "",
-  ifscCode: "",
-  accountHolder: "",
-  upiAddress: "",
-};
-
 const AddBank = () => {
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [values, setValues] = useState({
+    bankName: "",
+    accountNumber: "",
+    ifscCode: "",
+    accountHolder: "",
+    upiAddress: "",
+  });
 
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: initialValues,
-      validationSchema: bankValidation,
-      onSubmit: async () => {
-        try {
-          const formData = new FormData();
-          for (const key in values) {
-            formData.append(key, values[key]);
-          }
-          const config = {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          };
+  const handleAddBank = async (e) => {
+    e.preventDefault();
 
-          const { data } = await dbObject.post(
-            "/bank-account/update.php",
-            formData,
-            config
-          );
+    try {
+      const formData = new FormData();
+      for (const key in values) {
+        formData.append(key, values[key]);
+      }
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
 
-          console.log(data)
-          if (!data.error) {
-            toast.success(data.message, toastOptions);
+      const { data } = await dbObject.post(
+        "/bank-account/update.php",
+        formData,
+        config
+      );
 
-            setTimeout(() => {
-              navigate(location?.state?.from || '/')
-            }, 1000)
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    });
+      console.log(data);
+      if (!data.error) {
+        toast.success(data.message, toastOptions);
+
+        setTimeout(() => {
+          navigate(location?.state?.from || "/home");
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getBank = async () => {
     try {
       const { data } = await dbObject.get("/bank-account/fetch.php");
 
       console.log(data);
-      initialValues = {
-        ...data.response,
-      };
+
+      if (!data.error && data?.response) {
+        setValues(data.response);
+      }
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+
+    setValues({ ...values, [name]: value });
   };
 
   useEffect(() => {
@@ -83,7 +86,7 @@ const AddBank = () => {
         <i className="bi bi-bank2"></i>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleAddBank}>
         <div className="up-input-outer">
           <label htmlFor="input1">Bank Name</label>
           <input
@@ -92,12 +95,8 @@ const AddBank = () => {
             placeholder="Eg., State Bank of India"
             value={values.bankName}
             name="bankName"
-            onBlur={handleBlur}
             onChange={handleChange}
           />
-          {errors.bankName && touched.bankName ? (
-            <small style={{ color: "red" }}>{errors.bankName}</small>
-          ) : null}
         </div>
 
         <div className="up-input-outer">
@@ -108,13 +107,8 @@ const AddBank = () => {
             placeholder="Eg., 110283...."
             value={values.accountNumber}
             name="accountNumber"
-            onBlur={handleBlur}
             onChange={handleChange}
           />
-
-          {errors.accountNumber && touched.accountNumber ? (
-            <small style={{ color: "red" }}>{errors.accountNumber}</small>
-          ) : null}
         </div>
 
         <div className="up-input-outer">
@@ -125,12 +119,8 @@ const AddBank = () => {
             placeholder="Eg., SBIN008.."
             value={values.ifscCode}
             name="ifscCode"
-            onBlur={handleBlur}
             onChange={handleChange}
           />
-          {errors.ifscCode && touched.ifscCode ? (
-            <small style={{ color: "red" }}>{errors.ifscCode}</small>
-          ) : null}
         </div>
 
         <div className="up-input-outer">
@@ -141,12 +131,8 @@ const AddBank = () => {
             placeholder="Eg., Your Name"
             value={values.accountHolder}
             name="accountHolder"
-            onBlur={handleBlur}
             onChange={handleChange}
           />
-          {errors.accountHolder && touched.accountHolder ? (
-            <small style={{ color: "red" }}>{errors.accountHolder}</small>
-          ) : null}
         </div>
 
         <div className="up-input-outer">
@@ -157,13 +143,8 @@ const AddBank = () => {
             placeholder="Eg., some@upiAddress"
             value={values.upiAddress}
             name="upiAddress"
-            onBlur={handleBlur}
             onChange={handleChange}
           />
-
-          {errors.upiAddress && touched.upiAddress ? (
-            <small style={{ color: "red" }}>{errors.upiAddress}</small>
-          ) : null}
         </div>
         <div style={{ width: "100%" }}>
           <button

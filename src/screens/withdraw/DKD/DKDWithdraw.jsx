@@ -179,13 +179,13 @@ const DKDWithdraw = () => {
                   <div className="passbook__detail__col">
                     <div className="passbook__detail__col__left">Name</div>
                     <div className="passbook__detail__col__right">
-                      Ashadu Zaman
+                    {bank?.accountHolder}
                     </div>
                   </div>
                   <div className="passbook__detail__col">
                     <div className="passbook__detail__col__left">IFSC</div>
                     <div className="passbook__detail__col__right">
-                      SOMETHING002
+                     {bank?.ifscCode}
                     </div>
                   </div>
                   <div className="passbook__detail__col">
@@ -193,9 +193,23 @@ const DKDWithdraw = () => {
                       Account Number
                     </div>
                     <div className="passbook__detail__col__right">
-                      0616261626162
+                     {bank?.accountNumber}
                     </div>
                   </div>
+
+                  <div className="passbook__detail__col">
+                  <div className="passbook__detail__col__left">Bank Name</div>
+                  <div className="passbook__detail__col__right">
+                    {bank?.bankName}
+                  </div>
+                </div>
+
+                <div className="passbook__detail__col">
+                  <div className="passbook__detail__col__left">UPI</div>
+                  <div className="passbook__detail__col__right">
+                    {bank?.upiAddress}
+                  </div>
+                </div>
                 </div>
               </div>
               <div className="changeCard">
