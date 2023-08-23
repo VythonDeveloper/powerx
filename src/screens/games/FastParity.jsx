@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import "./game.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../../components";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
 import { database } from "../../firebase.config";
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 import { dbObject } from "../../helper/constant";
 import Keyboard from "../../components/keyboard/Keyboard";
 import { Rupee } from "../../assets/svg/CustomSVG";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
-import ResultPopup from "../../components/result-popup/ResultPopup";
 
 const FastParity = () => {
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ const FastParity = () => {
   const [timeinSec, setTimeinSec] = useState(0);
   const [myOrder, setMyOrder] = useState([]);
   const [resultHistory, setResultHistory] = useState([]);
-  const [showResult, setShowResult] = useState(false);
+
   const [maxCoinBid, setmaxCoinBid] = useState('1')
 
   const location = useLocation();
@@ -176,11 +175,7 @@ const FastParity = () => {
         <Header title={"Power X"} />
         <Toaster />
 
-        {
-          showResult && (
-            <ResultPopup setShowResult={setShowResult} />
-          )
-        }
+      
 
         {showModal && (
           <div className="start-box">
@@ -483,20 +478,22 @@ const FastParity = () => {
               <table style={{ width: "100%", marginTop: "1rem" }}>
                 <thead>
                   <tr className="parity-myorder-header parity-myorder row">
-                    <td className="col-4">Period</td>
-                    <td className="col-4 text-center">Select</td>
-                    <td className="col-4">Point</td>
+                    <td className="col-5">Period</td>
+                    <td className="col-3 text-center">Select</td>
+                    <td className="col-2 text-center ">Point</td>
+                    <td className="col-2">Won</td>
                   </tr>
                 </thead>
 
                 <tbody>
                   {myOrder.map((item, i) => (
                     <tr key={i} className="parity-myorder row">
-                      <td className="col-4">{item.period}</td>
-                      <td className="parity-selected col-4 text-light">
+                      <td className="col-5">{item.period}</td>
+                      <td className="parity-selected col-3 text-light text-center">
                         <p>{item.alphabet || item.coin || item.color}</p>
                       </td>
-                      <td className="col-4">₹{item.points}</td>
+                      <td className="col-2 text-center">₹{item.points}</td>
+                      <td className="col-2">₹{item.winPoints}</td>
                     </tr>
                   ))}
                 </tbody>

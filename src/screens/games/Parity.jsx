@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./game.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../../components";
 import { database } from "../../firebase.config";
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 import { dbObject } from "../../helper/constant";
 import { Rupee } from "../../assets/svg/CustomSVG";
 import Keyboard from "../../components/keyboard/Keyboard";
-import ResultPopup from "../../components/result-popup/ResultPopup";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
@@ -20,7 +19,6 @@ const Parity = () => {
   const [winWallet, setWinWallet] = useState("0.00");
   const [playWallet, setPlayWallet] = useState("0.00");
   const [amount, setAmount] = useState("");
-  const [showResult, setShowResult] = useState(false);
   const [nums, setNums] = useState({
     num1: "",
     num2: "",
@@ -91,7 +89,6 @@ const Parity = () => {
     getCurrentDayHistory();
   }, []);
 
-  const [showMyBid, setShowMyBid] = useState(false);
   const [showMyBidId, setShowMyBidId] = useState(false);
 
   const getResultHistory = async () => {
@@ -187,7 +184,6 @@ const Parity = () => {
         <div className="container dus-ka-dum">
           <Header backgroundColor={"#fff"} title={"10 Ka Dum"} />
 
-          {showResult && <ResultPopup setShowResult={setShowResult} />}
 
           {showModal && (
             <div className="start-box">

@@ -11,14 +11,13 @@ import Toaster, { toastOptions } from "../../../components/toaster/Toaster";
 const Transfer = () => {
   const location = useLocation();
   const [amount, setAmount] = useState("");
-  const [bonusAmount, setBonusAmount] = useState("0.00");
   const [bonus, setBonus] = useState("0");
   const [winWallet, setWinWallet] = useState("0.00");
   const [minimunTransfer, setMinimumTrasfer] = useState()
+  const [level1Bonus, setLevel1Bonus] = useState(0)
+  const [level2Bonus, setLevel2Bonus] = useState(0)
 
-  useEffect(() => {
-    setBonusAmount((Number(amount) * Number(bonus)) / 100);
-  }, [amount]);
+
 
   const getWallet = async () => {
     try {
@@ -42,6 +41,8 @@ const Transfer = () => {
         if(!data.error) {
             setBonus(data.response.transferBonus)
             setMinimumTrasfer(data?.response.minTransfer)
+            setLevel2Bonus(data.response.level2Bonus)
+              setLevel1Bonus(data.response.level1Bonus)
         }
     } catch (error) {
         console.log(error)
@@ -129,10 +130,9 @@ const Transfer = () => {
           </div>
 
           <div className="withdrawal__input__notes">
-            <p className="mb-0 mt-2">
-              Bonus {bonus}% = ₹{bonusAmount}
-            </p>
-          </div>
+          <p className="mb-0 mt-2">Bonus {bonus}%</p>
+          <p className="mb-0 mt-2">Referral Fees  {Number(level1Bonus) + Number(level2Bonus)}%</p>
+        </div>
 
           <br />
           <button

@@ -18,7 +18,6 @@ const Profile = lazy(() => import("./screens/profile/Profile"));
 const Transaction = lazy(() => import("./screens/transaction/Transaction"));
 const Signin = lazy(() => import("./screens/auth/Signin"));
 const Signup = lazy(() => import("./screens/auth/Signup"));
-const GameHistory = lazy(() => import("./screens/game-history/GameHistory"));
 const Recharge = lazy(() => import("./screens/recharge/Recharge"));
 const DKDRecharge = lazy(() => import("./screens/recharge/DKDRecharge"));
 const Withdraw = lazy(() => import("./screens/withdraw/Withdraw"));
@@ -64,7 +63,7 @@ function App() {
           <Route path="/dus-ka-dum/forward" element={<ForwardDKD />} />
           <Route path="/follow-us" element={<FollowUs />} />
           <Route path="/transaction" element={<Transaction />} />
-          <Route path="/game-history" element={<GameHistory />} />
+         
           <Route path="/power-x/recharge" element={<Recharge />} />
           <Route path="/dus-ka-dum/recharge" element={<DKDRecharge />} />
           <Route path="/recharge-history" element={<RechargeHistory />} />

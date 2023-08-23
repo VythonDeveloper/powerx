@@ -11,18 +11,11 @@ import Toaster, { toastOptions } from '../../components/toaster/Toaster';
 const Transfer = () => {
     const location = useLocation();
     const [amount, setAmount] = useState('');
-    const [bonusAmount, setBonusAmount] = useState('0.00')
     const [level1Bonus, setLevel1Bonus] = useState(0)
     const [level2Bonus, setLevel2Bonus] = useState(0)
     const [bonus, setBonus] = useState('0')
     const [winWallet, setWinWallet] = useState("0.00");
     const [minimunTransfer, setMinimumTrasfer] = useState()
-
-    useEffect(() => {
-      let level1Fees = amount * (level1Bonus / 100)
-      let level2Fees = amount * (level2Bonus / 100)
-      setBonusAmount((level1Fees + level2Fees) - Number(amount) * (Number(bonus) / 100))
-    }, [amount])
 
     const getWallet = async () => {
       try {
