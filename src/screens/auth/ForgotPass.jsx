@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import { dbObject } from '../../helper/constant';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../../components/toaster/Toaster';
+import "./auth.css";
 
 
 const initialValues = {

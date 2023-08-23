@@ -1,21 +1,30 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import IsNotAuthenticate from "../../redirect/IsNotAuthenticate";
 import { signupSchema } from "../../validation/auth";
 import { useFormik } from "formik";
 import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
 import { toastOptions } from "../../components/toaster/Toaster";
-const initialValues = {
-  phone: "",
-  newPassword: "",
-  confirmPassword: "",
-  otp: '',
-  referrerCode: ''
-};
+import "./auth.css";
+
 
 const Signup = () => {
   const navigate = useNavigate();
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search);
+
+  // Access the specific parameter you need
+  const referCode = queryParams.get('refercode');
+
+  const initialValues = {
+    phone: '',
+    newPassword: '',
+    confirmPassword: '',
+    otp: '',
+    referrerCode: referCode || '', // Set to referCode if available, otherwise empty string
+  };
+
 
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
     useFormik({
