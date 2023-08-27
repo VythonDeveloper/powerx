@@ -9,7 +9,7 @@ import { toastOptions } from "../../components/toaster/Toaster";
 import "./auth.css";
 
 const initialValues = {
-  phone: "",
+  email: "",
   newPassword: "",
   otp: "",
 };
@@ -117,21 +117,7 @@ const ForgotPass = () => {
             ) : null}
           </div>
 
-          <div className="form-group mt-2">
-            <input
-              autoComplete="off"
-              className="form-control"
-              type="number"
-              name="phone"
-              placeholder="Phone"
-              value={values.phone}
-              onBlur={handleBlur}
-              onChange={handleChange}
-            />
-            {errors.phone && touched.phone ? (
-              <small style={{ color: "red" }}>{errors.phone}</small>
-            ) : null}
-          </div>
+          
 
           <div className="form-group mt-2">
             <input

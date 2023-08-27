@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import IsNotAuthenticate from "../../redirect/IsNotAuthenticate";
 import { signupSchema } from "../../validation/auth";
 import { useFormik } from "formik";
@@ -12,6 +12,15 @@ const Signup = () => {
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
+  const location = useLocation()
+
+  useEffect(() => {
+    if(!location?.state?.referrerCode) {
+      return navigate('/auth-refer')
+    }
+  }, [location])
+
+  
 
   const initialValues = {
     phone: "",
@@ -19,6 +28,7 @@ const Signup = () => {
     confirmPassword: "",
     otp: "",
     email: "",
+    referrerCode: location?.state?.referrerCode
   };
 
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
@@ -26,8 +36,10 @@ const Signup = () => {
       initialValues: initialValues,
       validationSchema: signupSchema,
       onSubmit: async () => {
+        // return console.log(values)
         try {
           const formData = new FormData();
+        
           for (const key in values) {
             formData.append(key, values[key]);
           }
