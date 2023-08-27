@@ -58,9 +58,19 @@ const Signin = () => {
       
       <div className="login-dark">
         <form onSubmit={handleSubmit} method="post" className="container">
-          <h2 className="sr-only">Sign In</h2>
+          <h2 className="sr-only text-center">Sign In</h2>
 
-          <div className="form-group mt-4">
+          <div className="google-auth">
+          <i class="bi bi-google"></i>
+
+          <span>Sign in with Google</span>
+          </div>
+
+          <p className="mb-0 mt-4 text-center" style={{color: '#95999d'}}>Or</p>
+
+
+
+          <div className="form-group mt-2">
             <input
               autoComplete="off"
               autoCorrect="off"
@@ -104,7 +114,7 @@ const Signin = () => {
             Forgot your password?
           </Link>
 
-          <Link to={"/signup"} className="signIn_SignUp">
+          <Link to={"/auth-refer"} className="signIn_SignUp">
             Don't have an account? <span>Sign Up</span>
           </Link>
         </form>

@@ -30,6 +30,7 @@ const RechargeHistory = lazy(() =>
 const Refer = lazy(() => import("./screens/refer/Refer"));
 const WithdrawHistory = lazy(() => import('./screens/withdraw-history/WIthdrawHistory'))
 const DKDWithdrawHistory = lazy(() => import('./screens/withdraw-history/DKDWithdrawHistory'))
+const ReferInput = lazy(() => import('./screens/auth/Refer'))
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/auth-refer" element={<ReferInput />} />
           <Route path="/forgot-password" element={<ForgotPass />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/power-x" element={<FastParity />} />

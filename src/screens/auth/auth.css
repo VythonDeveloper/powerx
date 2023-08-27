@@ -79,3 +79,23 @@
     color: #2f6cbd;
     font-size: 17px;
   }
+
+  .google-auth {
+    background-color: #fff;
+    color: #172a3a;
+    padding: 0.4rem 1rem;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    align-items: center;
+  }
+
+  .google-auth i {
+    font-size: 2rem;
+    color: red;
+  }

@@ -10,7 +10,7 @@ const Refer = () => {
 
   const shareLink = () => {
     // Replace this URL with the link you want to share
-    const linkToShare = `https://zingo.online/signup?refercode=${user.referCode}`;
+    const linkToShare = `https://zingo.online/auth-refer?refercode=${user.referCode}`;
     const message = `Ready to earn big while playing games? Join now with my referral code ${user.referCode} and join the ranks of 1000+ players who are making over 500 Rs daily! Let's win together!`;
 
     // Use the Web Share API to share the link
