@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./game.css";
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../../components";
 import { database } from "../../firebase.config";
 import { onValue, ref } from "firebase/database";
@@ -15,7 +15,7 @@ const Parity = () => {
   const navigate = useNavigate();
   const firstCardList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const [timer, setTimer] = useState("0:00");
-  const [period, setPeroid] = useState("000000000000");
+  const [period, setPeroid] = useState("--/--/---- --:-- --");
   const [winWallet, setWinWallet] = useState("0.00");
   const [playWallet, setPlayWallet] = useState("0.00");
   const [amount, setAmount] = useState("");
@@ -38,6 +38,7 @@ const Parity = () => {
   const [selectedNum2, setSelectedNum2] = useState(null);
   const [result, setResult] = useState([]);
   const [currentDayHistory, setCurrentDayHistory] = useState([]);
+  const [time, setTime] = useState(null)
 
   const location = useLocation();
 
@@ -62,6 +63,7 @@ const Parity = () => {
           const { time, period } = data[key];
           setPeroid(period);
           setTimer(secondsToTime(time));
+          setTime(time)
         }
       });
     } catch (error) {
@@ -69,10 +71,17 @@ const Parity = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (time == 0) {
+      getResultHistory();
+      getCurrentDayHistory();
+      getWallet();
+    }
+  }, [timer]);
+
   const getWallet = async () => {
     try {
       const { data } = await dbObject("/dus-ka-dum/fetch-wallet.php");
-      console.log(data);
 
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
@@ -94,8 +103,6 @@ const Parity = () => {
   const getResultHistory = async () => {
     try {
       const { data } = await dbObject.get("/dus-ka-dum/result-history.php");
-      console.log(data);
-
       if (!data.error) {
         const sortedData = data.response.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
@@ -112,7 +119,6 @@ const Parity = () => {
       const { data } = await dbObject.get(
         "/dus-ka-dum/my-current-day-orders.php"
       );
-      console.log(data);
 
       if (!data.error) {
         setCurrentDayHistory(data.response);
@@ -130,32 +136,36 @@ const Parity = () => {
 
   const placeBit = async () => {
     try {
-      const values = {
-        ...nums,
-        period,
-      };
-      const formData = new FormData();
-      for (const key in values) {
-        formData.append(key, values[key]);
-      }
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
+      if (time >= '32') {
+        const values = {
+          ...nums,
+          period,
+        };
+        const formData = new FormData();
+        for (const key in values) {
+          formData.append(key, values[key]);
+        }
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
 
-      console.log(values);
-      const { data } = await dbObject.post(
-        "/dus-ka-dum/place-bid.php",
-        formData,
-        config
-      );
+        const { data } = await dbObject.post(
+          "/dus-ka-dum/place-bid.php",
+          formData,
+          config
+        );
 
-      if (!data.error) {
-        toast.success(data.message, toastOptions);
-        getCurrentDayHistory()
+        if (!data.error) {
+          toast.success(data.message, toastOptions);
+          getWallet();
+          getCurrentDayHistory();
+        } else {
+          toast.error(data.message, toastOptions);
+        }
       } else {
-        toast.error(data.message, toastOptions);
+        toast.warning("We are not accepting any more bids");
       }
 
       setNums({
@@ -177,13 +187,19 @@ const Parity = () => {
     }
   };
 
+  const formatPeriodFunc = (period) => {
+    let periodArr = period.split("-");
+
+    const formatedPeriod = `${periodArr[2]}/${periodArr[1]}/${periodArr[0]} ${periodArr[3]}:${periodArr[4]} ${periodArr[5]}`;
+    return formatedPeriod;
+  };
+
   return (
     <IsAuthenticate path="/dus-ka-dum">
       <Toaster />
       <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
         <div className="container dus-ka-dum">
           <Header backgroundColor={"#fff"} title={"10 Ka Dum"} />
-
 
           {showModal && (
             <div className="start-box">
@@ -332,7 +348,7 @@ const Parity = () => {
                     5 Minute
                   </p>
                   <p className="mb-0" style={{ fontSize: 14 }}>
-                    {period}
+                    {formatPeriodFunc(period)}
                   </p>
                 </div>
                 <p
@@ -446,24 +462,31 @@ const Parity = () => {
               {currentDayHistory?.map((item, i) => (
                 <React.Fragment key={i}>
                   <div className="value  p-2">
-                    <p
-                      className="mb-0"
-                     
-                    >
+                    <p className="mb-0">
                       {i + 1}{" "}
                       {showMyBidId === item.id ? (
-                        <i  onClick={() => {
-                          setShowMyBidId('');
-                        }} className="bi bi-arrow-down-circle"></i>
+                        <i
+                          onClick={() => {
+                            setShowMyBidId("");
+                          }}
+                          className="bi bi-arrow-down-circle"
+                        ></i>
                       ) : (
-                        <i  onClick={() => {
-                          setShowMyBidId(item.id);
-                        }} className="bi bi-arrow-up-circle"></i>
+                        <i
+                          onClick={() => {
+                            setShowMyBidId(item.id);
+                          }}
+                          className="bi bi-arrow-up-circle"
+                        ></i>
                       )}
                     </p>
-                    <p className="text-center mb-0" style={{fontSize: 11}}>{item.date}</p>
+                    <p className="text-center mb-0" style={{ fontSize: 11 }}>
+                      {formatPeriodFunc(item.period)}
+                    </p>
                     <div className="text-center mb-0">₹{item.totalPoints}</div>
-                    <div className="text-center mb-0">{item.numberResult || '?'}</div>
+                    <div className="text-center mb-0">
+                      {item.numberResult || "?"}
+                    </div>
                     <p
                       className={`text-end mb-0`}
                       style={{ fontSize: "18px", fontWeight: "500" }}
@@ -475,7 +498,7 @@ const Parity = () => {
                   {showMyBidId === item.id ? (
                     <div className="my-bit mt-2">
                       <div className="d-flex justify-content-between">
-                        <ResultCircle numResult={item.num1}  num="1" />
+                        <ResultCircle numResult={item.num1} num="1" />
                         <ResultCircle numResult={item.num2} num="2" />
                         <ResultCircle numResult={item.num3} num="3" />
                         <ResultCircle numResult={item.num4} num="4" />
@@ -484,7 +507,7 @@ const Parity = () => {
                       </div>
 
                       <div className="d-flex justify-content-between mt-2">
-                        <ResultCircle numResult={item.num7}  num="7" />
+                        <ResultCircle numResult={item.num7} num="7" />
                         <ResultCircle numResult={item.num8} num="8" />
                         <ResultCircle numResult={item.num9} num="9" />
                         <ResultCircle numResult={item.num10} num="10" />

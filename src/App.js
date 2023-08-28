@@ -64,7 +64,7 @@ function App() {
           <Route path="/power-x/forward" element={<ForwardPX />} />
           <Route path="/dus-ka-dum/forward" element={<ForwardDKD />} />
           <Route path="/follow-us" element={<FollowUs />} />
-          <Route path="/transaction" element={<Transaction />} />
+          {/* <Route path="/transaction" element={<Transaction />} /> */}
          
           <Route path="/power-x/recharge" element={<Recharge />} />
           <Route path="/dus-ka-dum/recharge" element={<DKDRecharge />} />

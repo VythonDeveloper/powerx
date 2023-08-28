@@ -75,7 +75,7 @@ const Profile = () => {
   ]
 
   return (
-    <IsAuthenticate>
+    <IsAuthenticate path={'/profile'}>
       {showModal && (
         <ConfirmModal
           confirmFunc={logout}

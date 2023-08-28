@@ -22,7 +22,6 @@ const Signin = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("Google login successful:", user);
 
       const body = {
         email: result?.user?.email,
@@ -44,8 +43,6 @@ const Signin = () => {
         formData,
         config
       );
-
-      console.log(data);
 
       if (!data.error) {
         toast.success(data.message, toastOptions);
@@ -102,7 +99,7 @@ const Signin = () => {
           <h2 className="sr-only text-center">Sign In</h2>
 
           <div onClick={handleGoogleLogin} className="google-auth">
-            <i class="bi bi-google"></i>
+            <i className="bi bi-google"></i>
 
             <span>Sign in with Google</span>
           </div>

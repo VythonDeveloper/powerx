@@ -3,6 +3,7 @@ import { Header } from "../../components";
 import { useLocation } from "react-router-dom";
 import { dbObject } from "../../helper/constant";
 import "./withdraw-history.css";
+import IsAuthenticate from "../../redirect/IsAuthenticate";
 
 const WIthdrawHistory = () => {
   const location = useLocation();
@@ -11,8 +12,6 @@ const WIthdrawHistory = () => {
   const getWithdrawHitory = async () => {
     try {
       const { data } = await dbObject.get("/dus-ka-dum/withdraw-history.php");
-      console.log(data);
-
       if (!data.error) {
         setWithdrawHistory(data?.response);
       }
@@ -25,6 +24,7 @@ const WIthdrawHistory = () => {
     getWithdrawHitory();
   });
   return (
+    <IsAuthenticate path={'/dus-ka-dum/withdraw-history'}>
     <div
       className="container"
       style={{ minHeight: "100vh", backgroundColor: "#fff" }}
@@ -118,6 +118,7 @@ const WIthdrawHistory = () => {
         </div>
       ))}
     </div>
+    </IsAuthenticate>
   );
 };
 

@@ -12,8 +12,6 @@ const IsNotAuthenticate = ({ children }) => {
         if (user) {
             return navigate(location?.state?.path || '/home')
         }
-
-        console.log(loading)
     }, [user, location?.state?.path, loading, navigate])
 
     if (loading) {

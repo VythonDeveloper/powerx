@@ -35,14 +35,12 @@ const ForgotPass = () => {
             },
           };
 
-          console.log(formData);
 
           const { data } = await dbObject.post(
             "/users/forgot-password.php",
             formData,
             config
           );
-          console.log(data);
           if (!data.error) {
             toast.success(data.message, toastOptions);
 

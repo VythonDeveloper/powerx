@@ -61,11 +61,16 @@ const FastParity = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if(timer === 0) {
+      getWallet()
+      getResultHistory()
+    }
+  }, [timer])
+
   const getWallet = async () => {
     try {
       const { data } = await dbObject("/power-x/fetch-wallet.php");
-      console.log(data);
-
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
         setPlayWallet(data?.response.playWallet);
@@ -78,7 +83,6 @@ const FastParity = () => {
   const getControlFields = async () => {
     try {
         const {data} = await dbObject.get('/power-x/control-fields.php')
-        console.log(data)
 
         if(!data.error) {
           setmaxCoinBid(data.response.maxCoinBid)
@@ -96,7 +100,7 @@ const FastParity = () => {
   }, []);
 
   const placeBit = async () => {
-    if (timeinSec > 10) {
+    if (timeinSec >= 32) {
       try {
         const values = {
           period,
@@ -124,7 +128,6 @@ const FastParity = () => {
           formData,
           config
         );
-        console.log(data);
         if (!data.error) {
           toast.success(data.message, toastOptions);
           setAmount("");
@@ -146,8 +149,6 @@ const FastParity = () => {
   const getMyOrder = async () => {
     try {
       const { data } = await dbObject.get("/power-x/my-orders.php");
-      console.log(data);
-
       if (!data.error) {
         setMyOrder(data.response.reverse());
       }
@@ -159,7 +160,6 @@ const FastParity = () => {
   const getResultHistory = async () => {
     try {
       const { data } = await dbObject.get("/power-x/result-history.php");
-      console.log(data);
 
       if (!data.error) {
         setResultHistory(data.response.reverse());

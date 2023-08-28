@@ -7,6 +7,7 @@ import Keyboard from "../../../components/keyboard/Keyboard";
 import { dbObject } from "../../../helper/constant";
 import Toaster, { toastOptions } from "../../../components/toaster/Toaster";
 import { toast } from "react-toastify";
+import IsAuthenticate from "../../../redirect/IsAuthenticate";
 
 const DKDWithdraw = () => {
   const location = useLocation();
@@ -21,8 +22,6 @@ const DKDWithdraw = () => {
   const getWallet = async () => {
     try {
       const { data } = await dbObject("/dus-ka-dum/fetch-wallet.php");
-      console.log(data);
-
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
       }
@@ -35,8 +34,6 @@ const DKDWithdraw = () => {
     try {
       const { data } = await dbObject.get("/bank-account/fetch.php");
 
-      console.log(data);
-
       if (data?.response) {
         setBank(data.response);
       }
@@ -48,7 +45,6 @@ const DKDWithdraw = () => {
   const getControlFields = async () => {
     try {
       const { data } = await dbObject.get("/dus-ka-dum/control-fields.php");
-      console.log(data);
 
       if (!data.error) {
         setminWithdraw(data.response.minWithdraw);
@@ -62,7 +58,6 @@ const DKDWithdraw = () => {
   const getWithdrawHitory = async () => {
     try {
       const { data } = await dbObject.get("/dus-ka-dum/withdraw-history.php");
-      console.log(data);
 
       if (!data.error) {
         setWithdrawHistory(data?.response?.slice(0, 1));
@@ -109,7 +104,6 @@ const DKDWithdraw = () => {
       } else {
         toast.warning(data.message, toastOptions);
       }
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -117,6 +111,7 @@ const DKDWithdraw = () => {
 
 
   return (
+    <IsAuthenticate path={'/dus-ka-dum/withdraw'}>
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <div className="container dus-ka-dum">
         <Toaster />
@@ -276,7 +271,7 @@ const DKDWithdraw = () => {
               </div>
 
               {withdrawHistory.map((item, i) => (
-                <div className="withdrawalRecords__container">
+                <div key={i} className="withdrawalRecords__container">
                   <div className="withdrawalRecords__container__box">
                     <div className="withdrawalRecords__container__box__top">
                       <div
@@ -358,6 +353,7 @@ const DKDWithdraw = () => {
         ) : null}
       </div>
     </div>
+    </IsAuthenticate>
   );
 };
 

@@ -26,7 +26,7 @@ const Refer = () => {
     }
   };
   return (
-    <IsAuthenticate>
+    <IsAuthenticate path={'/refer'}>
       <div className="container">
         <BottomNav />
         <Header title={"Refer"} path={"/"} />
@@ -39,9 +39,11 @@ const Refer = () => {
           <h1 className="text-center mt-4 refer-heading">
             Refer and Earn ₹500
           </h1>
+          <div className="refer-code">{user.referCode}</div>
           <p className="refer-desc text-center">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit esse
-            saepe, quaerat perspiciatis aliquam earum!
+            Ready to earn big while playing games? Join now with my referral
+            code {user.referCode} and join the ranks of 1000+ players who are making over
+            500 Rs daily! Let's win together!
           </p>
         </div>
 

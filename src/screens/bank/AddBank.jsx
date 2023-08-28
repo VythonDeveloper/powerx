@@ -7,6 +7,7 @@ import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 import { useLocation, useNavigate } from "react-router-dom";
+import IsAuthenticate from "../../redirect/IsAuthenticate";
 
 const AddBank = () => {
   const location = useLocation();
@@ -39,7 +40,6 @@ const AddBank = () => {
         config
       );
 
-      console.log(data);
       if (!data.error) {
         toast.success(data.message, toastOptions);
 
@@ -55,8 +55,6 @@ const AddBank = () => {
   const getBank = async () => {
     try {
       const { data } = await dbObject.get("/bank-account/fetch.php");
-
-      console.log(data);
 
       if (!data.error && data?.response) {
         setValues(data.response);
@@ -77,6 +75,7 @@ const AddBank = () => {
   }, []);
 
   return (
+  <IsAuthenticate path="/bank">
     <div className="container">
       {/* Top Navbar */}
       <Header title={"Add Bank"} path={location?.state?.from || "/"} />
@@ -157,6 +156,7 @@ const AddBank = () => {
         </div>
       </form>
     </div>
+    </IsAuthenticate>
   );
 };
 

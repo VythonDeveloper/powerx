@@ -8,8 +8,6 @@ const About = () => {
     const fetchData = async () => {
         try {
             const { data } = await dbObject.get('/documents/about-us.php')
-            console.log(data)
-
             if (!data.error) {
                 setAbout(data.response.content)
             }

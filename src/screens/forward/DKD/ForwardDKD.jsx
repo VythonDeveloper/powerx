@@ -5,6 +5,7 @@ import Header from "../../../components/header/Header";
 import { dbObject } from "../../../helper/constant";
 import Toaster, { toastOptions } from "../../../components/toaster/Toaster";
 import { toast } from "react-toastify";
+import IsAuthenticate from "../../../redirect/IsAuthenticate";
 
 const Forward = () => {
   const location = useLocation();
@@ -21,7 +22,6 @@ const Forward = () => {
   const getContactList = async () => {
     try {
       const { data } = await dbObject("/contact-master/fetch.php");
-      console.log(data);
 
       if (!data.error) {
         setContactList(data?.response);
@@ -34,8 +34,6 @@ const Forward = () => {
   const getControlFields = async () => {
     try {
       const { data } = await dbObject.get("/dus-ka-dum/control-fields.php");
-      console.log(data);
-
       if (!data.error) {
         setforwardFees(data.response.forwardFees);
         setminForward(data?.response.minForward);
@@ -80,7 +78,6 @@ const Forward = () => {
       } else {
         toast.error(data.message, toastOptions);
       }
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -115,13 +112,13 @@ const Forward = () => {
       } else {
         toast.warning(data.message, toastOptions);
       }
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
+    <IsAuthenticate path='/dus-ka-dum/forward'>
     <div style={{ backgroundColor: "#fff", minHeight: '100vh' }}>
       <div className="container dkd-container">
         {/* Top Navbar */}
@@ -324,6 +321,7 @@ const Forward = () => {
         </div>
       </div>
     </div>
+    </IsAuthenticate>
   );
 };
 

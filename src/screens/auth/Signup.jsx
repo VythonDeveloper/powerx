@@ -28,8 +28,6 @@ const Signup = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("Google login successful:", user);
-
       const body = {
         email: result?.user?.email,
         uid: result?.user?.uid,
@@ -78,7 +76,6 @@ const Signup = () => {
       initialValues: initialValues,
       validationSchema: signupSchema,
       onSubmit: async () => {
-        // return console.log(values)
         try {
           const formData = new FormData();
 
@@ -91,14 +88,11 @@ const Signup = () => {
             },
           };
 
-          console.log(formData);
-
           const { data } = await dbObject.post(
             "/users/register-with-email.php",
             formData,
             config
           );
-          console.log(data);
           if (!data.error) {
             toast.success(data.message, toastOptions);
 

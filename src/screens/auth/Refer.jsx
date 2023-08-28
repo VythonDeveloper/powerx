@@ -17,7 +17,7 @@ const Refer = () => {
   const referCode = queryParams.get("refercode");
 
   const initialValues = {
-    referrerCode: referCode || "", // Set to referCode if available, otherwise empty string
+    referrerCode: referCode || "",
   };
 
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
@@ -25,7 +25,6 @@ const Refer = () => {
       initialValues: initialValues,
       validationSchema: referSchema,
       onSubmit: async () => {
-        // return console.log(values);
         try {
           const formData = new FormData();
           for (const key in values) {
@@ -52,7 +51,6 @@ const Refer = () => {
             toast.error(data.message, toastOptions);
           }
 
-          console.log(data);
         } catch (error) {
           console.log(error);
         }

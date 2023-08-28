@@ -9,7 +9,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <IsAuthenticate>
+    <IsAuthenticate path={'/home'}>
       <BottomNav />
       <div className="container">
         <div className="background-custom"></div>

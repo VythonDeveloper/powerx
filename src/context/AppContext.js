@@ -16,21 +16,15 @@ const AppProvider = ({ children }) => {
       }
 
       setLoading(false);
-
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const getUser = async () => {
-  //   const user = auth.currentUser;
-  //   console.log("current user", user);
-  // };
+
 
   useEffect(() => {
     getData();
-    // getUser();
   }, []);
   return (
     <AppContext.Provider value={{ user, setUser, loading }}>

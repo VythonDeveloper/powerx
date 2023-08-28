@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./duskadum-result.css";
 import { Header } from "../../components";
 import { dbObject } from "../../helper/constant";
+import IsAuthenticate from "../../redirect/IsAuthenticate";
 
 const DKDResult = () => {
   const [result, setResult] = useState([]);
@@ -15,15 +16,12 @@ const DKDResult = () => {
   const getResultHistory = async () => {
     try {
       const { data } = await dbObject.get("/dus-ka-dum/result-history.php");
-      console.log(data);
-
+ 
       if (!data.error) {
         const sortedData = data.response.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
         setResult(sortedData.slice(0, 5));
-
-        console.log(sortedData.slice(0, 5));
       }
     } catch (error) {
       console.log(error);
@@ -31,6 +29,7 @@ const DKDResult = () => {
   };
 
   return (
+    <IsAuthenticate path="/dus-ka-dum/result">
     <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
       <div className="container dus-ka-dum">
         <Header
@@ -48,12 +47,13 @@ const DKDResult = () => {
           </div>
 
           {result?.map((item, i) => {
-            const regex = /(\d{4}-\d{2}-\d{2})-(\d{2}-\d{2}-\w{2})/;
-            const formattedDate = item.period.replace(regex, "$1 $2");
+            let periodArr = item.period.split('-')
+
+            let formatedPeriod = `${periodArr[2]}/${periodArr[1]}/${periodArr[0]} ${periodArr[3]}:${periodArr[4]} ${periodArr[5]}`
 
             return (
-              <div className="value  p-2">
-                <p className="mb-0">{formattedDate}</p>
+              <div key={i} className="value  p-2">
+                <p className="mb-0">{formatedPeriod}</p>
 
                 <div>
                   <button className="text-center mb-0">
@@ -75,6 +75,7 @@ const DKDResult = () => {
         </div>
       </div>
     </div>
+    </IsAuthenticate>
   );
 };
 

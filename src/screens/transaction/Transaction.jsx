@@ -2,9 +2,11 @@ import React from "react";
 import { Header } from "../../components";
 import "./transaction.css";
 import { rocket } from "../../assets";
+import IsAuthenticate from "../../redirect/IsAuthenticate";
 
 const Transaction = () => {
   return (
+    <IsAuthenticate path={'/transaction'}>
     <div className="container">
       <Header title={"Transactions"} path="/profile" />
       <div className="mt-3">
@@ -13,6 +15,7 @@ const Transaction = () => {
         <Card />
       </div>
     </div>
+    </IsAuthenticate>
   );
 };
 

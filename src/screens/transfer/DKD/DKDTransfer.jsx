@@ -7,6 +7,7 @@ import Keyboard from "../../../components/keyboard/Keyboard";
 import { dbObject } from "../../../helper/constant";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../../components/toaster/Toaster";
+import IsAuthenticate from "../../../redirect/IsAuthenticate";
 
 const Transfer = () => {
   const location = useLocation();
@@ -22,11 +23,9 @@ const Transfer = () => {
   const getWallet = async () => {
     try {
       const { data } = await dbObject("/dus-ka-dum/fetch-wallet.php");
-      console.log(data);
 
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
-        
       }
     } catch (error) {
       console.log(error);
@@ -36,7 +35,6 @@ const Transfer = () => {
   const getControlFields = async () => {
     try {
         const {data} = await dbObject.get('/dus-ka-dum/control-fields.php')
-        console.log(data)
 
         if(!data.error) {
             setBonus(data.response.transferBonus)
@@ -76,8 +74,6 @@ const Transfer = () => {
         config
       );
 
-      console.log(data);
-
       if (!data.error) {
         toast.success(data.message, toastOptions)
         getWallet();
@@ -91,6 +87,7 @@ const Transfer = () => {
   };
 
   return (
+    <IsAuthenticate path={'/dus-ka-dum/transfer'}>
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <Toaster />
       <div className="container dkd-container">
@@ -148,72 +145,10 @@ const Transfer = () => {
 
         <Keyboard color={"#c1bebe27"} setAmount={setAmount} amount={amount} />
 
-        {/* <div className="withdrawal__records__section">
-          <div className="withdrawal__records__section__record__top"></div>
-          <div className="withdrawal__records__section__bottom">
-            <div className="withdrawal__records__section__bottom__header">
-              Transfer Records
-            </div>
-            <div className="withdrawalRecords__container">
-              <div className="withdrawalRecords__container__box">
-                <div className="withdrawalRecords__container__box__top">
-                  <div
-                    className="withdrawalRecords__container__box__top__col"
-                    style={{ flexBasis: "32%", width: "100%" }}
-                  >
-                    <div className="withdrawalRecords__container__box__top__top">
-                      Amount
-                    </div>
-                    <div
-                      className="withdrawalRecords__container__box__top__bottom"
-                      style={{ fontFamily: "sans-serif" }}
-                    >
-                      ₹158
-                    </div>
-                  </div>
-                  <div
-                    className="withdrawalRecords__container__box__top__col"
-                    style={{ flexBasis: "34%", width: "100%" }}
-                  >
-                    <div className="withdrawalRecords__container__box__top__top">
-                      Time
-                    </div>
-                    <div className="withdrawalRecords__container__box__top__bottom">
-                      01/25 16:24
-                    </div>
-                  </div>
-                  <div
-                    className="withdrawalRecords__container__box__top__col"
-                    style={{
-                      flexBasis: "34%",
-                      width: "100%",
-                      textAlign: "right",
-                    }}
-                  >
-                    <div className="withdrawalRecords__container__box__top__top">
-                      Status
-                    </div>
-                    <div className="withdrawalRecords__container__box__top__bottom">
-                      Pending
-                    </div>
-                  </div>
-                </div>
-                <div className="withdrawalRecords__container__box__bottom">
-                  <div className="withdrawalRecords__container__box__bottom__top">
-                    <div className="withdrawalRecords__container__box__bottom__top__col">
-                      Actually Arrived: 128
-                    </div>
-                    <div className="withdrawalRecords__container__box__bottom__top__col">
-                      Bonus: 30
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> */}
+        
       </div>
     </div>
+    </IsAuthenticate>
   );
 };
 
