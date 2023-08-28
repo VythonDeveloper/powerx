@@ -10,6 +10,7 @@ import { toastOptions } from '../../components/toaster/Toaster'
 import IsAuthenticate from "../../redirect/IsAuthenticate";
 import { profile } from "../../assets";
 import { FollowUS, HistorySvg, RightArrow, Signout, Transaction } from "../../assets/svg/CustomSVG";
+import {auth} from '../../firebase.config'
 
 const Profile = () => {
   const [showModal, setShowModal] = useState(false);
@@ -22,6 +23,7 @@ const Profile = () => {
       formData.append('userId', user?.id);
 
       const { data } = await dbObject.post('/users/logout.php', formData)
+      await auth.signOut()
       if (!data.error) {
         toast.success(data?.message, toastOptions)
 
@@ -103,7 +105,7 @@ const Profile = () => {
               <b>ID: {user?.referCode}</b>
             </div>
             <div className="user__details__section__right__col">
-              Phone: {user?.phone}
+              {user?.email}
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { dbObject } from "../helper/constant";
+import { auth } from "../firebase.config";
 
 export const AppContext = createContext();
 
@@ -16,15 +17,20 @@ const AppProvider = ({ children }) => {
 
       setLoading(false);
 
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
-  
+
+  // const getUser = async () => {
+  //   const user = auth.currentUser;
+  //   console.log("current user", user);
+  // };
 
   useEffect(() => {
     getData();
+    // getUser();
   }, []);
   return (
     <AppContext.Provider value={{ user, setUser, loading }}>

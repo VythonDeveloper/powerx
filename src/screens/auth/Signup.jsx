@@ -7,28 +7,67 @@ import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 import "./auth.css";
+import { auth, provider } from "../../firebase.config";
+import { signInWithPopup } from "firebase/auth";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
-  const location = useLocation()
+  const location = useLocation();
 
   useEffect(() => {
-    if(!location?.state?.referrerCode) {
-      return navigate('/auth-refer')
+    if (!location?.state?.referrerCode) {
+      return navigate("/auth-refer");
     }
-  }, [location])
+  }, [location]);
 
-  
+  const handleGoogleSignup = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Google login successful:", user);
+
+      const body = {
+        email: result?.user?.email,
+        uid: result?.user?.uid,
+        referrerCode : location?.state?.referrerCode
+      };
+
+      const formData = new FormData();
+      for (const key in body) {
+        formData.append(key, body[key]);
+      }
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type to form data
+        },
+      };
+
+      const { data } = await dbObject.post(
+        "/users/register-with-google.php",
+        formData,
+        config
+      );
+
+      if(!data.error) {
+        toast.success(data.message, toastOptions)
+        navigate('/signin')
+      }else {
+        toast.error(data.message, toastOptions)
+      }
+      console.log(data)
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
+  };
 
   const initialValues = {
-    phone: "",
     newPassword: "",
     confirmPassword: "",
     otp: "",
     email: "",
-    referrerCode: location?.state?.referrerCode
+    referrerCode: location?.state?.referrerCode,
   };
 
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
@@ -39,7 +78,7 @@ const Signup = () => {
         // return console.log(values)
         try {
           const formData = new FormData();
-        
+
           for (const key in values) {
             formData.append(key, values[key]);
           }
@@ -52,7 +91,7 @@ const Signup = () => {
           console.log(formData);
 
           const { data } = await dbObject.post(
-            "/users/register.php",
+            "/users/register-with-email.php",
             formData,
             config
           );
@@ -73,19 +112,19 @@ const Signup = () => {
       },
     });
 
-    useEffect(() => {
-      if (seconds > 0 && otpSent) {
-        const interval = setInterval(() => {
-          setSeconds(seconds - 1);
-        }, 1000);
-  
-        return () => clearInterval(interval);
-      }
-  
-      if (seconds <= 0) {
-        setOtpSent(false);
-      }
-    }, [seconds, otpSent]);
+  useEffect(() => {
+    if (seconds > 0 && otpSent) {
+      const interval = setInterval(() => {
+        setSeconds(seconds - 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+
+    if (seconds <= 0) {
+      setOtpSent(false);
+    }
+  }, [seconds, otpSent]);
   const handleOTP = async () => {
     try {
       if (!values.email) return toast.error("Email is required", toastOptions);
@@ -113,7 +152,7 @@ const Signup = () => {
         <form onSubmit={handleSubmit} method="post" className="container">
           <h2 className="sr-only text-center">Sign Up</h2>
 
-          <div className="google-auth">
+          <div onClick={handleGoogleSignup} className="google-auth">
             <i className="bi bi-google"></i>
 
             <span>Sign up with Google</span>
@@ -139,23 +178,11 @@ const Signup = () => {
             ) : null}
           </div>
 
-          <div className="form-group mt-2">
-            <input
-              autoComplete="off"
-              className="form-control"
-              type="number"
-              name="phone"
-              placeholder="Phone"
-              value={values.phone}
-              onBlur={handleBlur}
-              onChange={handleChange}
-            />
-            {errors.phone && touched.phone ? (
-              <small style={{ color: "red" }}>{errors.phone}</small>
-            ) : null}
-          </div>
           {otpSent && seconds > 0 ? (
-            <div className="mt-2" style={{fontSize: 12, marginBottom:-12, paddingLeft: 13}}>
+            <div
+              className="mt-2"
+              style={{ fontSize: 12, marginBottom: -12, paddingLeft: 13 }}
+            >
               Resend otp in <span>{seconds}</span> s
             </div>
           ) : null}

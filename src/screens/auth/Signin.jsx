@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./auth.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -8,15 +8,59 @@ import { dbObject } from "../../helper/constant";
 import IsNotAuthenticate from "../../redirect/IsNotAuthenticate";
 import { toast } from "react-toastify";
 import { toastOptions } from "../../components/toaster/Toaster";
+import { auth, provider } from "../../firebase.config";
+import { signInWithPopup } from "firebase/auth";
 
 const initialValues = {
-  phone: "",
+  email: "",
   password: "",
 };
 const Signin = () => {
   const { setUser } = useContext(AppContext);
-  const navigate = useNavigate();
 
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Google login successful:", user);
+
+      const body = {
+        email: result?.user?.email,
+        uid: result?.user?.uid,
+      };
+
+      const formData = new FormData();
+      for (const key in body) {
+        formData.append(key, body[key]);
+      }
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type to form data
+        },
+      };
+
+      const { data } = await dbObject.post(
+        "/users/login-with-google.php",
+        formData,
+        config
+      );
+
+      console.log(data);
+
+      if (!data.error) {
+        toast.success(data.message, toastOptions);
+
+        setTimeout(() => {
+          setUser(data.response);
+          // navigate('/')
+        }, 1000);
+      } else {
+        toast.error(data.message, toastOptions);
+      }
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
+  };
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
@@ -29,46 +73,47 @@ const Signin = () => {
           }
           const config = {
             headers: {
-              'Content-Type': 'multipart/form-data', // Set the content type to form data
+              "Content-Type": "multipart/form-data", // Set the content type to form data
             },
           };
 
-          const { data } = await dbObject.post('/users/login.php', formData, config);
+          const { data } = await dbObject.post(
+            "/users/login-with-email.php",
+            formData,
+            config
+          );
           if (!data.error) {
-            toast.success(data.message, toastOptions)
+            toast.success(data.message, toastOptions);
 
             setTimeout(() => {
-              setUser(data.response)
+              setUser(data.response);
               // navigate('/')
-            }, 1000)
-          } else { 
-            toast.error(data.message, toastOptions) 
+            }, 1000);
+          } else {
+            toast.error(data.message, toastOptions);
           }
         } catch (error) {
-          console.log(error)
-          toast.error('Internal server error', toastOptions) 
+          console.log(error);
+          toast.error("Internal server error", toastOptions);
         }
-
-
       },
     });
 
   return (
     <IsNotAuthenticate>
-      
       <div className="login-dark">
         <form onSubmit={handleSubmit} method="post" className="container">
           <h2 className="sr-only text-center">Sign In</h2>
 
-          <div className="google-auth">
-          <i class="bi bi-google"></i>
+          <div onClick={handleGoogleLogin} className="google-auth">
+            <i class="bi bi-google"></i>
 
-          <span>Sign in with Google</span>
+            <span>Sign in with Google</span>
           </div>
 
-          <p className="mb-0 mt-4 text-center" style={{color: '#95999d'}}>Or</p>
-
-
+          <p className="mb-0 mt-4 text-center" style={{ color: "#95999d" }}>
+            Or
+          </p>
 
           <div className="form-group mt-2">
             <input
@@ -76,15 +121,15 @@ const Signin = () => {
               autoCorrect="off"
               spellCheck="false"
               className="form-control"
-              type="number"
-              name="phone"
-              placeholder="Phone"
-              value={values.phone}
+              type="text"
+              name="email"
+              placeholder="Email"
+              value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {errors.phone && touched.phone ? (
-              <small style={{ color: "red" }}>{errors.phone}</small>
+            {errors.email && touched.email ? (
+              <small style={{ color: "red" }}>{errors.email}</small>
             ) : null}
           </div>
 
