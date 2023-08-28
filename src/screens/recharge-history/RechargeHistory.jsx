@@ -4,6 +4,7 @@ import { Header } from "../../components";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { dbObject } from "../../helper/constant";
+import IsAuthenticate from "../../redirect/IsAuthenticate";
 
 const RechargeHistory = () => {
   const location = useLocation();
@@ -14,7 +15,6 @@ const RechargeHistory = () => {
   const getPowerx = async () => {
     try {
       const { data } = await dbObject("/power-x/recharge-history.php");
-      console.log(data);
       if (!data.error) {
         setPowerx(data.response);
       }
@@ -26,7 +26,6 @@ const RechargeHistory = () => {
   const getDusKadum = async () => {
     try {
       const { data } = await dbObject("/dus-ka-dum/recharge-history.php");
-      console.log(data);
       if (!data.error) {
         setDuskadum(data.response);
       }
@@ -41,6 +40,7 @@ const RechargeHistory = () => {
   }, []);
 
   return (
+    <IsAuthenticate path={'/recharge-history'}>
     <div className="container">
       <Header
         title={"Recharge History"}
@@ -253,6 +253,7 @@ const RechargeHistory = () => {
           </div>
         ))}
     </div>
+    </IsAuthenticate>
   );
 };
 
