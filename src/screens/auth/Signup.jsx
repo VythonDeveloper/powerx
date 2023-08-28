@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import IsNotAuthenticate from "../../redirect/IsNotAuthenticate";
 import { signupSchema } from "../../validation/auth";
@@ -9,12 +9,14 @@ import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 import "./auth.css";
 import { auth, provider } from "../../firebase.config";
 import { signInWithPopup } from "firebase/auth";
+import { AppContext } from "../../context/AppContext";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
   const location = useLocation();
+  const { setUser } = useContext(AppContext);
 
   useEffect(() => {
     if (!location?.state?.referrerCode) {
@@ -31,7 +33,7 @@ const Signup = () => {
       const body = {
         email: result?.user?.email,
         uid: result?.user?.uid,
-        referrerCode : location?.state?.referrerCode
+        referrerCode: location?.state?.referrerCode,
       };
 
       const formData = new FormData();
@@ -40,7 +42,7 @@ const Signup = () => {
       }
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data", // Set the content type to form data
+          "Content-Type": "multipart/form-data",
         },
       };
 
@@ -50,13 +52,14 @@ const Signup = () => {
         config
       );
 
-      if(!data.error) {
-        toast.success(data.message, toastOptions)
-        navigate('/signin')
-      }else {
-        toast.error(data.message, toastOptions)
+      if (!data.error) {
+        toast.success(data.message, toastOptions);
+        toast.success(data.message, toastOptions);
+        setUser(data.response);
+      } else {
+        toast.error(data.message, toastOptions);
       }
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }

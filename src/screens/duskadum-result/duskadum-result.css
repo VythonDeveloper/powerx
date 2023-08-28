@@ -1,16 +1,16 @@
 .result-history .header {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     background-color: #ffc565;
 }
 
 .result-history .value {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     align-items: center;
 }
 
-.result-history .value div {
+.result-history .value button {
     /* background-color: #ffc565; */
     width: 35px;
     aspect-ratio: 1/1;
@@ -24,4 +24,6 @@
     background-repeat: no-repeat;
     margin: auto;
     font-size: 14px;
+    background-color: transparent;
+    border: none;
 }

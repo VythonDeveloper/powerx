@@ -49,11 +49,7 @@ const Signin = () => {
 
       if (!data.error) {
         toast.success(data.message, toastOptions);
-
-        setTimeout(() => {
-          setUser(data.response);
-          // navigate('/')
-        }, 1000);
+        setUser(data.response);
       } else {
         toast.error(data.message, toastOptions);
       }

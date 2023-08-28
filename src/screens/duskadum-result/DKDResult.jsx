@@ -5,6 +5,9 @@ import { dbObject } from "../../helper/constant";
 
 const DKDResult = () => {
   const [result, setResult] = useState([]);
+  function formatDate(inputDate) {
+    return inputDate;
+  }
 
   useEffect(() => {
     getResultHistory();
@@ -39,31 +42,36 @@ const DKDResult = () => {
         <div className="result-history">
           <div className="header mt-4 p-2">
             <p className="mb-0">Period</p>
-            <p className="text-center mb-0"></p>
+            {/* <p className="text-center mb-0"></p> */}
             <p className="text-center mb-0">Number</p>
             <p className="text-end mb-0">Status</p>
           </div>
 
           {result?.map((item, i) => {
-            const dateObject = new Date(item.date);
-            const formattedTime = dateObject.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            });
+            const regex = /(\d{4}-\d{2}-\d{2})-(\d{2}-\d{2}-\w{2})/;
+            const formattedDate = item.period.replace(regex, "$1 $2");
+
             return (
-            <div className="value  p-2">
-              <p className="mb-0">{item.period}</p>
-              <p className="text-center mb-0"></p>
-              <div className="text-center mb-0" style={{marginRight: item.status === 'Running' ? '2.4rem' : '2rem'}}>{item.number || '?'}</div>
-              <p
-                className={`text-end mb-0 ${item.status === 'Running'? 'text-danger': 'text-success'}`}
-                style={{ fontSize: "18px", fontWeight: "500" }}
-              >
-                {item.status}
-              </p>
-            </div>
-          )})}
+              <div className="value  p-2">
+                <p className="mb-0">{formattedDate}</p>
+
+                <div>
+                  <button className="text-center mb-0">
+                    {item.number || "?"}
+                  </button>
+                </div>
+
+                <p
+                  className={`text-end mb-0 ${
+                    item.status === "Running" ? "text-danger" : "text-success"
+                  }`}
+                  style={{ fontSize: "18px", fontWeight: "500" }}
+                >
+                  {item.status}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

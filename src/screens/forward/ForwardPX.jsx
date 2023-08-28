@@ -10,11 +10,11 @@ const Forward = () => {
   const location = useLocation();
   const [contactList, setContactList] = useState([]);
   const [nickname, setnickname] = useState("");
-  const [phone, setphone] = useState("");
+  const [email, setemail] = useState("");
   const [showAddFriend, setShowAddFriend] = useState(false);
   const [showSendMoney, setShowSendMoney] = useState(false);
   const [points, setPoints] = useState("");
-  const [selectedPhone, setSelectedPhone] = useState("");
+  const [selectedEmail, setSelectedEmail] = useState("");
   const [forwardFees, setforwardFees] = useState('0')
   const [minForward, setminForward] = useState('0')
 
@@ -54,7 +54,7 @@ const Forward = () => {
     try {
       const values = {
         nickname,
-        phone,
+        email,
       };
 
       const formData = new FormData();
@@ -89,7 +89,7 @@ const Forward = () => {
   const handleSendMoney = async () => {
     try {
       const values = {
-        phone: selectedPhone,
+        email: selectedEmail,
         points,
       };
 
@@ -195,7 +195,7 @@ const Forward = () => {
               key={i}
               onClick={() => {
                 setShowSendMoney(true)
-                setSelectedPhone(item.phone);
+                setSelectedEmail(item.email);
               }}
               className="transaction-history-card py-0"
             >
@@ -206,7 +206,7 @@ const Forward = () => {
                 ></i>
                 <div>
                   <p className="m-0">{item.nickname}</p>
-                  <p className="m-0">{item.phone}</p>
+                  <p className="m-0">{item.email}</p>
                 </div>
               </div>
 
@@ -270,15 +270,15 @@ const Forward = () => {
                       htmlFor="exampleInputPassword1"
                       className="form-label"
                     >
-                      Phone
+                      Email
                     </label>
                     <input
-                      type="number"
-                      value={phone}
+                      type="email"
+                      value={email}
                       className="form-control text-light"
                       id="exampleInputPassword1"
                       style={{ background: "#d3d3d33b", border: "none" }}
-                      onChange={(e) => setphone(e.target.value)}
+                      onChange={(e) => setemail(e.target.value)}
                     />
                   </div>
                 </form>

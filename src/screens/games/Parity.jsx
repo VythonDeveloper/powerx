@@ -461,7 +461,7 @@ const Parity = () => {
                         }} className="bi bi-arrow-up-circle"></i>
                       )}
                     </p>
-                    <p className="text-center mb-0" style={{fontSize: 12}}>{item.date}</p>
+                    <p className="text-center mb-0" style={{fontSize: 11}}>{item.date}</p>
                     <div className="text-center mb-0">₹{item.totalPoints}</div>
                     <div className="text-center mb-0">{item.numberResult || '?'}</div>
                     <p
