@@ -90,7 +90,7 @@ const Transfer = () => {
     <IsAuthenticate path={'/dus-ka-dum/transfer'}>
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <Toaster />
-      <div className="container dkd-container">
+      <div className="container dkd-container" style={{paddingTop: 55}}>
         <Header
           backgroundColor={"#fff"}
           title={"Transfer"}

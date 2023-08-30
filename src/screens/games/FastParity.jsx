@@ -27,6 +27,7 @@ const FastParity = () => {
   const [timeinSec, setTimeinSec] = useState(0);
   const [myOrder, setMyOrder] = useState([]);
   const [resultHistory, setResultHistory] = useState([]);
+  const [platformFees, setplatformFees] = useState()
 
   const [maxCoinBid, setmaxCoinBid] = useState('1')
 
@@ -86,6 +87,7 @@ const FastParity = () => {
 
         if(!data.error) {
           setmaxCoinBid(data.response.maxCoinBid)
+          setplatformFees(data.response.platformFees)
         }
     } catch (error) {
         console.log(error)
@@ -171,7 +173,7 @@ const FastParity = () => {
 
   return (
     <IsAuthenticate path="/power-x">
-      <div className="container">
+      <div className="container" style={{paddingTop: 55}}>
         <Header title={"Power X"} />
         <Toaster />
 
@@ -179,6 +181,7 @@ const FastParity = () => {
 
         {showModal && (
           <div className="start-box">
+            <div className="start-box-content container">
             <div className="modal-header p-2 mb-3 border-bottom">
               <button
                 onClick={() => setShowModal(false)}
@@ -213,8 +216,8 @@ const FastParity = () => {
             </div>
 
             <div className="withdrawal__input__notes d-flex justify-content-between">
-              <p className="mb-0 mt-2">Service charge 10%</p>
-              <p className="mb-0 mt-2">Delivery 50.00</p>
+              <p className="mb-0 mt-2">Service charge {platformFees}%</p>
+              <p className="mb-0 mt-2">Delivery {(Number(amount) - (Number(platformFees) / 100 * Number(amount))).toFixed(2)}</p>
             </div>
 
             <Keyboard amount={amount} setAmount={setAmount} />
@@ -229,6 +232,7 @@ const FastParity = () => {
               >
                 Start
               </button>
+            </div>
             </div>
           </div>
         )}

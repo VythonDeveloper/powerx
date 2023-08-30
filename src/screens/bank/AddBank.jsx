@@ -76,7 +76,7 @@ const AddBank = () => {
 
   return (
   <IsAuthenticate path="/bank">
-    <div className="container">
+    <div className="container" style={{paddingTop: 55}}>
       {/* Top Navbar */}
       <Header title={"Add Bank"} path={location?.state?.from || "/"} />
       <Toaster />

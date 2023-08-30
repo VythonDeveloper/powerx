@@ -21,7 +21,7 @@ const About = () => {
     }, [])
 
     return (
-        <div className='container'>
+        <div className='container' style={{paddingTop: 55}}>
             <Header title={'About Us'} path={'/profile'} />
             <div className="content" dangerouslySetInnerHTML={{__html: about}}></div>
         </div>

@@ -27,7 +27,7 @@ const WIthdrawHistory = () => {
     <IsAuthenticate path={'/dus-ka-dum/withdraw-history'}>
     <div
       className="container"
-      style={{ minHeight: "100vh", backgroundColor: "#fff" }}
+      style={{ minHeight: "100vh", backgroundColor: "#fff", paddingTop: 55 }}
     >
       <Header
         backgroundColor={"#fff"}

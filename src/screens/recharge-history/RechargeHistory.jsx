@@ -41,7 +41,7 @@ const RechargeHistory = () => {
 
   return (
     <IsAuthenticate path={'/recharge-history'}>
-    <div className="container">
+    <div className="container" style={{paddingTop: 55}}>
       <Header
         title={"Recharge History"}
         path={location?.state?.from || "/profile"}

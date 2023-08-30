@@ -19,7 +19,7 @@ const Faq = () => {
     }, [])
 
     return (
-        <div className='container'>
+        <div className='container' style={{paddingTop: 55}}>
             <Header title={'Faq'} path={'/profile'} />
 
             <div>

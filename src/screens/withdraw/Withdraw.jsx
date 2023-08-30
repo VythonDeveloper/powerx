@@ -110,7 +110,7 @@ const Withdraw = () => {
 
   return (
     <IsAuthenticate path={"/withdraw"}>
-      <div className="container powerx-withdraw">
+      <div className="container powerx-withdraw" style={{paddingTop: 55}}>
         <Header title={"Withdraw"} path={location?.state?.from || "/"} />
         <Toaster />
 

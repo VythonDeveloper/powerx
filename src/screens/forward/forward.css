@@ -17,7 +17,6 @@
     transition: all 0.3s ease-in-out;
     position: fixed;
     bottom: 15%;
-    right: 2.5rem;
 }
 
 .floating-btn button {

@@ -85,7 +85,7 @@ const Transfer = () => {
 
   return (
     <IsAuthenticate path={'/transfer'}>
-      <div className="container px-transfer">
+      <div className="container px-transfer" style={{paddingTop: 55}}>
         <Header title={"Transfer"} path={location?.state?.from || "/"} />
         <Toaster />
 

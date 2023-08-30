@@ -31,7 +31,7 @@ const DKDResult = () => {
   return (
     <IsAuthenticate path="/dus-ka-dum/result">
     <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
-      <div className="container dus-ka-dum">
+      <div className="container dus-ka-dum" style={{paddingTop: 55}}>
         <Header
           backgroundColor={"#fff"}
           title={"Result"}

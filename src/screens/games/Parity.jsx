@@ -19,6 +19,7 @@ const Parity = () => {
   const [winWallet, setWinWallet] = useState("0.00");
   const [playWallet, setPlayWallet] = useState("0.00");
   const [amount, setAmount] = useState("");
+  const [platformFees, setplatformFees] = useState()
   const [nums, setNums] = useState({
     num1: "",
     num2: "",
@@ -92,10 +93,22 @@ const Parity = () => {
     }
   };
 
+  const getControlFields = async () => {
+    try {
+        const {data} = await dbObject.get('/power-x/control-fields.php')
+        if(!data.error) {
+          setplatformFees(data.response.platformFees)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
   useEffect(() => {
     getWallet();
     getResultHistory();
     getCurrentDayHistory();
+    getControlFields()
   }, []);
 
   const [showMyBidId, setShowMyBidId] = useState(false);
@@ -198,11 +211,12 @@ const Parity = () => {
     <IsAuthenticate path="/dus-ka-dum">
       <Toaster />
       <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
-        <div className="container dus-ka-dum">
+        <div className="container dus-ka-dum" style={{paddingTop: 55}}>
           <Header backgroundColor={"#fff"} title={"10 Ka Dum"} />
 
           {showModal && (
             <div className="start-box">
+               <div className="start-box-content container">
               <div className="modal-header p-2 mb-3 border-bottom">
                 <button
                   onClick={() => setShowModal(false)}
@@ -234,8 +248,8 @@ const Parity = () => {
               </div>
 
               <div className="withdrawal__input__notes d-flex justify-content-between">
-                <p className="mb-0 mt-2 text-light">Service charge 10%</p>
-                <p className="mb-0 mt-2 text-light">Delivery 50.00</p>
+                <p className="mb-0 mt-2 text-light">Service charge {platformFees}%</p>
+                <p className="mb-0 mt-2 text-light">Delivery {(Number(amount) - (Number(platformFees) / 100 * Number(amount))).toFixed(2)}</p>
               </div>
 
               <Keyboard amount={amount} setAmount={setAmount} />
@@ -250,6 +264,7 @@ const Parity = () => {
                 >
                   Continue
                 </button>
+              </div>
               </div>
             </div>
           )}
@@ -463,7 +478,7 @@ const Parity = () => {
                 <React.Fragment key={i}>
                   <div className="value  p-2">
                     <p className="mb-0">
-                      {i + 1}{" "}
+                      {currentDayHistory.length - i}{" "}
                       {showMyBidId === item.id ? (
                         <i
                           onClick={() => {

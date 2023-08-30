@@ -26,7 +26,7 @@ const WIthdrawHistory = () => {
   });
   return (
     <IsAuthenticate path={'/power-x/withdraw-history'}>
-    <div className="container powerx-withdraw">
+    <div className="container powerx-withdraw" style={{paddingTop: 55}}>
       <Header
         title={"Withdraw History"}
         path={location?.state?.from || "/home"}

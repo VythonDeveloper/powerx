@@ -113,7 +113,7 @@ const DKDWithdraw = () => {
   return (
     <IsAuthenticate path={'/dus-ka-dum/withdraw'}>
     <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-      <div className="container dus-ka-dum">
+      <div className="container dus-ka-dum" style={{paddingTop: 55}}>
         <Toaster />
         <Header
           backgroundColor={"#fff"}

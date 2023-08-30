@@ -13,7 +13,7 @@ const Home = () => {
       <BottomNav />
       <div className="container background-custom" style={{paddingTop: 55}}>
         {/* <div className="background-custom"></div> */}
-        <div className="position-relative">
+        <div style={{position: 'relative', zIndex: '999'}}>
           <h1 style={{ fontSize: "1.5rem" }}>All Games</h1>
 
           <div className="games">

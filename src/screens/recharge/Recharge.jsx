@@ -10,7 +10,7 @@ const Recharge = () => {
 
   return (
     <IsAuthenticate path={'/power-x/recharge'}>
-      <div className="container">
+      <div className="container" style={{paddingTop: 55}}>
         <Header title={"Recharge"} path={location?.state?.from || "/"} />
         <div className="d-flex flex-column align-items-center mt-2">
           <p className="mb-0">Recharge for</p>

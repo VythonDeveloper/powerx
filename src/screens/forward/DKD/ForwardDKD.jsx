@@ -120,15 +120,15 @@ const Forward = () => {
   return (
     <IsAuthenticate path='/dus-ka-dum/forward'>
     <div style={{ backgroundColor: "#fff", minHeight: '100vh' }}>
-      <div className="container dkd-container">
+      <div className="container dkd-container" style={{paddingTop: 55}}>
         {/* Top Navbar */}
         <Header backgroundColor={'#fff'} title={"Forward"} path={location?.state?.from || "/"} />
         <Toaster />
         {showSendMoney && (
           <div className="add-friend">
             <div
-              className="modal-dialog modal-dialog-centered"
-              style={{ width: "94%" }}
+              className="modal-dialog modal-dialog-centered container"
+              style={{ width: "94%", maxWidth: 400 }}
             >
               <div className="modal-content forward-modal p-3">
                 <div className="modal-header border-bottom mb-3 pb-1">
@@ -235,7 +235,7 @@ const Forward = () => {
           <div className="add-friend">
             <div
               className="modal-dialog modal-dialog-centered"
-              style={{ width: "94%" }}
+              style={{ width: "94%", maxWidth: 400 }}
             >
               <div className="modal-content forward-modal p-3">
                 <div className="modal-header border-bottom mb-3 pb-1">

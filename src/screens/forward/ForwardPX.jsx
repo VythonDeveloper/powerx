@@ -114,7 +114,7 @@ const Forward = () => {
 
   return (
     <IsAuthenticate path="/power-x/forward">
-    <div className="container">
+    <div className="container" style={{paddingTop: 55}}>
       {/* Top Navbar */}
       <Header title={"Forward"} path={location?.state?.from || "/"} />
       <Toaster />
@@ -122,7 +122,7 @@ const Forward = () => {
         <div className="add-friend">
           <div
             className="modal-dialog modal-dialog-centered"
-            style={{ width: "94%" }}
+            style={{ width: "94%", maxWidth: 400 }}
           >
             <div className="modal-content forward-modal p-3">
               <div className="modal-header border-bottom mb-3 pb-1">
@@ -206,12 +206,6 @@ const Forward = () => {
                 </div>
               </div>
 
-              {/* <div>
-              <i
-                className="bi bi-trash3-fill text-light"
-                style={{ fontSize: "1.2rem" }}
-              ></i>
-            </div> */}
             </div>
           ))}
         </div>
@@ -229,7 +223,7 @@ const Forward = () => {
         <div className="add-friend">
           <div
             className="modal-dialog modal-dialog-centered"
-            style={{ width: "94%" }}
+            style={{ width: "94%", maxWidth: 400 }}
           >
             <div className="modal-content forward-modal p-3">
               <div className="modal-header border-bottom mb-3 pb-1">

@@ -34,7 +34,7 @@ const FollowUs = () => {
     </div>
   } else {
     return (
-      <div className="container">
+      <div className="container" style={{paddingTop: 55}}>
         <Header title="Follow Us" path="/profile" />
 
         <div className="follow-cards">

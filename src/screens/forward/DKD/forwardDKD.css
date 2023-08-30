@@ -9,35 +9,7 @@
     border: none;
 }
 
-.floating-btn {
-    width: 55px;
-    aspect-ratio: 1/1;
-    background: #fec007;
-    box-shadow: 0 10px 20px -10px #fec007;
-    transition: all 0.3s ease-in-out;
-    position: fixed;
-    bottom: 15%;
-    right: 2.5rem;
-}
 
-.floating-btn button {
-    background: none;
-    border: none;
-}
-
-.floating-btn button:focus {
-    outline: none;
-}
-
-.floating-btn:active {
-    scale: 1.2;
-    outline: none !important;
-}
-
-.floating-btn button i {
-    font-size: 2.5rem;
-    color: #f5f5f5;
-}
 
 .transaction-history-card {
     background-color: #283546;
@@ -140,7 +112,6 @@
     transition: all 0.3s ease-in-out;
     position: fixed;
     bottom: 15%;
-    right: 2.5rem;
 }
 
 .dkd-container .floating-btn button {
