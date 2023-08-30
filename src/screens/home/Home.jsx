@@ -11,8 +11,8 @@ const Home = () => {
   return (
     <IsAuthenticate path={'/home'}>
       <BottomNav />
-      <div className="container">
-        <div className="background-custom"></div>
+      <div className="container background-custom" style={{paddingTop: 55}}>
+        {/* <div className="background-custom"></div> */}
         <div className="position-relative">
           <h1 style={{ fontSize: "1.5rem" }}>All Games</h1>
 

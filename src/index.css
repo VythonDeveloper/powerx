@@ -12,11 +12,12 @@ body {
 }
 
 .container {
-  max-width: 500px;
-  padding-bottom: 10px;
+  max-width: 400px;
+  /* padding-bottom: 10px; */
   position: relative;
-  padding-top: 55px;
+  /* padding-top: 55px; */
   transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
 

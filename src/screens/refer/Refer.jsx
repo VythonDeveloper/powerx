@@ -10,8 +10,8 @@ const Refer = () => {
 
   const shareLink = () => {
     // Replace this URL with the link you want to share
-    const linkToShare = `https://zingo.online/auth-refer?refercode=${user.referCode}`;
-    const message = `Ready to earn big while playing games? Join now with my referral code ${user.referCode} and join the ranks of 1000+ players who are making over 500 Rs daily! Let's win together!`;
+    const linkToShare = `https://zingo.online/auth-refer?refercode=${user?.referCode}`;
+    const message = `Ready to earn big while playing games? Join now with my referral code ${user?.referCode} and join the ranks of 1000+ players who are making over 500 Rs daily! Let's win together!`;
 
     // Use the Web Share API to share the link
     if (navigator.share) {
@@ -31,20 +31,17 @@ const Refer = () => {
         <BottomNav />
         <Header title={"Refer"} path={"/"} />
 
-        <div className="mt-3 d-flex justify-content-center">
-          <ReferBanner />
-        </div>
+       
 
-        <div>
+        <div style={{marginTop: '50%'}}>
           <h1 className="text-center mt-4 refer-heading">
-            Refer and Earn ₹500
+            Refer and Earn More
           </h1>
-          <div className="refer-code">{user.referCode}</div>
           <p className="refer-desc text-center">
-            Ready to earn big while playing games? Join now with my referral
-            code {user.referCode} and join the ranks of 1000+ players who are making over
-            500 Rs daily! Let's win together!
+           Refer code
           </p>
+          <div className="refer-code">{user?.referCode}</div>
+         
         </div>
 
         <div className="d-flex justify-content-center mt-5">

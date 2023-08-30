@@ -85,7 +85,7 @@ const Profile = () => {
         />
       )}
 
-      <div className="container">
+      <div className="container" style={{marginTop: 55}}>
         <BottomNav />
 
         <Header title={"Profile"} />
@@ -147,7 +147,7 @@ const Card = ({ item }) => {
         className="profile__records__section__col"
         onClick={() => navigate(item?.path)}
       >
-        <div className="profile__records__section__col__left">
+        <div className="profile__records__section__col__left user-select-none">
           <div className="profile__record__section__col__icon">
             {item?.icon}
           </div>

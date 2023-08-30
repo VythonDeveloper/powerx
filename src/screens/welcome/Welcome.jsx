@@ -6,7 +6,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Welcome = () => {
   return (
-    <div>
+    <div className='container'>
       <div className="welcome-custom" rel='preload'>
         {/* <img loading='lazy' src={welcomebg} alt="bg" /> */}
         <LazyLoadImage

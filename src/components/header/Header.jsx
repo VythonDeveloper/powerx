@@ -7,7 +7,7 @@ const Header = ({ title, path, backgroundColor }) => {
   return (
     <div >
       {/* Top Navbar */}
-      <div className={`app__top__nav ${backgroundColor && "border-bottom"}`} style={{ backgroundColor }}>
+      <div className={`app__top__nav container ${backgroundColor && "border-bottom"}`} style={{ backgroundColor }}>
         <div className="top__nav__cols">
           <div
             className="top__nav__back__btn"

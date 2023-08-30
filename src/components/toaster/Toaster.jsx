@@ -16,7 +16,7 @@ const Toaster = () => (
 )
 
 export const toastOptions = {
-    position: "top-left",
+    position: "top-center",
     autoClose: 1000,
     hideProgressBar: false,
     closeOnClick: true,

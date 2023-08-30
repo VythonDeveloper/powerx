@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IsNotAuthenticate from "../../redirect/IsNotAuthenticate";
 import { forgotPassSchema } from "../../validation/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
@@ -88,6 +88,10 @@ const ForgotPass = () => {
       }
     } catch (error) {
       console.log(error);
+
+      if(error?.response?.data) {
+        toast.error(error?.response?.data?.error)
+      }
     }
   };
 
@@ -167,7 +171,13 @@ const ForgotPass = () => {
               Update
             </button>
           </div>
+
+          <Link to={"/signin"} className="signIn_SignUp">
+            Remember password? <span>Sign In</span>
+          </Link>
         </form>
+
+        
       </div>
     </IsNotAuthenticate>
   );
