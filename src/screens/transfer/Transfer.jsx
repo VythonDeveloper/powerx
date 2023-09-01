@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../../components";
 import "./transfer.css";
 import { Rupee } from "../../assets/svg/CustomSVG";
@@ -44,6 +44,8 @@ const Transfer = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     getWallet();
     getControlFields();
@@ -84,8 +86,8 @@ const Transfer = () => {
   };
 
   return (
-    <IsAuthenticate path={'/transfer'}>
-      <div className="container px-transfer" style={{paddingTop: 55}}>
+    <IsAuthenticate path={"/transfer"}>
+      <div className="container px-transfer" style={{ paddingTop: 55 }}>
         <Header title={"Transfer"} path={location?.state?.from || "/"} />
         <Toaster />
 
@@ -139,6 +141,27 @@ const Transfer = () => {
 
         <Keyboard setAmount={setAmount} amount={amount} />
       </div>
+
+    <div className="d-flex justify-content-center mt-4 mb-4">
+    <button
+        onClick={() =>
+          navigate("/transfer-history?type=power-x", {
+            state: { from: location.pathname },
+          })
+        }
+        className="w-75"
+        style={{
+          height: 55,
+          borderColor: "rgb(252, 148, 13)",
+          borderRadius: 5,
+          backgroundColor: "transparent",
+          color: "rgb(252, 148, 13)",
+          fontWeight: "500",
+        }}
+      >
+        Recharge History
+      </button>
+    </div>
     </IsAuthenticate>
   );
 };

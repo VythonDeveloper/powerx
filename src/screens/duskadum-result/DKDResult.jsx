@@ -6,23 +6,21 @@ import IsAuthenticate from "../../redirect/IsAuthenticate";
 
 const DKDResult = () => {
   const [result, setResult] = useState([]);
-  function formatDate(inputDate) {
-    return inputDate;
-  }
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getResultHistory();
   }, []);
   const getResultHistory = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject.get("/dus-ka-dum/result-history.php");
- 
+
       if (!data.error) {
-        const sortedData = data.response.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-        setResult(sortedData.slice(0, 5));
+        setResult(data.response);
       }
+
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -30,51 +28,68 @@ const DKDResult = () => {
 
   return (
     <IsAuthenticate path="/dus-ka-dum/result">
-    <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
-      <div className="container dus-ka-dum" style={{paddingTop: 55}}>
-        <Header
-          backgroundColor={"#fff"}
-          title={"Result"}
-          path={"/dus-ka-dum"}
-        />
+      <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
+        <div className="container dus-ka-dum" style={{ paddingTop: 55 }}>
+          <Header
+            backgroundColor={"#fff"}
+            title={"Result"}
+            path={"/dus-ka-dum"}
+          />
 
-        <div className="result-history">
-          <div className="header mt-4 p-2">
-            <p className="mb-0">Period</p>
-            {/* <p className="text-center mb-0"></p> */}
-            <p className="text-center mb-0">Number</p>
-            <p className="text-end mb-0">Status</p>
-          </div>
+          <div className="result-history">
+            <div className="header mt-4 p-2">
+              <p className="mb-0">Period</p>
+              {/* <p className="text-center mb-0"></p> */}
+              <p className="text-center mb-0">Number</p>
+              <p className="text-end mb-0">Status</p>
+            </div>
 
-          {result?.map((item, i) => {
-            let periodArr = item.period.split('-')
+            {result.length ? (
+              result?.map((item, i) => {
+                let periodArr = item.period.split("-");
 
-            let formatedPeriod = `${periodArr[2]}/${periodArr[1]}/${periodArr[0]} ${periodArr[3]}:${periodArr[4]} ${periodArr[5]}`
+                let formatedPeriod = `${periodArr[2]}/${periodArr[1]}/${periodArr[0]} ${periodArr[3]}:${periodArr[4]} ${periodArr[5]}`;
 
-            return (
-              <div key={i} className="value  p-2">
-                <p className="mb-0">{formatedPeriod}</p>
+                return (
+                  <div key={i} className="value  p-2">
+                    <p className="mb-0">{formatedPeriod}</p>
 
-                <div>
-                  <button className="text-center mb-0">
-                    {item.number || "?"}
-                  </button>
-                </div>
+                    <div>
+                      <button className="text-center mb-0">
+                        {item.number || "?"}
+                      </button>
+                    </div>
 
-                <p
-                  className={`text-end mb-0 ${
-                    item.status === "Running" ? "text-danger" : "text-success"
-                  }`}
-                  style={{ fontSize: "18px", fontWeight: "500" }}
+                    <p
+                      className={`text-end mb-0 ${
+                        item.status === "Running"
+                          ? "text-danger"
+                          : "text-success"
+                      }`}
+                      style={{ fontSize: "18px", fontWeight: "500" }}
+                    >
+                      {item.status}
+                    </p>
+                  </div>
+                );
+              })
+            ) : (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ height: "90vh" }}
+              >
+                <div
+                  className="spinner-border text-warning"
+                  style={{ width: "3rem", height: "3rem" }}
+                  role="status"
                 >
-                  {item.status}
-                </p>
+                  <span className="sr-only"></span>
+                </div>
               </div>
-            );
-          })}
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </IsAuthenticate>
   );
 };

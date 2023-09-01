@@ -31,6 +31,9 @@ const Refer = lazy(() => import("./screens/refer/Refer"));
 const WithdrawHistory = lazy(() => import('./screens/withdraw-history/WIthdrawHistory'))
 const DKDWithdrawHistory = lazy(() => import('./screens/withdraw-history/DKDWithdrawHistory'))
 const ReferInput = lazy(() => import('./screens/auth/Refer'))
+const TransferHistory = lazy(() => import('./screens/transfer-historty/TransferHistory'))
+const ForwardHistory = lazy(() => import('./screens/forward-history/ForwardHistory'))
+const ResultHistoryPx = lazy(() => import('./screens/result-history-px/ResultHistoryPX'))
 
 function App() {
   return (
@@ -81,6 +84,10 @@ function App() {
           <Route path="/power-x/withdraw-history" element={<WithdrawHistory />} />
           <Route path="/dus-ka-dum/withdraw-history" element={<DKDWithdrawHistory />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/transfer-history" element={<TransferHistory />} />
+          <Route path="/forward-history" element={<ForwardHistory />} />
+          <Route path="/power-x/result-history" element={<ResultHistoryPx />} />
+
 
         </Routes>
       </Suspense>

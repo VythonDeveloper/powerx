@@ -42,11 +42,6 @@ const Profile = () => {
   };
 
   const data = [
-    {
-      title: 'Recharge History',
-      path: '/recharge-history',
-      icon: <HistorySvg />
-    },
 
     {
       title: 'Contact Us',

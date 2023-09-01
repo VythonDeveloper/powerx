@@ -117,6 +117,8 @@ const Forward = () => {
     }
   };
 
+  const navigate = useNavigate()
+
   return (
     <IsAuthenticate path='/dus-ka-dum/forward'>
     <div style={{ backgroundColor: "#fff", minHeight: '100vh' }}>
@@ -124,6 +126,15 @@ const Forward = () => {
         {/* Top Navbar */}
         <Header backgroundColor={'#fff'} title={"Forward"} path={location?.state?.from || "/"} />
         <Toaster />
+
+        <div className="d-flex justify-content-end mb-4">
+          <span className="text-dark mt-2" onClick={() =>
+          navigate("/forward-history?type=dus-ka-dum", {
+            state: { from: location.pathname },
+          })
+        }>History</span>
+        </div>
+
         {showSendMoney && (
           <div className="add-friend">
             <div

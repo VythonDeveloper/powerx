@@ -112,12 +112,24 @@ const Forward = () => {
     }
   };
 
+  const navigate = useNavigate()
+
   return (
     <IsAuthenticate path="/power-x/forward">
     <div className="container" style={{paddingTop: 55}}>
       {/* Top Navbar */}
       <Header title={"Forward"} path={location?.state?.from || "/"} />
       <Toaster />
+
+      
+      <div className="d-flex justify-content-end mb-4">
+          <span onClick={() =>
+          navigate("/forward-history?type=power-x", {
+            state: { from: location.pathname },
+          })
+        }>History</span>
+        </div>
+
       {showSendMoney && (
         <div className="add-friend">
           <div
@@ -305,6 +317,7 @@ const Forward = () => {
         </button>
       </div>
     </div>
+
     </IsAuthenticate>
   );
 };

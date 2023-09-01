@@ -42,7 +42,7 @@ const Recharge = () => {
           </button>
           <button
             onClick={() =>
-              navigate("/recharge-history", {
+              navigate("/recharge-history?type=power-x", {
                 state: { from: location.pathname },
               })
             }

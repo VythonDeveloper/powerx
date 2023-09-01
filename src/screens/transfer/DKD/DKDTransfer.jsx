@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../../../components";
 import "./DKDTransfer.css";
 import { Rupee } from "../../../assets/svg/CustomSVG";
@@ -18,6 +18,7 @@ const Transfer = () => {
   const [level1Bonus, setLevel1Bonus] = useState(0)
   const [level2Bonus, setLevel2Bonus] = useState(0)
 
+  const navigate = useNavigate()
 
 
   const getWallet = async () => {
@@ -147,7 +148,30 @@ const Transfer = () => {
 
         
       </div>
+
+      <div className="d-flex justify-content-center mt-4 mb-4">
+    <button
+        onClick={() =>
+          navigate("/transfer-history?type=dus-ka-dum", {
+            state: { from: location.pathname },
+          })
+        }
+        className="w-75"
+        style={{
+          height: 55,
+          borderColor: "rgb(252, 148, 13)",
+          borderRadius: 5,
+          backgroundColor: "transparent",
+          color: "rgb(252, 148, 13)",
+          fontWeight: "500",
+        }}
+      >
+        Recharge History
+      </button>
     </div>
+    </div>
+
+    
     </IsAuthenticate>
   );
 };

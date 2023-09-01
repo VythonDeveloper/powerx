@@ -32,6 +32,9 @@ const WIthdrawHistory = () => {
         path={location?.state?.from || "/home"}
       />
 
+<h3>Power X</h3>
+
+
       {withdrawHistory.map((item, i) => (
         <div key={i} className="withdrawalRecords__container">
           <div className="withdrawalRecords__container__box">

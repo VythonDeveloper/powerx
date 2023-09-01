@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./game.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../../components";
@@ -27,9 +27,9 @@ const FastParity = () => {
   const [timeinSec, setTimeinSec] = useState(0);
   const [myOrder, setMyOrder] = useState([]);
   const [resultHistory, setResultHistory] = useState([]);
-  const [platformFees, setplatformFees] = useState()
+  const [platformFees, setplatformFees] = useState();
 
-  const [maxCoinBid, setmaxCoinBid] = useState('1')
+  const [maxCoinBid, setmaxCoinBid] = useState("1");
 
   const location = useLocation();
 
@@ -63,11 +63,11 @@ const FastParity = () => {
   }, []);
 
   useEffect(() => {
-    if(timer === 0) {
-      getWallet()
-      getResultHistory()
+    if (timeinSec === 0) {
+      getWallet();
+      getResultHistory();
     }
-  }, [timer])
+  }, [timeinSec]);
 
   const getWallet = async () => {
     try {
@@ -83,26 +83,26 @@ const FastParity = () => {
 
   const getControlFields = async () => {
     try {
-        const {data} = await dbObject.get('/power-x/control-fields.php')
+      const { data } = await dbObject.get("/power-x/control-fields.php");
 
-        if(!data.error) {
-          setmaxCoinBid(data.response.maxCoinBid)
-          setplatformFees(data.response.platformFees)
-        }
+      if (!data.error) {
+        setmaxCoinBid(data.response.maxCoinBid);
+        setplatformFees(data.response.platformFees);
+      }
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getWallet();
     getMyOrder();
     getResultHistory();
-    getControlFields()
+    getControlFields();
   }, []);
 
   const placeBit = async () => {
-    if (timeinSec >= 32) {
+    if (timeinSec >= 11) {
       try {
         const values = {
           period,
@@ -161,7 +161,7 @@ const FastParity = () => {
 
   const getResultHistory = async () => {
     try {
-      const { data } = await dbObject.get("/power-x/result-history.php");
+      const { data } = await dbObject.get("/power-x/result-history.php?limit=10");
 
       if (!data.error) {
         setResultHistory(data.response.reverse());
@@ -173,66 +173,70 @@ const FastParity = () => {
 
   return (
     <IsAuthenticate path="/power-x">
-      <div className="container" style={{paddingTop: 55}}>
+      <div className="container" style={{ paddingTop: 55 }}>
         <Header title={"Power X"} />
         <Toaster />
-
-      
 
         {showModal && (
           <div className="start-box">
             <div className="start-box-content container">
-            <div className="modal-header p-2 mb-3 border-bottom">
-              <button
-                onClick={() => setShowModal(false)}
-                className="ms-auto close-btn"
-              >
-                <i className="bi bi-x-lg"></i>
-              </button>
-            </div>
-            <h2 className="game-name">
-              {coin ? "Coin - " : alphabet ? "Alphabet - " : "Color - "}{" "}
-              {coin || alphabet || color}
-            </h2>
+              <div className="modal-header p-2 mb-3 border-bottom">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="ms-auto close-btn"
+                >
+                  <i className="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <h2 className="game-name">
+                {coin ? "Coin - " : alphabet ? "Alphabet - " : "Color - "}{" "}
+                {coin || alphabet || color}
+              </h2>
 
-            <div className="contract-point">
-              <p>Contract Amount</p>
-
-              <div
-                className="withdrawal__input__field justify-content-start px-3"
-                style={{ backgroundColor: "#e5e5e5" }}
-              >
-                <div className="withdrawal__input__field__icon justify-content-start text-dark ">
-                  <Rupee />
-                </div>
+              <div className="contract-point">
+                <p>Contract Amount</p>
 
                 <div
-                  className="input pe-3"
-                  style={{ fontWeight: "700", fontSize: "1.5rem" }}
+                  className="withdrawal__input__field justify-content-start px-3"
+                  style={{ backgroundColor: "#e5e5e5" }}
                 >
-                  {amount}
+                  <div className="withdrawal__input__field__icon justify-content-start text-dark ">
+                    <Rupee />
+                  </div>
+
+                  <div
+                    className="input pe-3"
+                    style={{ fontWeight: "700", fontSize: "1.5rem" }}
+                  >
+                    {amount}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="withdrawal__input__notes d-flex justify-content-between">
-              <p className="mb-0 mt-2">Service charge {platformFees}%</p>
-              <p className="mb-0 mt-2">Delivery {(Number(amount) - (Number(platformFees) / 100 * Number(amount))).toFixed(2)}</p>
-            </div>
+              <div className="withdrawal__input__notes d-flex justify-content-between">
+                <p className="mb-0 mt-2">Service charge {platformFees}%</p>
+                <p className="mb-0 mt-2">
+                  Delivery{" "}
+                  {(
+                    Number(amount) -
+                    (Number(platformFees) / 100) * Number(amount)
+                  ).toFixed(2)}
+                </p>
+              </div>
 
-            <Keyboard amount={amount} setAmount={setAmount} />
+              <Keyboard amount={amount} setAmount={setAmount} />
 
-            <div className="mb-3 d-flex justify-content-center">
-              <button
-                style={{
-                  backgroundColor: "rgb(252, 148, 13)",
-                }}
-                onClick={placeBit}
-                className="btn text-light py-3 modal-btn w-25"
-              >
-                Start
-              </button>
-            </div>
+              <div className="mb-3 d-flex justify-content-center">
+                <button
+                  style={{
+                    backgroundColor: "rgb(252, 148, 13)",
+                  }}
+                  onClick={placeBit}
+                  className="btn text-light py-3 modal-btn w-25"
+                >
+                  Start
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -286,7 +290,9 @@ const FastParity = () => {
                   fontSize: 13,
                 }}
                 onClick={() =>
-                  navigate("/power-x/recharge", { state: { from: location.pathname } })
+                  navigate("/power-x/recharge", {
+                    state: { from: location.pathname },
+                  })
                 }
               >
                 Recharge
@@ -324,7 +330,33 @@ const FastParity = () => {
           </div>
 
           <div className="power-x p-2 mt-2 position-relative">
-            <p className="mb-1 w-50" style={{fontSize: 12}}>Maximum bid for Gold and Silver is ₹{maxCoinBid} </p>
+            {
+              timeinSec < 11 ? (
+                <div
+              className="countdown"
+              style={{
+                position: "absolute",
+                backgroundColor: "#040404b3",
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                zIndex: "90",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <section class="wrapper">
+                <div class="top">{timeinSec}</div>
+                <div class="wapper-bottom">{timeinSec}</div>
+              </section>
+            </div>
+              ): null
+            }
+            <p className="mb-1 w-50" style={{ fontSize: 12 }}>
+              Maximum bid for Gold and Silver is ₹{maxCoinBid}{" "}
+            </p>
             <div className="game-coins position-relative">
               <div
                 className="d-flex flex-column gold-coin"
@@ -476,6 +508,27 @@ const FastParity = () => {
                   ))}
                 </tbody>
               </table>
+
+              <div className="mb-4 d-flex justify-content-center mt-3">
+              <button
+            onClick={() =>
+              navigate("/power-x/result-history", {
+                state: { from: location.pathname },
+              })
+            }
+            className="w-50"
+            style={{
+              height: 55,
+              borderColor: "rgb(252, 148, 13)",
+              borderRadius: 5,
+              backgroundColor: "transparent",
+              color: "rgb(252, 148, 13)",
+              fontWeight: "500",
+            }}
+          >
+            See More
+          </button>
+              </div>
             </div>
           ) : (
             <div>

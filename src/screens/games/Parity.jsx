@@ -19,7 +19,7 @@ const Parity = () => {
   const [winWallet, setWinWallet] = useState("0.00");
   const [playWallet, setPlayWallet] = useState("0.00");
   const [amount, setAmount] = useState("");
-  const [platformFees, setplatformFees] = useState()
+  const [platformFees, setplatformFees] = useState();
   const [nums, setNums] = useState({
     num1: "",
     num2: "",
@@ -39,7 +39,7 @@ const Parity = () => {
   const [selectedNum2, setSelectedNum2] = useState(null);
   const [result, setResult] = useState([]);
   const [currentDayHistory, setCurrentDayHistory] = useState([]);
-  const [time, setTime] = useState(null)
+  const [time, setTime] = useState(null);
 
   const location = useLocation();
 
@@ -64,7 +64,7 @@ const Parity = () => {
           const { time, period } = data[key];
           setPeroid(period);
           setTimer(secondsToTime(time));
-          setTime(time)
+          setTime(time);
         }
       });
     } catch (error) {
@@ -78,7 +78,7 @@ const Parity = () => {
       getCurrentDayHistory();
       getWallet();
     }
-  }, [timer]);
+  }, [time]);
 
   const getWallet = async () => {
     try {
@@ -95,32 +95,30 @@ const Parity = () => {
 
   const getControlFields = async () => {
     try {
-        const {data} = await dbObject.get('/power-x/control-fields.php')
-        if(!data.error) {
-          setplatformFees(data.response.platformFees)
-        }
+      const { data } = await dbObject.get("/power-x/control-fields.php");
+      if (!data.error) {
+        setplatformFees(data.response.platformFees);
+      }
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getWallet();
     getResultHistory();
     getCurrentDayHistory();
-    getControlFields()
+    getControlFields();
   }, []);
 
   const [showMyBidId, setShowMyBidId] = useState(false);
 
   const getResultHistory = async () => {
     try {
-      const { data } = await dbObject.get("/dus-ka-dum/result-history.php");
+      const { data } = await dbObject.get("/dus-ka-dum/result-history.php?limit=5");
+      console.log(data)
       if (!data.error) {
-        const sortedData = data.response.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-        setResult(sortedData.slice(0, 5));
+        setResult(data.response);
       }
     } catch (error) {
       console.log(error);
@@ -149,7 +147,7 @@ const Parity = () => {
 
   const placeBit = async () => {
     try {
-      if (time >= '32') {
+      if (time >= 11) {
         const values = {
           ...nums,
           period,
@@ -211,60 +209,68 @@ const Parity = () => {
     <IsAuthenticate path="/dus-ka-dum">
       <Toaster />
       <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
-        <div className="container dus-ka-dum" style={{paddingTop: 55}}>
+        <div className="container dus-ka-dum" style={{ paddingTop: 55 }}>
           <Header backgroundColor={"#fff"} title={"10 Ka Dum"} />
 
           {showModal && (
             <div className="start-box">
-               <div className="start-box-content container">
-              <div className="modal-header p-2 mb-3 border-bottom">
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="ms-auto close-btn"
-                >
-                  <i className="bi bi-x-lg"></i>
-                </button>
-              </div>
-              <h2 className="game-name">Selected - {selectedNum2}</h2>
+              <div className="start-box-content container">
+                <div className="modal-header p-2 mb-3 border-bottom">
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="ms-auto close-btn"
+                  >
+                    <i className="bi bi-x-lg"></i>
+                  </button>
+                </div>
+                <h2 className="game-name">Selected - {selectedNum2}</h2>
 
-              <div className="contract-point">
-                <p>Contract Amount</p>
-
-                <div
-                  className="withdrawal__input__field justify-content-start px-3"
-                  style={{ backgroundColor: "#e5e5e5" }}
-                >
-                  <div className="withdrawal__input__field__icon justify-content-start text-dark">
-                    <Rupee />
-                  </div>
+                <div className="contract-point">
+                  <p>Contract Amount</p>
 
                   <div
-                    className="input pe-3"
-                    style={{ fontWeight: "700", fontSize: "1.5rem" }}
+                    className="withdrawal__input__field justify-content-start px-3"
+                    style={{ backgroundColor: "#e5e5e5" }}
                   >
-                    {amount}
+                    <div className="withdrawal__input__field__icon justify-content-start text-dark">
+                      <Rupee />
+                    </div>
+
+                    <div
+                      className="input pe-3"
+                      style={{ fontWeight: "700", fontSize: "1.5rem" }}
+                    >
+                      {amount}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="withdrawal__input__notes d-flex justify-content-between">
-                <p className="mb-0 mt-2 text-light">Service charge {platformFees}%</p>
-                <p className="mb-0 mt-2 text-light">Delivery {(Number(amount) - (Number(platformFees) / 100 * Number(amount))).toFixed(2)}</p>
-              </div>
+                <div className="withdrawal__input__notes d-flex justify-content-between">
+                  <p className="mb-0 mt-2 text-light">
+                    Service charge {platformFees}%
+                  </p>
+                  <p className="mb-0 mt-2 text-light">
+                    Delivery{" "}
+                    {(
+                      Number(amount) -
+                      (Number(platformFees) / 100) * Number(amount)
+                    ).toFixed(2)}
+                  </p>
+                </div>
 
-              <Keyboard amount={amount} setAmount={setAmount} />
+                <Keyboard amount={amount} setAmount={setAmount} />
 
-              <div className="mb-3 d-flex justify-content-center">
-                <button
-                  style={{
-                    backgroundColor: "rgb(252, 148, 13)",
-                  }}
-                  onClick={handleChange}
-                  className="btn text-light py-3 modal-btn w-50"
-                >
-                  Continue
-                </button>
-              </div>
+                <div className="mb-3 d-flex justify-content-center">
+                  <button
+                    style={{
+                      backgroundColor: "rgb(252, 148, 13)",
+                    }}
+                    onClick={handleChange}
+                    className="btn text-light py-3 modal-btn w-50"
+                  >
+                    Continue
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -399,12 +405,10 @@ const Parity = () => {
 
             <div className="slider mt-2">
               {result.map((item, i) => {
-                const dateObject = new Date(item.date);
-                const formattedTime = dateObject.toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                });
+             
+                let periodArr = item.period.split('-')
+                const formatedArr = `${periodArr[3]}:${periodArr[4]} ${periodArr[5]}`
+                
                 return (
                   <div
                     key={i}
@@ -415,8 +419,7 @@ const Parity = () => {
                       className="mb-0 text-danger text-center"
                       style={{ fontSize: "10px", fontWeight: "600" }}
                     >
-                      {/* {item.time} */}
-                      {formattedTime}
+                      {formatedArr}
                     </p>
                   </div>
                 );
@@ -434,7 +437,33 @@ const Parity = () => {
               </div>
             </div>
 
-            <div className="paritynum-btns mt-2 p-4">
+            <div className="paritynum-btns mt-2 p-4 position-relative">
+              {time < 11 ? (
+                <div
+                  className="countdown"
+                  style={{
+                    position: "absolute",
+                    backgroundColor: "#04040440",
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    zIndex: "90",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: 10,
+                    width: "100%",
+                    height: "100%",
+                    color: "#c70d0e",
+                  }}
+                >
+                  <section class="wrapper">
+                    <div class="top">{time}</div>
+                    <div class="wapper-bottom">{time}</div>
+                  </section>
+                </div>
+              ) : null}
               {firstCardList.map((item, i) => (
                 <div
                   className="position-relative item mb-2 dkd-chip"
