@@ -140,28 +140,28 @@ const Transfer = () => {
         </div>
 
         <Keyboard setAmount={setAmount} amount={amount} />
-      </div>
 
-    <div className="d-flex justify-content-center mt-4 mb-4">
-    <button
-        onClick={() =>
-          navigate("/transfer-history?type=power-x", {
-            state: { from: location.pathname },
-          })
-        }
-        className="w-75"
-        style={{
-          height: 55,
-          borderColor: "rgb(252, 148, 13)",
-          borderRadius: 5,
-          backgroundColor: "transparent",
-          color: "rgb(252, 148, 13)",
-          fontWeight: "500",
-        }}
-      >
-        Recharge History
-      </button>
-    </div>
+        <div className="d-flex justify-content-center mt-4 mb-4">
+          <button
+            onClick={() =>
+              navigate("/transfer-history?type=power-x", {
+                state: { from: location.pathname },
+              })
+            }
+            className="w-75"
+            style={{
+              height: 55,
+              borderColor: "rgb(252, 148, 13)",
+              borderRadius: 5,
+              backgroundColor: "transparent",
+              color: "rgb(252, 148, 13)",
+              fontWeight: "500",
+            }}
+          >
+            Transfer History
+          </button>
+        </div>
+      </div>
     </IsAuthenticate>
   );
 };

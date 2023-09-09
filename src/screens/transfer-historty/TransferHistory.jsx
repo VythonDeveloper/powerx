@@ -19,6 +19,7 @@ const RechargeHistory = () => {
   const getPowerx = async () => {
     try {
       const { data } = await dbObject("/power-x/transfer-history.php");
+      console.log(data);
       if (!data.error) {
         setData(data.response);
       }
@@ -30,6 +31,7 @@ const RechargeHistory = () => {
   const getDusKadum = async () => {
     try {
       const { data } = await dbObject("/dus-ka-dum/transfer-history.php");
+      console.log(data);
       if (!data.error) {
         setData(data.response);
       }
@@ -39,7 +41,6 @@ const RechargeHistory = () => {
   };
 
   useEffect(() => {
-    console.log(paramValue);
     if (paramValue === "power-x") {
       getPowerx();
     } else if (paramValue === "dus-ka-dum") {
@@ -76,7 +77,7 @@ const RechargeHistory = () => {
                         className="withdrawalRecords__container__box__top__bottom"
                         style={{ fontFamily: "sans-serif" }}
                       >
-                        ₹{item.points}
+                        ₹{item.transferPoints}
                       </div>
                     </div>
                     <div
@@ -125,10 +126,10 @@ const RechargeHistory = () => {
 
                     <div className="withdrawalRecords__container__box__bottom__top">
                       <div className="withdrawalRecords__container__box__bottom__top__col">
-                        Deposit Amount:
+                        Points:
                       </div>
                       <div className="withdrawalRecords__container__box__bottom__top__col">
-                        ₹{item.depositPoints}
+                        ₹{item.points}
                       </div>
                     </div>
                     <div className="withdrawalRecords__container__box__bottom__top">
@@ -149,8 +150,6 @@ const RechargeHistory = () => {
             <img src={emptyBox} alt="" />
           </div>
         )}
-
-        
       </div>
     </IsAuthenticate>
   );

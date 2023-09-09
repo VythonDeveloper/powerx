@@ -15,7 +15,7 @@ const ResultHistoryPX = () => {
       const { data } = await dbObject.get("/power-x/result-history.php");
 
       if (!data.error) {
-        setResultHistory(data.response.reverse());
+        setResultHistory(data.response);
       }
       setLoading(false);
     } catch (error) {

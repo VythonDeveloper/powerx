@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./keyboard.css";
 
-const Keyboard = ({ amount, setAmount, color }) => {
+const Keyboard = ({ amount, setAmount, color, title, func }) => {
   const handleNumberClick = (number) => {
     setAmount(amount + number);
   };
@@ -86,7 +86,19 @@ const Keyboard = ({ amount, setAmount, color }) => {
         <span>9</span>
       </div>
 
-      <div></div>
+      <div className="d-flex align-items-center">
+        {title ? (
+          <button
+            className="btn btn-primary h-75 w-100"
+            style={{ backgroundColor: "rgb(252, 148, 13)" }}
+            onClick={func}
+          >
+            {title}
+          </button>
+        ) : (
+          ""
+        )}
+      </div>
 
       <div
         onClick={() => handleNumberClick(0)}

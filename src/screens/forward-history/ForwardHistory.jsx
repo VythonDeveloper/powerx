@@ -30,6 +30,7 @@ const RechargeHistory = () => {
   const getDusKadum = async () => {
     try {
       const { data } = await dbObject("/dus-ka-dum/forward-history.php");
+      console.log(data);
       if (!data.error) {
         setData(data.response);
       }
@@ -50,10 +51,10 @@ const RechargeHistory = () => {
   }, [location]);
 
   return (
-    <IsAuthenticate path={`/recharge-history?type=${paramValue}`}>
+    <IsAuthenticate path={`/forward-history?type=${paramValue}`}>
       <div className="container" style={{ paddingTop: 55 }}>
         <Header
-          title={"Recharge History"}
+          title={"Forward History"}
           path={location?.state?.from || "/profile"}
         />
 
@@ -113,30 +114,22 @@ const RechargeHistory = () => {
                       style={{ marginTop: 12 }}
                     >
                       <div className="withdrawalRecords__container__box__bottom__top__col">
-                        Bonus:
+                        Forward amount:
                       </div>
                       <div
                         style={{ textTransform: "capitalize" }}
                         className="withdrawalRecords__container__box__bottom__top__col"
                       >
-                        ₹{item.bonus}
+                        ₹{item.forwardPoints}
                       </div>
                     </div>
 
                     <div className="withdrawalRecords__container__box__bottom__top">
                       <div className="withdrawalRecords__container__box__bottom__top__col">
-                        Deposit Amount:
+                        Forward Fees:
                       </div>
                       <div className="withdrawalRecords__container__box__bottom__top__col">
-                        ₹{item.depositPoints}
-                      </div>
-                    </div>
-                    <div className="withdrawalRecords__container__box__bottom__top">
-                      <div className="withdrawalRecords__container__box__bottom__top__col">
-                        Referral Fees:
-                      </div>
-                      <div className="withdrawalRecords__container__box__bottom__top__col">
-                        ₹{item.referralFees}
+                        ₹{item.fees}
                       </div>
                     </div>
                   </div>

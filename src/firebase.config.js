@@ -3,15 +3,16 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getAuth, GoogleAuthProvider } from "firebase/auth"; // Add these imports for authentication
 
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCHkIRE2-PPEKAtnQn_A4yvka5NqqiP6PU",
-  authDomain: "game-project-timer.firebaseapp.com",
-  databaseURL: "https://game-project-timer-default-rtdb.firebaseio.com",
-  projectId: "game-project-timer",
-  storageBucket: "game-project-timer.appspot.com",
-  messagingSenderId: "313565163673",
-  appId: "1:313565163673:web:c6746b4e60023bdcb5c808"
+  apiKey: "AIzaSyATeXMy5rr4wnIgY13onzUQCOBZ7pc_CKI",
+  authDomain: "zingo-7c171.firebaseapp.com",
+  databaseURL: "https://zingo-7c171-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "zingo-7c171",
+  storageBucket: "zingo-7c171.appspot.com",
+  messagingSenderId: "933340993540",
+  appId: "1:933340993540:web:736a516d4589688ede3d51"
 };
 
 // Initialize Firebase

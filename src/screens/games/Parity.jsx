@@ -73,7 +73,7 @@ const Parity = () => {
   }, []);
 
   useEffect(() => {
-    if (time == 0) {
+    if (time === 0) {
       getResultHistory();
       getCurrentDayHistory();
       getWallet();
@@ -95,7 +95,7 @@ const Parity = () => {
 
   const getControlFields = async () => {
     try {
-      const { data } = await dbObject.get("/power-x/control-fields.php");
+      const { data } = await dbObject.get("/dus-ka-dum/control-fields.php");
       if (!data.error) {
         setplatformFees(data.response.platformFees);
       }
@@ -115,8 +115,10 @@ const Parity = () => {
 
   const getResultHistory = async () => {
     try {
-      const { data } = await dbObject.get("/dus-ka-dum/result-history.php?limit=5");
-      console.log(data)
+      const { data } = await dbObject.get(
+        "/dus-ka-dum/result-history.php?limit=5"
+      );
+      console.log(data);
       if (!data.error) {
         setResult(data.response);
       }
@@ -131,8 +133,12 @@ const Parity = () => {
         "/dus-ka-dum/my-current-day-orders.php"
       );
 
+      console.log(data)
+
       if (!data.error) {
         setCurrentDayHistory(data.response);
+
+        console.log(data.response);
       }
     } catch (error) {
       console.log(error);
@@ -258,19 +264,12 @@ const Parity = () => {
                   </p>
                 </div>
 
-                <Keyboard amount={amount} setAmount={setAmount} />
-
-                <div className="mb-3 d-flex justify-content-center">
-                  <button
-                    style={{
-                      backgroundColor: "rgb(252, 148, 13)",
-                    }}
-                    onClick={handleChange}
-                    className="btn text-light py-3 modal-btn w-50"
-                  >
-                    Continue
-                  </button>
-                </div>
+                <Keyboard
+                  func={handleChange}
+                  title={"Continue"}
+                  amount={amount}
+                  setAmount={setAmount}
+                />
               </div>
             </div>
           )}
@@ -405,10 +404,9 @@ const Parity = () => {
 
             <div className="slider mt-2">
               {result.map((item, i) => {
-             
-                let periodArr = item.period.split('-')
-                const formatedArr = `${periodArr[3]}:${periodArr[4]} ${periodArr[5]}`
-                
+                let periodArr = item.period.split("-");
+                const formatedArr = `${periodArr[3]}:${periodArr[4]} ${periodArr[5]}`;
+
                 return (
                   <div
                     key={i}
@@ -507,7 +505,7 @@ const Parity = () => {
                 <React.Fragment key={i}>
                   <div className="value  p-2">
                     <p className="mb-0">
-                      {currentDayHistory.length - i}{" "}
+                      {item.entryNo}{" "}
                       {showMyBidId === item.id ? (
                         <i
                           onClick={() => {

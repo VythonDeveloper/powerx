@@ -35,7 +35,6 @@ const ForgotPass = () => {
             },
           };
 
-
           const { data } = await dbObject.post(
             "/users/forgot-password.php",
             formData,
@@ -79,6 +78,8 @@ const ForgotPass = () => {
         { email: values.email }
       );
 
+      console.log(data);
+
       if (!data.error) {
         toast.success(data.message, toastOptions);
         setSeconds(60);
@@ -89,8 +90,8 @@ const ForgotPass = () => {
     } catch (error) {
       console.log(error);
 
-      if(error?.response?.data) {
-        toast.error(error?.response?.data?.error)
+      if (error?.response?.data) {
+        toast.error(error?.response?.data?.error, toastOptions);
       }
     }
   };
@@ -119,8 +120,6 @@ const ForgotPass = () => {
             ) : null}
           </div>
 
-          
-
           <div className="form-group mt-2">
             <input
               autoComplete="off"
@@ -138,7 +137,10 @@ const ForgotPass = () => {
           </div>
 
           {otpSent && seconds > 0 ? (
-            <div className="mt-2" style={{fontSize: 12, marginBottom:-12, paddingLeft: 13}}>
+            <div
+              className="mt-2"
+              style={{ fontSize: 12, marginBottom: -12, paddingLeft: 13 }}
+            >
               Resend otp in <span>{seconds}</span> s
             </div>
           ) : null}
@@ -176,8 +178,6 @@ const ForgotPass = () => {
             Remember password? <span>Sign In</span>
           </Link>
         </form>
-
-        
       </div>
     </IsNotAuthenticate>
   );

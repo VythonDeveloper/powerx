@@ -66,6 +66,7 @@ const FastParity = () => {
     if (timeinSec === 0) {
       getWallet();
       getResultHistory();
+      getMyOrder()
     }
   }, [timeinSec]);
 
@@ -152,7 +153,7 @@ const FastParity = () => {
     try {
       const { data } = await dbObject.get("/power-x/my-orders.php");
       if (!data.error) {
-        setMyOrder(data.response.reverse());
+        setMyOrder(data.response);
       }
     } catch (error) {
       console.log(error);
@@ -164,7 +165,7 @@ const FastParity = () => {
       const { data } = await dbObject.get("/power-x/result-history.php?limit=10");
 
       if (!data.error) {
-        setResultHistory(data.response.reverse());
+        setResultHistory(data.response);
       }
     } catch (error) {
       console.log(error);
@@ -214,8 +215,8 @@ const FastParity = () => {
               </div>
 
               <div className="withdrawal__input__notes d-flex justify-content-between">
-                <p className="mb-0 mt-2">Service charge {platformFees}%</p>
-                <p className="mb-0 mt-2">
+                <p className="mb-0 mt-2 text-light">Service charge {platformFees}%</p>
+                <p className="mb-0 mt-2 text-light">
                   Delivery{" "}
                   {(
                     Number(amount) -
@@ -224,19 +225,9 @@ const FastParity = () => {
                 </p>
               </div>
 
-              <Keyboard amount={amount} setAmount={setAmount} />
+              <Keyboard func={placeBit} title={'Start'} amount={amount} setAmount={setAmount} />
 
-              <div className="mb-3 d-flex justify-content-center">
-                <button
-                  style={{
-                    backgroundColor: "rgb(252, 148, 13)",
-                  }}
-                  onClick={placeBit}
-                  className="btn text-light py-3 modal-btn w-25"
-                >
-                  Start
-                </button>
-              </div>
+              
             </div>
           </div>
         )}
