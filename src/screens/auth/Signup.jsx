@@ -10,12 +10,15 @@ import "./auth.css";
 import { auth, provider } from "../../firebase.config";
 import { signInWithPopup } from "firebase/auth";
 import { AppContext } from "../../context/AppContext";
+import axios from "axios";
+import Spinner from "../../components/spinner/Spinner";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
   const location = useLocation();
+  const [loading, setLoading] = useState(false)
   const { setUser } = useContext(AppContext);
 
   useEffect(() => {
@@ -77,6 +80,7 @@ const Signup = () => {
       validationSchema: signupSchema,
       onSubmit: async () => {
         try {
+          setLoading(true)
           const formData = new FormData();
 
           for (const key in values) {
@@ -102,9 +106,13 @@ const Signup = () => {
           } else {
             toast.error(data.message, toastOptions);
           }
+
+          setLoading(false)
         } catch (error) {
+          setLoading(true)
           console.log(error);
           toast.error("Internal server error", toastOptions);
+          setLoading(false)
         }
       },
     });
@@ -124,10 +132,25 @@ const Signup = () => {
   }, [seconds, otpSent]);
   const handleOTP = async () => {
     try {
+      setLoading(true)
       if (!values.email) return toast.error("Email is required", toastOptions);
-      const { data } = await dbObject.post(
-        "https://otp.zingo.online/send-register-otp",
-        { email: values.email }
+      const inputs = {
+        email: values.email,
+      };
+      const formData = new FormData();
+      for (const key in inputs) {
+        formData.append(key, inputs[key]);
+      }
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type to form data
+        },
+      };
+
+      const { data } = await axios.post(
+        "https://app-apis.zingo.online/mail-sender/send-register-otp.php",
+        formData,
+        config
       );
 
       if (!data.error) {
@@ -137,17 +160,24 @@ const Signup = () => {
       } else {
         toast.error(data.message, toastOptions);
       }
+
+      setLoading(false)
     } catch (error) {
+      setLoading(true)
       console.log(error);
 
-      if(error?.response?.data) {
-        toast.error(error?.response?.data?.error, toastOptions)
+      if (error?.response?.data) {
+        toast.error(error?.response?.data?.error, toastOptions);
       }
+      setLoading(false)
     }
   };
 
   return (
     <IsNotAuthenticate>
+      {
+        loading && <Spinner />
+      }
       <Toaster />
       <div className="login-dark">
         <form onSubmit={handleSubmit} method="post" className="container">

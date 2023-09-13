@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./auth.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { toastOptions } from "../../components/toaster/Toaster";
 import { auth, provider } from "../../firebase.config";
 import { signInWithPopup } from "firebase/auth";
+import Spinner from "../../components/spinner/Spinner";
 
 const initialValues = {
   email: "",
@@ -17,11 +18,12 @@ const initialValues = {
 };
 const Signin = () => {
   const { setUser } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleLogin = async () => {
     try {
+      setLoading(true);
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
 
       const body = {
         email: result?.user?.email,
@@ -50,7 +52,10 @@ const Signin = () => {
       } else {
         toast.error(data.message, toastOptions);
       }
+
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error("Error signing in with Google:", error);
     }
   };
@@ -60,6 +65,7 @@ const Signin = () => {
       validationSchema: signinSchema,
       onSubmit: async () => {
         try {
+          setLoading(true);
           const formData = new FormData();
           for (const key in values) {
             formData.append(key, values[key]);
@@ -81,19 +87,25 @@ const Signin = () => {
             setTimeout(() => {
               setUser(data.response);
               // navigate('/')
+              setLoading(false);
             }, 1000);
           } else {
             toast.error(data.message, toastOptions);
+            setLoading(false);
           }
         } catch (error) {
+          setLoading(true);
           console.log(error);
           toast.error("Internal server error", toastOptions);
+          setLoading(false);
         }
       },
     });
 
   return (
     <IsNotAuthenticate>
+      {loading && <Spinner />}
+
       <div className="login-dark">
         <form onSubmit={handleSubmit} method="post" className="container">
           <h2 className="sr-only text-center">Sign In</h2>

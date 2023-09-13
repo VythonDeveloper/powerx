@@ -8,10 +8,13 @@ import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 import { useLocation, useNavigate } from "react-router-dom";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
+import Spinner from "../../components/spinner/Spinner";
 
 const AddBank = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const [values, setValues] = useState({
     bankName: "",
     accountNumber: "",
@@ -24,6 +27,7 @@ const AddBank = () => {
     e.preventDefault();
 
     try {
+      setLoading(true)
       const formData = new FormData();
       for (const key in values) {
         formData.append(key, values[key]);
@@ -45,10 +49,12 @@ const AddBank = () => {
 
         setTimeout(() => {
           navigate(location?.state?.from || "/home");
+          setLoading(false)
         }, 1000);
       }
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
@@ -76,7 +82,8 @@ const AddBank = () => {
 
   return (
   <IsAuthenticate path="/bank">
-    <div className="container" style={{paddingTop: 55}}>
+    {loading && <Spinner />}
+    <div className="container" style={{paddingTop: 55, paddingBottom: 30}}>
       {/* Top Navbar */}
       <Header title={"Add Bank"} path={location?.state?.from || "/"} />
       <Toaster />

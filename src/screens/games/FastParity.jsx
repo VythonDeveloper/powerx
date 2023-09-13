@@ -10,6 +10,7 @@ import Keyboard from "../../components/keyboard/Keyboard";
 import { Rupee } from "../../assets/svg/CustomSVG";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
+import Spinner from "../../components/spinner/Spinner";
 
 const FastParity = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const FastParity = () => {
   const [myOrder, setMyOrder] = useState([]);
   const [resultHistory, setResultHistory] = useState([]);
   const [platformFees, setplatformFees] = useState();
+  const [loading, setLoading] = useState(false);
 
   const [maxCoinBid, setmaxCoinBid] = useState("1");
 
@@ -105,6 +107,7 @@ const FastParity = () => {
   const placeBit = async () => {
     if (timeinSec >= 11) {
       try {
+        setLoading(true)
         const values = {
           period,
           coin,
@@ -141,8 +144,10 @@ const FastParity = () => {
           toast.warning(data.message, toastOptions);
           setShowModal(false);
         }
+        setLoading(false)
       } catch (error) {
         console.log(error);
+        setLoading(false)
       }
     } else {
       toast.warning("You can place bit after in next period");
@@ -174,6 +179,7 @@ const FastParity = () => {
 
   return (
     <IsAuthenticate path="/power-x">
+      {loading && <Spinner />}
       <div className="container" style={{ paddingTop: 55 }}>
         <Header title={"Power X"} />
         <Toaster />

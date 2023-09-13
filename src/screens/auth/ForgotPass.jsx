@@ -7,6 +7,8 @@ import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
 import { toastOptions } from "../../components/toaster/Toaster";
 import "./auth.css";
+import axios from "axios";
+import Spinner from "../../components/spinner/Spinner";
 
 const initialValues = {
   email: "",
@@ -18,6 +20,7 @@ const ForgotPass = () => {
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -25,6 +28,7 @@ const ForgotPass = () => {
       validationSchema: forgotPassSchema,
       onSubmit: async () => {
         try {
+          setLoading(true);
           const formData = new FormData();
           for (const key in values) {
             formData.append(key, values[key]);
@@ -49,9 +53,13 @@ const ForgotPass = () => {
           } else {
             toast.error(data.message, toastOptions);
           }
+
+          setLoading(false);
         } catch (error) {
+          setLoading(true);
           console.log(error);
           toast.error("Internal server error", toastOptions);
+          setLoading(false);
         }
       },
     });
@@ -72,10 +80,25 @@ const ForgotPass = () => {
 
   const handleOTP = async () => {
     try {
+      setLoading(true);
       if (!values.email) return toast.error("Email is required", toastOptions);
-      const { data } = await dbObject.post(
-        "https://otp.zingo.online/send-forgot-otp",
-        { email: values.email }
+
+      const inputs = {
+        email: values.email,
+      };
+      const formData = new FormData();
+      for (const key in inputs) {
+        formData.append(key, inputs[key]);
+      }
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type to form data
+        },
+      };
+      const { data } = await axios.post(
+        "https://app-apis.zingo.online/mail-sender/send-forgot-password-otp.php",
+        formData,
+        config
       );
 
       console.log(data);
@@ -87,17 +110,23 @@ const ForgotPass = () => {
       } else {
         toast.error(data.message, toastOptions);
       }
+
+      setLoading(false);
     } catch (error) {
+      setLoading(true);
       console.log(error);
 
       if (error?.response?.data) {
         toast.error(error?.response?.data?.error, toastOptions);
       }
+      setLoading(false);
     }
   };
 
   return (
     <IsNotAuthenticate>
+      {loading && <Spinner />}
+
       <div className="login-dark">
         <form onSubmit={handleSubmit} method="post" className="container">
           <h2 className="sr-only">

@@ -8,6 +8,7 @@ import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
+import Spinner from "../../components/spinner/Spinner";
 
 const Withdraw = () => {
   const location = useLocation();
@@ -18,51 +19,64 @@ const Withdraw = () => {
   const [minWithdraw, setminWithdraw] = useState("0.00");
   const [withdrawFees, setwithdrawFees] = useState("0");
   const [withdrawHistory, setWithdrawHistory] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getWallet = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject("/power-x/fetch-wallet.php");
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   const getBank = async () => {
     try {
+      setLoading(false)
       const { data } = await dbObject.get("/bank-account/fetch.php");
 
       if (data?.response) {
         setBank(data.response);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   const getControlFields = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject.get("/power-x/control-fields.php");
       if (!data.error) {
         setminWithdraw(data.response.minWithdraw);
         setwithdrawFees(data?.response.withdrawFees);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   const getWithdrawHitory = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject.get("/power-x/withdraw-history.php");
 
       if (!data.error) {
         setWithdrawHistory(data?.response?.slice(0, 1));
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
@@ -75,6 +89,7 @@ const Withdraw = () => {
 
   const handleWithdraw = async () => {
     try {
+      setLoading(true)
       const values = {
         points: amount,
       };
@@ -103,13 +118,16 @@ const Withdraw = () => {
       } else {
         toast.warning(data.message, toastOptions);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   return (
     <IsAuthenticate path={"/withdraw"}>
+      {loading && <Spinner />}
       <div className="container powerx-withdraw" style={{paddingTop: 55}}>
         <Header title={"Withdraw"} path={location?.state?.from || "/"} />
         <Toaster />

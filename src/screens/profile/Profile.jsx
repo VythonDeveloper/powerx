@@ -11,14 +11,17 @@ import IsAuthenticate from "../../redirect/IsAuthenticate";
 import { profile } from "../../assets";
 import { FollowUS, HistorySvg, RightArrow, Signout, Transaction } from "../../assets/svg/CustomSVG";
 import {auth} from '../../firebase.config'
+import Spinner from "../../components/spinner/Spinner";
 
 const Profile = () => {
   const [showModal, setShowModal] = useState(false);
   const { user, setUser } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
 
   const logout = async () => {
     try {
+      setLoading(true)
       const formData = new FormData();
       formData.append('userId', user?.id);
 
@@ -30,14 +33,17 @@ const Profile = () => {
         setTimeout(() => {
           setUser(null)
           navigate("/signin");
+          setLoading(false)
         }, 1000);
       } else {
         toast.error(data?.message, toastOptions)
+        setLoading(false)
       }
 
     } catch (error) {
       console.log(error);
       toast.error('Internal server error', toastOptions)
+      setLoading(false)
     }
   };
 
@@ -71,6 +77,7 @@ const Profile = () => {
 
   return (
     <IsAuthenticate path={'/profile'}>
+      {loading && <Spinner />}
       {showModal && (
         <ConfirmModal
           confirmFunc={logout}
