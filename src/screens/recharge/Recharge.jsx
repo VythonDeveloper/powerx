@@ -11,7 +11,7 @@ const Recharge = () => {
   return (
     <IsAuthenticate path={'/power-x/recharge'}>
       <div className="container" style={{paddingTop: 55}}>
-        <Header title={"Recharge"} path={location?.state?.from || "/"} />
+        <Header title={"Recharge"} path={location?.state?.from || "/power-x"} />
         <div className="d-flex flex-column align-items-center mt-2">
           <p className="mb-0">Recharge for</p>
           <p
@@ -34,7 +34,7 @@ const Recharge = () => {
 
         <div className="mt-2">
           <button
-            onClick={() => navigate("/fast-parity")}
+            onClick={() => navigate("/power-x")}
             className="w-100 mb-2 withdraw__btn"
             style={{ height: 55 }}
           >

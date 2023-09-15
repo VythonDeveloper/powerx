@@ -4,27 +4,35 @@ import { useLocation } from "react-router-dom";
 import { dbObject } from "../../helper/constant";
 import "./withdraw-history.css";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
+import Spinner from "../../components/spinner/Spinner";
 
 const WIthdrawHistory = () => {
   const location = useLocation();
   const [withdrawHistory, setWithdrawHistory] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const getWithdrawHitory = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject.get("/dus-ka-dum/withdraw-history.php");
       if (!data.error) {
         setWithdrawHistory(data?.response);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   useEffect(() => {
     getWithdrawHitory();
-  });
+  }, []);
   return (
     <IsAuthenticate path={"/dus-ka-dum/withdraw-history"}>
+      {
+        loading && <Spinner />
+      }
       <div
         className="container"
         style={{ minHeight: "100vh", backgroundColor: "#fff", paddingTop: 55 }}
@@ -32,7 +40,7 @@ const WIthdrawHistory = () => {
         <Header
           backgroundColor={"#fff"}
           title={"Withdraw History"}
-          path={location?.state?.from || "/home"}
+          path={location?.state?.from || "/dus-ka-dum"}
         />
 
         <h3 className="text-dark mt-3">Dus Ka Dum</h3>

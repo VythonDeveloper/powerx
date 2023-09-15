@@ -5,11 +5,13 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { dbObject } from "../../helper/constant";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
+import Spinner from "../../components/spinner/Spinner";
 
 const RechargeHistory = () => {
   const location = useLocation();
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   const queryParams = new URLSearchParams(location.search);
 
@@ -18,29 +20,35 @@ const RechargeHistory = () => {
 
   const getPowerx = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject("/power-x/forward-history.php");
       if (!data.error) {
         setData(data.response);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   const getDusKadum = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject("/dus-ka-dum/forward-history.php");
       console.log(data);
       if (!data.error) {
         setData(data.response);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   useEffect(() => {
-    console.log(paramValue);
+    setLoading(true)
     if (paramValue === "power-x") {
       getPowerx();
     } else if (paramValue === "dus-ka-dum") {
@@ -48,14 +56,16 @@ const RechargeHistory = () => {
     } else {
       navigate("/home");
     }
+    setLoading(false)
   }, [location]);
 
   return (
     <IsAuthenticate path={`/forward-history?type=${paramValue}`}>
+      {loading && <Spinner />}
       <div className="container" style={{ paddingTop: 55 }}>
         <Header
           title={"Forward History"}
-          path={location?.state?.from || "/profile"}
+          path={paramValue === 'power-x'?  "/power-x/forward": '/dus-ka-dum/forward'}
         />
 
         <h3>{paramValue === "power-x" ? "Power X" : "Dus Ka Dum"}</h3>

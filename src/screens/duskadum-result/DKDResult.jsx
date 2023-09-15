@@ -3,6 +3,7 @@ import "./duskadum-result.css";
 import { Header } from "../../components";
 import { dbObject } from "../../helper/constant";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
+import Spinner from "../../components/spinner/Spinner";
 
 const DKDResult = () => {
   const [result, setResult] = useState([]);
@@ -74,18 +75,7 @@ const DKDResult = () => {
                 );
               })
             ) : (
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ height: "90vh" }}
-              >
-                <div
-                  className="spinner-border text-warning"
-                  style={{ width: "3rem", height: "3rem" }}
-                  role="status"
-                >
-                  <span className="sr-only"></span>
-                </div>
-              </div>
+              <Spinner />
             )}
           </div>
         </div>

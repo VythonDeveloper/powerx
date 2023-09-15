@@ -8,6 +8,7 @@ import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
+import Spinner from "../../components/spinner/Spinner";
 
 const Transfer = () => {
   const location = useLocation();
@@ -17,21 +18,26 @@ const Transfer = () => {
   const [bonus, setBonus] = useState("0");
   const [winWallet, setWinWallet] = useState("0.00");
   const [minimunTransfer, setMinimumTrasfer] = useState();
+  const [loading, setLoading] = useState(false)
 
   const getWallet = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject.get("/power-x/fetch-wallet.php");
 
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   const getControlFields = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject.get("/power-x/control-fields.php");
       if (!data.error) {
         setBonus(data.response.transferBonus);
@@ -39,8 +45,10 @@ const Transfer = () => {
         setLevel2Bonus(data.response.level2Bonus);
         setLevel1Bonus(data.response.level1Bonus);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
@@ -53,6 +61,7 @@ const Transfer = () => {
 
   const transferHandler = async () => {
     try {
+      setLoading(true)
       const values = {
         points: amount,
       };
@@ -77,18 +86,22 @@ const Transfer = () => {
         toast.success(data.message, toastOptions);
         getWallet();
         setAmount("");
+        setLoading(false)
       } else {
         toast.error(data.message, toastOptions);
+        setLoading(false)
       }
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   return (
     <IsAuthenticate path={"/transfer"}>
+      {loading && <Spinner />}
       <div className="container px-transfer" style={{ paddingTop: 55 }}>
-        <Header title={"Transfer"} path={location?.state?.from || "/"} />
+        <Header title={"Transfer"} path={location?.state?.from || "/power-x"} />
         <Toaster />
 
         <div className="withdrawal__page__balance__section">
@@ -106,14 +119,14 @@ const Transfer = () => {
         </div>
 
         <div className="withdrawal__amount__field">
-          <div className="withdrawal__field__header">
+          <div className="withdrawal__field__header text-light">
             Transfer to Play Wallet <br />
             <span style={{ fontSize: 12, fontWeight: "300" }}>
               Min Rs. {minimunTransfer} & thereafter multiple of Rs. 5
             </span>
           </div>
           <div className="withdrawal__input__field">
-            <div className="withdrawal__input__field__icon">
+            <div className="withdrawal__input__field__icon text-light">
               <Rupee />
             </div>
 

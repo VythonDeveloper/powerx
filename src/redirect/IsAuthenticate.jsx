@@ -19,7 +19,7 @@ const IsAuthenticate = ({ children, path }) => {
       >
         <div
           className="spinner-border text-warning"
-          style={{ width: "3rem", height: "3rem" }}
+          // style={{ width: "3rem", height: "3rem" }}
           role="status"
         >
           <span className="sr-only"></span>

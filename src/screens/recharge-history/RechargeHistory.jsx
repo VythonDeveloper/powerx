@@ -54,7 +54,7 @@ const RechargeHistory = () => {
       <div className="container" style={{ paddingTop: 55 }}>
         <Header
           title={"Recharge History"}
-          path={location?.state?.from || "/profile"}
+          path={ paramValue === "power-x" ? "/power-x/recharge" : "/dus-ka-dum/recharge"}
         />
 
         <h3>{paramValue === "power-x" ? "Power X" : "Dus Ka Dum"}</h3>

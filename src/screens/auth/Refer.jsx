@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./auth.css";
 import IsNotAuthenticate from "../../redirect/IsNotAuthenticate";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -7,11 +7,13 @@ import { useFormik } from "formik";
 import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
+import Spinner from "../../components/spinner/Spinner";
 
 const Refer = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const [loading, setLoading] = useState(false)
 
   // Access the specific parameter you need
   const referCode = queryParams.get("refercode");
@@ -26,6 +28,7 @@ const Refer = () => {
       validationSchema: referSchema,
       onSubmit: async () => {
         try {
+          setLoading(true)
           const formData = new FormData();
           for (const key in values) {
             formData.append(key, values[key]);
@@ -51,14 +54,19 @@ const Refer = () => {
             toast.error(data.message, toastOptions);
           }
 
+          setLoading(false)
         } catch (error) {
           console.log(error);
+          setLoading(false)
         }
       },
     });
 
   return (
     <IsNotAuthenticate>
+      {
+        loading && <Spinner />
+      }
       <Toaster />
       <div className="login-dark">
         <form onSubmit={handleSubmit} method="post" className="container">

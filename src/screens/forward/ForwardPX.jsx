@@ -6,6 +6,7 @@ import { dbObject } from "../../helper/constant";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
 import { toast } from "react-toastify";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
+import Spinner from "../../components/spinner/Spinner";
 
 const Forward = () => {
   const location = useLocation();
@@ -18,27 +19,34 @@ const Forward = () => {
   const [selectedEmail, setSelectedEmail] = useState("");
   const [forwardFees, setforwardFees] = useState('0')
   const [minForward, setminForward] = useState('0')
+  const [loading, setLoading] = useState(false)
 
   const getContactList = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject("/contact-master/fetch.php");
       if (!data.error) {
         setContactList(data?.response);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   const getControlFields = async () => {
     try {
+      setLoading(true)
         const {data} = await dbObject.get('/power-x/control-fields.php')
         if(!data.error) {
             setforwardFees(data.response.forwardFees)
             setminForward(data?.response.minForward)
         }
+        setLoading(false)
     } catch (error) {
         console.log(error)
+        setLoading(false)
     }
   }
 
@@ -49,6 +57,7 @@ const Forward = () => {
 
   const handleAddFrinedn = async () => {
     try {
+      setLoading(true)
       const values = {
         nickname,
         email,
@@ -74,16 +83,20 @@ const Forward = () => {
         toast.success(data.message, toastOptions);
         getContactList();
         setShowAddFriend(false);
+        setLoading(false)
       } else {
         toast.error(data.message, toastOptions);
+        setLoading(false)
       }
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   const handleSendMoney = async () => {
     try {
+      setLoading(true)
       const values = {
         email: selectedEmail,
         points,
@@ -104,11 +117,14 @@ const Forward = () => {
         toast.success(data.message, toastOptions)
         setShowSendMoney(false)
         setPoints('')
+        setLoading(false)
       }else {
         toast.warning(data.message, toastOptions)
+        setLoading(false)
       }
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
@@ -116,9 +132,10 @@ const Forward = () => {
 
   return (
     <IsAuthenticate path="/power-x/forward">
+      {loading && <Spinner />}
     <div className="container" style={{paddingTop: 55}}>
       {/* Top Navbar */}
-      <Header title={"Forward"} path={location?.state?.from || "/"} />
+      <Header title={"Forward"} path={location?.state?.from || "/power-x"} />
       <Toaster />
 
       

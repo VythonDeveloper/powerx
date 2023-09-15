@@ -129,7 +129,7 @@ const Withdraw = () => {
     <IsAuthenticate path={"/withdraw"}>
       {loading && <Spinner />}
       <div className="container powerx-withdraw" style={{paddingTop: 55}}>
-        <Header title={"Withdraw"} path={location?.state?.from || "/"} />
+        <Header title={"Withdraw"} path={location?.state?.from || "/power-x"} />
         <Toaster />
 
         <div className="withdrawal__page__balance__section">
@@ -269,7 +269,7 @@ const Withdraw = () => {
           <div className="withdrawal__records__section">
             <div className="withdrawal__records__section__record__top"></div>
             <div className="withdrawal__records__section__bottom">
-              <div className="withdrawal__records__section__bottom__header d-flex justify-content-between">
+              <div className="withdrawal__records__section__bottom__header text-light d-flex justify-content-between">
                 <div>Withdrawal Records</div>
                 <div
                   onClick={() =>

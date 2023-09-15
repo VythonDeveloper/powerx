@@ -4,15 +4,18 @@ import { useLocation } from "react-router-dom";
 import { dbObject } from "../../helper/constant";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
+import Spinner from "../../components/spinner/Spinner";
 
 const ContactUs = () => {
   const location = useLocation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
 
     if (name.length > 1 && email.length > 1 && message.length > 1) {
       try {
@@ -55,9 +58,14 @@ const ContactUs = () => {
     } else {
       toast.error("All inputs required", toastOptions);
     }
+
+    setLoading(false)
   };
   return (
     <div className="container" style={{ paddingTop: 55 }}>
+      {
+        loading && <Spinner />
+      }
       <Toaster />
       <Header title={"Contact Us"} path={location?.state?.from || "/profile"} />
       <form onSubmit={handleSubmit} action="" className="contact-form mt-5">

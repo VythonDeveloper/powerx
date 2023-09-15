@@ -10,6 +10,7 @@ import Keyboard from "../../components/keyboard/Keyboard";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../components/toaster/Toaster";
+import Spinner from "../../components/spinner/Spinner";
 
 const Parity = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const Parity = () => {
   const [result, setResult] = useState([]);
   const [currentDayHistory, setCurrentDayHistory] = useState([]);
   const [time, setTime] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
 
@@ -57,6 +59,7 @@ const Parity = () => {
     const dusKaDamRef = ref(database, "dus-ka-dum/timer");
 
     try {
+      setLoading(true);
       onValue(dusKaDamRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -66,6 +69,7 @@ const Parity = () => {
           setTimer(secondsToTime(time));
           setTime(time);
         }
+        setLoading(false);
       });
     } catch (error) {
       console.log(error);
@@ -82,25 +86,31 @@ const Parity = () => {
 
   const getWallet = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject("/dus-ka-dum/fetch-wallet.php");
 
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
         setPlayWallet(data?.response.playWallet);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   const getControlFields = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject.get("/dus-ka-dum/control-fields.php");
       if (!data.error) {
         setplatformFees(data.response.platformFees);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -115,6 +125,7 @@ const Parity = () => {
 
   const getResultHistory = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject.get(
         "/dus-ka-dum/result-history.php?limit=5"
       );
@@ -122,24 +133,26 @@ const Parity = () => {
       if (!data.error) {
         setResult(data.response);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   const getCurrentDayHistory = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject.get(
         "/dus-ka-dum/my-current-day-orders.php"
       );
-
-      console.log(data)
 
       if (!data.error) {
         setCurrentDayHistory(data.response);
 
         console.log(data.response);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -153,6 +166,7 @@ const Parity = () => {
 
   const placeBit = async () => {
     try {
+      setLoading(true);
       if (time >= 11) {
         const values = {
           ...nums,
@@ -181,8 +195,10 @@ const Parity = () => {
         } else {
           toast.error(data.message, toastOptions);
         }
+        setLoading(false);
       } else {
         toast.warning("We are not accepting any more bids");
+        setLoading(false);
       }
 
       setNums({
@@ -199,8 +215,11 @@ const Parity = () => {
         num11: "",
         num12: "",
       });
+
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -213,6 +232,7 @@ const Parity = () => {
 
   return (
     <IsAuthenticate path="/dus-ka-dum">
+      {loading && <Spinner />}
       <Toaster />
       <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
         <div className="container dus-ka-dum" style={{ paddingTop: 55 }}>

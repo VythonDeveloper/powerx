@@ -5,6 +5,7 @@ import { dbObject } from "../../helper/constant";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
 import { Header } from "../../components";
 import { useLocation } from "react-router-dom";
+import Spinner from "../../components/spinner/Spinner";
 
 const ResultHistoryPX = () => {
   const [resultHistory, setResultHistory] = useState([]);
@@ -32,7 +33,7 @@ const ResultHistoryPX = () => {
   return (
     <IsAuthenticate path="/power-x/result-history">
       <div className="container" style={{ paddingTop: 55 }}>
-        <Header title={"Power X Result"} path={location?.state?.from || "/"} />
+        <Header title={"Power X Result"} path={location?.state?.from || "/power-x"} />
 
         <div>
           <table style={{ width: "100%", marginTop: "1rem" }}>
@@ -62,18 +63,9 @@ const ResultHistoryPX = () => {
                   </tr>
                 ))}
               </tbody>
-            ) : <div
-            className="d-flex justify-content-center align-items-center"
-            style={{ height: "90vh" }}
-          >
-            <div
-              className="spinner-border text-warning"
-              style={{ width: "3rem", height: "3rem" }}
-              role="status"
-            >
-              <span className="sr-only"></span>
-            </div>
-          </div>}
+            ) : (
+              <Spinner />
+            )}
           </table>
         </div>
       </div>

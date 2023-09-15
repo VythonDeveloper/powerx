@@ -5,10 +5,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { dbObject } from "../../helper/constant";
 import IsAuthenticate from "../../redirect/IsAuthenticate";
+import Spinner from "../../components/spinner/Spinner";
 
 const RechargeHistory = () => {
   const location = useLocation();
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(location.search);
@@ -18,29 +20,36 @@ const RechargeHistory = () => {
 
   const getPowerx = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject("/power-x/transfer-history.php");
       console.log(data);
       if (!data.error) {
         setData(data.response);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   const getDusKadum = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject("/dus-ka-dum/transfer-history.php");
       console.log(data);
       if (!data.error) {
         setData(data.response);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     if (paramValue === "power-x") {
       getPowerx();
     } else if (paramValue === "dus-ka-dum") {
@@ -48,14 +57,20 @@ const RechargeHistory = () => {
     } else {
       navigate("/home");
     }
+    setLoading(false);
   }, [location]);
 
   return (
     <IsAuthenticate path={`/transfer-history?type=${paramValue}`}>
+      {loading && <Spinner />}
       <div className="container" style={{ paddingTop: 55 }}>
         <Header
           title={"Transfer History"}
-          path={location?.state?.from || "/profile"}
+          path={
+             paramValue === "power-x"
+              ? "/transfer"
+              : "/dus-ka-dum/transfer"
+          }
         />
 
         <h3>{paramValue === "power-x" ? "Power X" : "Dus Ka Dum"}</h3>

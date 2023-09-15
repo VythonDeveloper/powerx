@@ -85,7 +85,7 @@ const AddBank = () => {
     {loading && <Spinner />}
     <div className="container" style={{paddingTop: 55, paddingBottom: 30}}>
       {/* Top Navbar */}
-      <Header title={"Add Bank"} path={location?.state?.from || "/"} />
+      <Header title={"Add Bank"} path={location?.state?.from || "/home"} />
       <Toaster />
 
       <div className="addbank-icon">

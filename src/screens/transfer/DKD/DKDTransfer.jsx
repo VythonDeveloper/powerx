@@ -8,6 +8,7 @@ import { dbObject } from "../../../helper/constant";
 import { toast } from "react-toastify";
 import Toaster, { toastOptions } from "../../../components/toaster/Toaster";
 import IsAuthenticate from "../../../redirect/IsAuthenticate";
+import Spinner from "../../../components/spinner/Spinner";
 
 const Transfer = () => {
   const location = useLocation();
@@ -17,23 +18,28 @@ const Transfer = () => {
   const [minimunTransfer, setMinimumTrasfer] = useState();
   const [level1Bonus, setLevel1Bonus] = useState(0);
   const [level2Bonus, setLevel2Bonus] = useState(0);
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate();
 
   const getWallet = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject("/dus-ka-dum/fetch-wallet.php");
 
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   const getControlFields = async () => {
     try {
+      setLoading(true)
       const { data } = await dbObject.get("/dus-ka-dum/control-fields.php");
 
       if (!data.error) {
@@ -42,8 +48,10 @@ const Transfer = () => {
         setLevel2Bonus(data.response.level2Bonus);
         setLevel1Bonus(data.response.level1Bonus);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
@@ -54,6 +62,7 @@ const Transfer = () => {
 
   const transferHandler = async () => {
     try {
+      setLoading(true)
       const values = {
         points: amount,
       };
@@ -81,20 +90,25 @@ const Transfer = () => {
       } else {
         toast.error(data.message, toastOptions);
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
   return (
     <IsAuthenticate path={"/dus-ka-dum/transfer"}>
+      {
+        loading && <Spinner />
+      }
       <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
         <Toaster />
         <div className="container dkd-container" style={{ paddingTop: 55 }}>
           <Header
             backgroundColor={"#fff"}
             title={"Transfer"}
-            path={location?.state?.from || "/"}
+            path={location?.state?.from || "/dus-ka-dum"}
           />
 
           <div className="withdrawal__page__balance__section mt-4">

@@ -46,6 +46,7 @@ const FastParity = () => {
   }
 
   useEffect(() => {
+    setLoading(true);
     const powerxRef = ref(database, "power-x/timer");
 
     try {
@@ -62,38 +63,45 @@ const FastParity = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     if (timeinSec === 0) {
       getWallet();
       getResultHistory();
-      getMyOrder()
+      getMyOrder();
     }
   }, [timeinSec]);
 
   const getWallet = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject("/power-x/fetch-wallet.php");
       if (!data.error) {
         setWinWallet(data?.response.winWallet);
         setPlayWallet(data?.response.playWallet);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   const getControlFields = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject.get("/power-x/control-fields.php");
 
       if (!data.error) {
         setmaxCoinBid(data.response.maxCoinBid);
         setplatformFees(data.response.platformFees);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(true);
     }
   };
 
@@ -105,9 +113,9 @@ const FastParity = () => {
   }, []);
 
   const placeBit = async () => {
+    setLoading(true);
     if (timeinSec >= 11) {
       try {
-        setLoading(true)
         const values = {
           period,
           coin,
@@ -144,36 +152,45 @@ const FastParity = () => {
           toast.warning(data.message, toastOptions);
           setShowModal(false);
         }
-        setLoading(false)
+         setLoading(false)
       } catch (error) {
         console.log(error);
         setLoading(false)
       }
     } else {
       toast.warning("You can place bit after in next period");
+      setLoading(false)
     }
   };
 
   const getMyOrder = async () => {
     try {
+      setLoading(true);
       const { data } = await dbObject.get("/power-x/my-orders.php");
       if (!data.error) {
         setMyOrder(data.response);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   const getResultHistory = async () => {
     try {
-      const { data } = await dbObject.get("/power-x/result-history.php?limit=10");
+      setLoading(true);
+      const { data } = await dbObject.get(
+        "/power-x/result-history.php?limit=10"
+      );
 
       if (!data.error) {
         setResultHistory(data.response);
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -221,7 +238,9 @@ const FastParity = () => {
               </div>
 
               <div className="withdrawal__input__notes d-flex justify-content-between">
-                <p className="mb-0 mt-2 text-light">Service charge {platformFees}%</p>
+                <p className="mb-0 mt-2 text-light">
+                  Service charge {platformFees}%
+                </p>
                 <p className="mb-0 mt-2 text-light">
                   Delivery{" "}
                   {(
@@ -231,9 +250,12 @@ const FastParity = () => {
                 </p>
               </div>
 
-              <Keyboard func={placeBit} title={'Start'} amount={amount} setAmount={setAmount} />
-
-              
+              <Keyboard
+                func={placeBit}
+                title={"Start"}
+                amount={amount}
+                setAmount={setAmount}
+              />
             </div>
           </div>
         )}
@@ -327,30 +349,28 @@ const FastParity = () => {
           </div>
 
           <div className="power-x p-2 mt-2 position-relative">
-            {
-              timeinSec < 11 ? (
-                <div
-              className="countdown"
-              style={{
-                position: "absolute",
-                backgroundColor: "#040404b3",
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                zIndex: "90",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <section class="wrapper">
-                <div class="top">{timeinSec}</div>
-                <div class="wapper-bottom">{timeinSec}</div>
-              </section>
-            </div>
-              ): null
-            }
+            {timeinSec < 11 ? (
+              <div
+                className="countdown"
+                style={{
+                  position: "absolute",
+                  backgroundColor: "#040404b3",
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  zIndex: "90",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <section class="wrapper">
+                  <div class="top">{timeinSec}</div>
+                  <div class="wapper-bottom">{timeinSec}</div>
+                </section>
+              </div>
+            ) : null}
             <p className="mb-1 w-50" style={{ fontSize: 12 }}>
               Maximum bid for Gold and Silver is ₹{maxCoinBid}{" "}
             </p>
@@ -507,24 +527,24 @@ const FastParity = () => {
               </table>
 
               <div className="mb-4 d-flex justify-content-center mt-3">
-              <button
-            onClick={() =>
-              navigate("/power-x/result-history", {
-                state: { from: location.pathname },
-              })
-            }
-            className="w-50"
-            style={{
-              height: 55,
-              borderColor: "rgb(252, 148, 13)",
-              borderRadius: 5,
-              backgroundColor: "transparent",
-              color: "rgb(252, 148, 13)",
-              fontWeight: "500",
-            }}
-          >
-            See More
-          </button>
+                <button
+                  onClick={() =>
+                    navigate("/power-x/result-history", {
+                      state: { from: location.pathname },
+                    })
+                  }
+                  className="w-50"
+                  style={{
+                    height: 55,
+                    borderColor: "rgb(252, 148, 13)",
+                    borderRadius: 5,
+                    backgroundColor: "transparent",
+                    color: "rgb(252, 148, 13)",
+                    fontWeight: "500",
+                  }}
+                >
+                  See More
+                </button>
               </div>
             </div>
           ) : (
