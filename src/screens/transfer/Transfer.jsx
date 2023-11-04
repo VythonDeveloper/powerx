@@ -13,8 +13,8 @@ import Spinner from "../../components/spinner/Spinner";
 const Transfer = () => {
   const location = useLocation();
   const [amount, setAmount] = useState("");
-  const [level1Bonus, setLevel1Bonus] = useState(0);
-  const [level2Bonus, setLevel2Bonus] = useState(0);
+  const [transferlevel1Bonus, setTransferLevel1Bonus] = useState(0);
+  const [transferlevel2Bonus, setTransferLevel2Bonus] = useState(0);
   const [bonus, setBonus] = useState("0");
   const [winWallet, setWinWallet] = useState("0.00");
   const [minimunTransfer, setMinimumTrasfer] = useState();
@@ -42,8 +42,8 @@ const Transfer = () => {
       if (!data.error) {
         setBonus(data.response.transferBonus);
         setMinimumTrasfer(data?.response.minTransfer);
-        setLevel2Bonus(data.response.level2Bonus);
-        setLevel1Bonus(data.response.level1Bonus);
+        setTransferLevel2Bonus(data.response.transferLevel2Bonus);
+        setTransferLevel1Bonus(data.response.transferLevel1Bonus);
       }
       setLoading(false)
     } catch (error) {
@@ -135,9 +135,16 @@ const Transfer = () => {
 
           <div className="withdrawal__input__notes">
             <p className="mb-0 mt-2">Bonus {bonus}%</p>
+            <p className="mb-0 mt-2">-</p>
+            <p className="mb-0 mt-2">(</p>
             <p className="mb-0 mt-2">
-              Referral Fees {Number(level1Bonus) + Number(level2Bonus)}%
+              Lv1 Fees {transferlevel1Bonus}%
             </p>
+            <p className="mb-0 mt-2">+</p>
+            <p className="mb-0 mt-2">
+              Lv2 Fees {transferlevel2Bonus}%
+            </p>
+            <p className="mb-0 mt-2">)</p>
           </div>
 
           <br />
